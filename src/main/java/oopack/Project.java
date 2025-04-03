@@ -1,9 +1,9 @@
-package asdru;
+package oopack;
 
-import asdru.datapack.Datapack;
-import asdru.resourcepack.Resourcepack;
-import asdru.version.Version;
-import asdru.version.VersionInfo;
+import oopack.datapack.Datapack;
+import oopack.resourcepack.Resourcepack;
+import oopack.version.Version;
+import oopack.version.VersionInfo;
 
 import java.nio.file.Path;
 import java.util.Map;

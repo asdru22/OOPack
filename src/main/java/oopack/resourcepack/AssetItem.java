@@ -1,6 +1,6 @@
-package asdru.resourcepack;
+package oopack.resourcepack;
 
-import asdru.PackItem;
+import oopack.PackItem;
 
 public class AssetItem extends PackItem<AssetEntries> {
 

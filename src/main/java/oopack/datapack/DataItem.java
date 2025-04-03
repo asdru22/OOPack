@@ -1,6 +1,6 @@
-package asdru.datapack;
+package oopack.datapack;
 
-import asdru.PackItem;
+import oopack.PackItem;
 
 public class DataItem extends PackItem<DataEntries> {
 

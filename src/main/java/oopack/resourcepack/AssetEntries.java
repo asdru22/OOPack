@@ -1,4 +1,4 @@
-package asdru.resourcepack;
+package oopack.resourcepack;
 
 public enum AssetEntries {
     LANG,

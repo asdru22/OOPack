@@ -1,4 +1,4 @@
-package asdru.resourcepack;
+package oopack.resourcepack;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

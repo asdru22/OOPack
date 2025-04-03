@@ -1,4 +1,4 @@
-package asdru.version;
+package oopack.version;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

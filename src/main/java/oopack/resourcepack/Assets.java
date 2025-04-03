@@ -1,6 +1,6 @@
-package asdru.resourcepack;
+package oopack.resourcepack;
 
-import asdru.NamespaceHolder;
+import oopack.NamespaceHolder;
 
 import java.nio.file.Path;
 import java.util.HashMap;

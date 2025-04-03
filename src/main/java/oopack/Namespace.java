@@ -1,7 +1,7 @@
-package asdru;
+package oopack;
 
-import asdru.datapack.Data;
-import asdru.resourcepack.Assets;
+import oopack.datapack.Data;
+import oopack.resourcepack.Assets;
 
 public class Namespace {
     private final Assets assets;

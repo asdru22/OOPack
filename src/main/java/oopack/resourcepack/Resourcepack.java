@@ -1,7 +1,7 @@
-package asdru.resourcepack;
+package oopack.resourcepack;
 
-import asdru.Namespace;
-import asdru.version.VersionHolder;
+import oopack.Namespace;
+import oopack.version.VersionHolder;
 
 import java.nio.file.Path;
 import java.util.List;

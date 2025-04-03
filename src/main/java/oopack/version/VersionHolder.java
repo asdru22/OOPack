@@ -1,7 +1,7 @@
-package asdru.version;
+package oopack.version;
 
-import asdru.Buildable;
-import asdru.json.Json;
+import oopack.Buildable;
+import oopack.json.Json;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;

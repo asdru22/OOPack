@@ -1,4 +1,4 @@
-package asdru;
+package oopack;
 
 public abstract class NamespaceHolder implements Buildable {
     private final String namespace;

@@ -32,7 +32,7 @@
                     <archive>
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <mainClass>asdru.Project</mainClass>
+                            <mainClass>oopack.Project</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

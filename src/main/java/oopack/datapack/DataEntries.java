@@ -1,4 +1,4 @@
-package asdru.datapack;
+package oopack.datapack;
 
 public enum DataEntries {
     FUNCTION,
