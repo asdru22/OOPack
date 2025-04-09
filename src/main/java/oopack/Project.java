@@ -6,18 +6,20 @@ import oopack.version.Version;
 import oopack.version.VersionInfo;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Project {
     private final String name, version, worldName;
-    private final String output;
+    private final List<String> output = new ArrayList<>();
     private Datapack datapack;
     private Resourcepack resourcepack = null;
 
     public Project(String name, String version, String output, String worldName) {
         this.name = name;
         this.version = version;
-        this.output = output;
+        this.output.add(output);
         this.worldName = worldName;
     }
 
@@ -56,13 +58,18 @@ public class Project {
 
     private void setVersion(VersionInfo versionInfo) {
         datapack.setVersion(versionInfo.datapackVersion());
-        datapack.build(Path.of(
-                output, "saves", worldName, "datapacks", name));
+        output.forEach(output -> {
+            datapack.build(Path.of(
+                    output, "saves", worldName, "datapacks", name));
+            if (resourcepack != null) {
+                resourcepack.setVersion(versionInfo.resourcepackVersion());
+                resourcepack.build(Path.of(
+                        output, "resourcepacks", name));
+            }
+        });
+    }
 
-        if (resourcepack != null) {
-            resourcepack.setVersion(versionInfo.resourcepackVersion());
-            resourcepack.build(Path.of(
-                    output, "resourcepacks", name));
-        }
+    public void addPath(String path) {
+        this.output.add(path);
     }
 }
