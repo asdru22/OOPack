@@ -1,4 +1,7 @@
-package oopack.resourcepack;
+package oopack.resourcepack.objects;
+
+import oopack.resourcepack.AssetEntries;
+import oopack.resourcepack.AssetItem;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -9,8 +12,8 @@ import java.nio.file.Path;
 
 public class TextureItem extends AssetItem {
 
-    public TextureItem(AssetEntries type, String name, String content) {
-        super(type, name, content);
+    public TextureItem(String destination, String source) {
+        super(AssetEntries.TEXTURES, destination, source);
     }
 
     @Override

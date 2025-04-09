@@ -1,7 +1,9 @@
 package oopack.resourcepack;
 
 public enum AssetEntries {
-    LANG,
     MODELS,
-    TEXTURES
+    TEXTURES,
+    ITEM,
+    FONT,
+    SOUNDS
 }

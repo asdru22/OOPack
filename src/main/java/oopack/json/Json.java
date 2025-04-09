@@ -15,4 +15,8 @@ public class Json {
     public static String toString(JsonObject input) {
         return gson.toJson(input);
     }
+
+    public static String toJson(Object src){
+        return gson.toJson(src);
+    }
 }
