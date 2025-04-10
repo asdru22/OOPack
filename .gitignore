@@ -40,4 +40,4 @@ build/
 .idea/
 out/
 /src/main/resources/
-/src/main/java/oopack/_MyProject.java
+src/main/java/oopack/_MyProject.java
