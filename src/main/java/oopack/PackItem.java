@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-public class PackItem<T> implements Buildable {
+public class PackItem<T> implements Buildable, Loggable {
     protected final String name;
     protected String content;
     private final T type;
@@ -40,7 +40,8 @@ public class PackItem<T> implements Buildable {
             // Write content to file
             Files.writeString(fileName, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger().severe("Error when creating pack item: " + this.getFileName() + " - " + e.getMessage());
+
         }
     }
 }

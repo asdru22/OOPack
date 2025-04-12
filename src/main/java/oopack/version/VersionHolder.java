@@ -1,6 +1,7 @@
 package oopack.version;
 
 import oopack.Buildable;
+import oopack.Loggable;
 import oopack.json.Json;
 import com.google.gson.JsonObject;
 
@@ -9,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-public abstract class VersionHolder implements Buildable {
+public abstract class VersionHolder implements Buildable, Loggable {
     private int version;
     private String packMCMeta = null;
 
@@ -39,7 +40,8 @@ public abstract class VersionHolder implements Buildable {
             Files.writeString(mcMetaPath, packMCMeta,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger().severe("Error when making pack.mcmeta: " + mcMetaPath + " - " + e.getMessage());
+
         }
 
     }

@@ -34,7 +34,8 @@ public class SoundItem extends AssetItem {
 
             is.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger().severe("Error when generating sound: " + this.getFileName() + " - " + e.getMessage());
+
         }
     }
 

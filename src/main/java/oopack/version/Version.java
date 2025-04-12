@@ -3,6 +3,7 @@ package oopack.version;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import oopack.Loggable;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,7 +13,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Version {
+public class Version implements Loggable {
     private static final String URL_STRING =
             "https://raw.githubusercontent.com/misode/mcmeta/refs/heads/summary/versions/data.json";
 
@@ -45,7 +46,8 @@ public class Version {
             return Optional.of(getStringVersionInfoMap(jsonArray));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error when getting dict - " + e.getMessage());
+
         }
         return Optional.empty();
     }

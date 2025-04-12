@@ -18,8 +18,16 @@ public class Data extends NamespaceHolder {
     }
 
     public DataItem add(DataEntries type, String name, String... contents) {
+        return createAndStore(type, name, String.join("\n", contents));
+    }
+
+    public DataItem add(DataEntries type, String name, StringBuilder content) {
+        return createAndStore(type, name, content.toString());
+    }
+
+    private DataItem createAndStore(DataEntries type, String name, String content) {
         name += type.equals(DataEntries.FUNCTION) ? ".mcfunction" : ".json";
-        DataItem dataItem = new DataItem(type, name, String.join("\n", contents));
+        DataItem dataItem = new DataItem(type, name, content);
         data.put(type, dataItem);
         return dataItem;
     }

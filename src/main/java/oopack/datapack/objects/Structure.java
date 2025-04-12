@@ -1,5 +1,6 @@
 package oopack.datapack.objects;
 
+import oopack.Loggable;
 import oopack.datapack.DataEntries;
 import oopack.datapack.DataItem;
 
@@ -7,10 +8,10 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
-public class Structure extends DataItem {
+public class Structure extends DataItem implements Loggable {
 
     public Structure(String name) {
-        super(DataEntries.STRUCTURE, name, name);
+        super(DataEntries.SRUCTURE, name, name);
     }
 
     public void build(Path buildPath, Path structuresPath) {
@@ -20,19 +21,21 @@ public class Structure extends DataItem {
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     Path targetDir = buildPath.resolve(structuresPath.relativize(dir));
                     Files.createDirectories(targetDir);
+                    logger().fine("Created directory: " + targetDir);
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     Path targetFile = buildPath.resolve(structuresPath.relativize(file));
-                    Files.createDirectories(targetFile.getParent()); // Ensure parent folder exists
+                    Files.createDirectories(targetFile.getParent());
                     Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
+                    logger().info("Copied file: " + file + " → " + targetFile);
                     return FileVisitResult.CONTINUE;
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            logger().severe("Error while copying structure files: " + e.getMessage());
         }
     }
 

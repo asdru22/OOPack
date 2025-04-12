@@ -10,4 +10,5 @@ public abstract class NamespaceHolder implements Buildable {
     public String getNamespace() {
         return namespace;
     }
+
 }
