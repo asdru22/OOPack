@@ -46,3 +46,8 @@ public class _MyProject {
     }
 }
 ```
+
+# TODO:
+- Text blocks for json and .mcfunction
+- Add mcmeta to textures
+- Select texture subsection

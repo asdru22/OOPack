@@ -6,5 +6,6 @@ public enum DataEntries {
     ADVANCEMENT,
     PREDICATE,
     RECIPE,
-    ITEM_MODIFIER
+    ITEM_MODIFIER,
+    STRUCTURE
 }
