@@ -58,15 +58,23 @@ public class Project {
 
     private void setVersion(VersionInfo versionInfo) {
         datapack.setVersion(versionInfo.datapackVersion());
-        output.forEach(output -> {
-            datapack.build(Path.of(
-                    output, "saves", worldName, "datapacks", name));
-            if (resourcepack != null) {
-                resourcepack.setVersion(versionInfo.resourcepackVersion());
-                resourcepack.build(Path.of(
-                        output, "resourcepacks", name));
+        for (int i = 0; i < output.size(); i++) {
+            String out = output.get(i);
+
+            if (i == 0) {
+                datapack.build(Path.of(out, "saves", worldName, "datapacks", name));
+                if (resourcepack != null) {
+                    resourcepack.setVersion(versionInfo.resourcepackVersion());
+                    resourcepack.build(Path.of(out, "resourcepacks", name));
+                }
+            } else {
+                datapack.build(Path.of(out, "datapack"));
+                if (resourcepack != null) {
+                    resourcepack.build(Path.of(out, "resourcepack"));
+                }
             }
-        });
+        }
+
     }
 
     public void addPath(String path) {
