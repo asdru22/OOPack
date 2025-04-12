@@ -52,6 +52,9 @@ public class TextureItem extends AssetItem implements Loggable {
             }
 
             Path destinationPath = this.getFileName();
+
+            Files.createDirectories(destinationPath.getParent());
+
             if (mcMeta != null) {
                 makeMcMeta(destinationPath.toString(), mcMeta);
             }
