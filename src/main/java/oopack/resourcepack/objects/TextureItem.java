@@ -68,7 +68,6 @@ public class TextureItem extends AssetItem implements Loggable {
 
     private void makeMcMeta(String path, String content) {
         Path mcMetaPath = Paths.get(String.format("%s.mcmeta", path));
-        System.out.println(mcMetaPath);
         try {
             // Write content to file
             Files.writeString(mcMetaPath, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);

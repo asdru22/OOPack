@@ -30,7 +30,6 @@ public class Structure extends DataItem implements Loggable {
                     Path targetFile = buildPath.resolve(structuresPath.relativize(file));
                     Files.createDirectories(targetFile.getParent());
                     Files.copy(file, targetFile, StandardCopyOption.REPLACE_EXISTING);
-                    logger().info("Copied file: " + file + " → " + targetFile);
                     return FileVisitResult.CONTINUE;
                 }
             });
