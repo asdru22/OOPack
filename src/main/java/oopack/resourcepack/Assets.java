@@ -7,12 +7,8 @@ import oopack.resourcepack.objects.Sounds;
 import oopack.resourcepack.objects.TextureItem;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Assets extends NamespaceHolder {
-
-    private final Map<AssetEntries, AssetItem> assets = new HashMap<>();
+public class Assets extends NamespaceHolder<AssetItem, AssetEntries> {
 
     public Assets(String namespace) {
         super(namespace);
@@ -21,14 +17,15 @@ public class Assets extends NamespaceHolder {
     private final Lang lang = new Lang();
     private final Sounds sounds = new Sounds(this);
 
-    public AssetItem add(AssetEntries type, String name, String... contents) {
+    @Override
+    protected AssetItem createAndStore(AssetEntries type, String name, String content) {
         AssetItem assetItem = switch (type) {
-            case TEXTURES -> new TextureItem(name + ".png", String.join("/", contents));
-            case SOUNDS -> new SoundItem(name + ".ogg", String.join("/", contents));
-            default -> new AssetItem(type, name + ".json", String.join("\n", contents));
+            case TEXTURES -> new TextureItem(name + ".png", String.join("/", content));
+            case SOUNDS -> new SoundItem(name + ".ogg", String.join("/", content));
+            default -> new AssetItem(type, name + ".json", String.join("\n", content));
         };
 
-        assets.put(type, assetItem);
+        items.put(name, assetItem);
         return assetItem;
     }
 
@@ -41,7 +38,7 @@ public class Assets extends NamespaceHolder {
     }
 
     public void addSoundItem(SoundItem soundItem) {
-        assets.put(AssetEntries.SOUNDS, soundItem);
+        items.put(soundItem.getName(), soundItem);
     }
 
     @Override
@@ -49,6 +46,6 @@ public class Assets extends NamespaceHolder {
         Path buildPath = output.resolve(this.getNamespace());
         sounds.build(buildPath);
         lang.build(buildPath);
-        assets.forEach((_, assetItem) -> assetItem.build(buildPath));
+        items.forEach((_, assetItem) -> assetItem.build(buildPath));
     }
 }

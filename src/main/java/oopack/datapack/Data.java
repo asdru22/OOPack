@@ -8,13 +8,10 @@ import oopack.json.Json;
 import oopack.json.ValuesContainer;
 
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class Data extends NamespaceHolder {
+public class Data extends NamespaceHolder<DataItem,DataEntries> {
 
-    private final Map<String, DataItem> data = new HashMap<>();
     private final Structures structures;
 
     public Data(String namespace) {
@@ -22,22 +19,10 @@ public class Data extends NamespaceHolder {
         this.structures = new Structures();
     }
 
-    public DataItem add(DataEntries type, String name, String... contents) {
-        return createAndStore(type, name, String.join("\n", contents));
-    }
-
-    public DataItem add(DataEntries type, String name, StringBuilder content) {
-        return createAndStore(type, name, content.toString());
-    }
-
-    public DataItem get(String name) {
-        return data.get(name);
-    }
-
-    private DataItem createAndStore(DataEntries type, String name, String content) {
+    protected DataItem createAndStore(DataEntries type, String name, String content) {
         String finalName = name + (type.equals(DataEntries.FUNCTION) ? ".mcfunction" : ".json");
         DataItem dataItem = new DataItem(type, finalName, content);
-        data.put(name, dataItem);
+        items.put(name, dataItem);
         return dataItem;
     }
 
@@ -84,7 +69,7 @@ public class Data extends NamespaceHolder {
     @Override
     public void build(Path output) {
         Path buildPath = output.resolve(this.getNamespace());
-        data.forEach((_, dataItem) -> dataItem.build(buildPath));
+        items.forEach((_, dataItem) -> dataItem.build(buildPath));
         structures.build(buildPath);
     }
 }
