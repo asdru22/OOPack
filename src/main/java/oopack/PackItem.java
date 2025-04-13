@@ -32,6 +32,18 @@ public class PackItem<T> implements Buildable, Loggable {
         return fileName;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public String getContent(){
+        return content;
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
+
     protected void makeFile() {
         try {
             // Create directories if they don't exist

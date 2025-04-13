@@ -7,5 +7,6 @@ public enum DataEntries {
     PREDICATE,
     RECIPE,
     ITEM_MODIFIER,
-    SRUCTURE
+    SRUCTURE,
+    TAGS
 }

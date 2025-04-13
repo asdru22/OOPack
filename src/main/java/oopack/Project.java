@@ -25,10 +25,12 @@ public class Project {
 
     public void setDatapack(Datapack datapack) {
         this.datapack = datapack;
+        datapack.setProject(this);
     }
 
     public void setResourcepack(Resourcepack resourcepack) {
         this.resourcepack = resourcepack;
+        resourcepack.setProject(this);
     }
 
     public void build() {
@@ -79,5 +81,13 @@ public class Project {
 
     public void addPath(String path) {
         this.output.add(path);
+    }
+
+    public Datapack getDatapack() {
+        return datapack;
+    }
+
+    public Resourcepack getResourcepack() {
+        return resourcepack;
     }
 }

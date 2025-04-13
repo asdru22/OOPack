@@ -1,6 +1,7 @@
 package oopack.resourcepack;
 
 import oopack.Namespace;
+import oopack.Project;
 import oopack.version.VersionHolder;
 
 import java.nio.file.Path;
@@ -22,5 +23,15 @@ public class Resourcepack extends VersionHolder {
     public void build(Path output) {
         makePackMCMeta(output);
         assets.forEach(a -> a.build(output.resolve("assets")));
+    }
+
+    @Override
+    public void setProject(Project project) {
+        this.project = project;
+        assets.forEach(a -> a.setProject(project));
+    }
+
+    public void addNamespace(Namespace namespace) {
+        this.assets.add(namespace.getAssets());
     }
 }

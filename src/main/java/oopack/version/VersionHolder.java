@@ -2,6 +2,7 @@ package oopack.version;
 
 import oopack.Buildable;
 import oopack.Loggable;
+import oopack.Project;
 import oopack.json.Json;
 import com.google.gson.JsonObject;
 
@@ -13,6 +14,7 @@ import java.nio.file.StandardOpenOption;
 public abstract class VersionHolder implements Buildable, Loggable {
     private int version;
     private String packMCMeta = null;
+    protected Project project = null;
 
     public void setVersion(int version) {
         this.version = version;
@@ -51,4 +53,7 @@ public abstract class VersionHolder implements Buildable, Loggable {
         jsonMCMeta.getAsJsonObject("pack").addProperty("pack_format", version);
         return Json.toString(jsonMCMeta);
     }
+
+    public abstract void setProject(Project project);
+
 }
