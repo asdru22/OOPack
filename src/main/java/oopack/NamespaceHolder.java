@@ -3,7 +3,7 @@ package oopack;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class NamespaceHolder<I,E> implements Buildable {
+public abstract class NamespaceHolder<I, E> implements Buildable {
     private final String namespace;
     protected Project project;
 
