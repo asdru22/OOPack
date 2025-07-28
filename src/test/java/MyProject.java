@@ -1,15 +1,26 @@
+import com.asdru.oopack.Context;
+import com.asdru.oopack.Folder;
 import com.asdru.oopack.Namespace;
-import com.asdru.oopack.Project;
 
-public class MyProject extends Project {
-    public MyProject() {
-        super(new Builder("MyProject", "1.0")
-                .addBuildDirectory("build/output")
-                .setWorldName("Overworld")
-                .addNamespace(new Namespace("test")));
-    }
+public class MyProject  {
+
 
     public static void main(String[] args) {
-        new MyProject();
+
+        Folder data = new Folder("data");
+        Context c = new Context(data);
+
+        var foo = new Namespace("foo");
+        data.add(foo);
+
+        foo.add(new MyFolder());
+
+        var bar = new Namespace("bar");
+        data.add(bar);
+
+        bar.add(new MyFolder());
+
+        System.out.println(data);
+
     }
 }

@@ -1,13 +1,14 @@
 package com.asdru.oopack;
 
-
-public class Namespace implements Buildable {
-    public final String name;
-    private Data data;
-    private Assets assets;
+public class Namespace extends Folder {
 
     public Namespace(String name) {
-        this.name = name;
+        super(name);
+        Context ctx = Context.getInstance();
+    }
+
+    public void add(Folder folder) {
+        children.add(folder);
     }
 
     @Override

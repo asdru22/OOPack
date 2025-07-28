@@ -1,48 +1,44 @@
 package com.asdru.oopack;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
-class Context {
-    private final Path path;
+public class Context {
+    private static Context instance;
+    public Path path;
+    private final Path root;
+    private Folder parent = null;
 
-    protected Context(Path path) {
-        this.path = path;
+    public Context(Folder src) {
+        this.path = src.getBuildPath();
+        this.root = path;
+        instance = this;
     }
 
-    protected Path getParent(){
-        return path.getParent();
+    public void push(String path) {
+        this.path = this.path.resolve(path);
     }
 
-    protected Path resolve(String child){
-        return path.resolve(child);
+    public void pop(){
+        this.path = this.path.getParent();
     }
 
-    protected void make() {
-        try {
-            if (Files.exists(path)) {
-                System.out.println("Path already exists: " + path);
-                return;
-            }
+    public static Context getInstance() {
+        return instance;
+    }
 
-            String name = path.getFileName().toString();
+    public Path getPath() {
+        return path;
+    }
 
-            // Heuristic: if name contains a dot (.) assume it's a file
-            if (name.contains(".")) {
-                // Ensure parent directory exists
-                Path parent = path.getParent();
-                if (parent != null && !Files.exists(parent)) {
-                    Files.createDirectories(parent);
-                }
-                Files.createFile(path);
-                System.out.println("File created at: " + path);
-            } else {
-                Files.createDirectories(path);
-                System.out.println("Directory created at: " + path);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to create path: " + path, e);
-        }
+    public Folder getParent() {
+        return parent;
+    }
+
+    public void setParent(Folder parent) {
+        this.parent = parent;
+    }
+
+    public Path getRoot() {
+        return root;
     }
 }
