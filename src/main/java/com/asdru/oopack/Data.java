@@ -1,4 +1,9 @@
 package com.asdru.oopack;
 
-public class Data {
+import com.asdru.oopack.datapack.DataItem;
+
+public class Data extends Resource<DataItem> {
+    public Data() {
+        super("data");
+    }
 }

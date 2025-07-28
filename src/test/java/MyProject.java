@@ -1,15 +1,16 @@
 import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
+import com.asdru.oopack.datapack.items.Function;
 
-public class MyProject extends Project {
-    public MyProject() {
-        super(new Builder("MyProject", "1.0")
-                .addBuildDirectory("build/output")
-                .setWorldName("Overworld")
-                .addNamespace(new Namespace("test")));
-    }
+public class MyProject  {
 
     public static void main(String[] args) {
-        new MyProject();
+        Project project = new Project();
+        System.out.println(project);
+
+        Namespace ns = new Namespace("tes");
+        ns.add(new Function());
+
+        project.addNamespace(ns);
     }
 }
