@@ -1,17 +1,26 @@
 package com.asdru.oopack.internal;
 
-import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class AbstractFolder extends Container<FileSystemObject> implements FileSystemObject {
-    private Path path;
+public abstract class AbstractFolder <T extends FileSystemObject> implements FileSystemObject {
+    private final String name;
+    private final List<T> files = new ArrayList<>();
 
-    @Override
-    public Path getPath() {
-        return path;
+    public AbstractFolder(String name) {
+        this.name = name;
+    }
+
+    public void addFile(T file) {
+        files.add(file);
+    }
+
+    public List<T> getFiles() {
+        return files;
     }
 
     @Override
-    public String toString() {
-        return String.format("%s: %s", path, children);
+    public Object getContent() {
+        return files;
     }
 }

@@ -1,18 +1,23 @@
 package com.asdru.oopack.internal;
 
-import java.nio.file.Path;
-
 public abstract class AbstractFile implements FileSystemObject {
-    private Path path;
+    private final String name;
+    private final String content;
+
+    public AbstractFile(String name, String content) {
+        this.name = name;
+        this.content = content;
+    }
 
     @Override
-    public Path getPath() {
-        return path;
+    public Object getContent() {
+        return content;
     }
 
     @Override
     public String toString() {
-        return path.toString();
+        return String.format("file=[Name: %s\nContent:  %s]",
+                name,content);
     }
-
 }
+
