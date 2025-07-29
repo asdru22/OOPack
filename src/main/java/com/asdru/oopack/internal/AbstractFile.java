@@ -1,16 +1,16 @@
 package com.asdru.oopack.internal;
 
-public abstract class AbstractFile implements FileSystemObject {
+abstract class AbstractFile<T> implements FileSystemObject {
     private final String name;
-    private final String content;
+    private final T content;
 
-    public AbstractFile(String name, String content) {
+    public AbstractFile(String name, T content) {
         this.name = name;
         this.content = content;
     }
 
     @Override
-    public Object getContent() {
+    public T getContent() {
         return content;
     }
 

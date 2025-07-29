@@ -1,7 +1,7 @@
 package com.asdru.oopack;
 
 import com.asdru.oopack.internal.FileSystemObject;
-import com.asdru.oopack.internal.Subfolder;
+import com.asdru.oopack.internal.Folder;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ public class Namespace implements FileSystemObject {
         this.name = name;
     }
 
-    private final List<Subfolder> subfolders = new ArrayList<>();
+    private final List<Folder> folders = new ArrayList<>();
 
-    public Namespace addSubfolder(Subfolder subfolder) {
-        subfolders.add(subfolder);
+    public Namespace addSubfolder(Folder folder) {
+        folders.add(folder);
         return this;
     }
 
@@ -27,17 +27,17 @@ public class Namespace implements FileSystemObject {
 
     @Override
     public Object getContent() {
-        return subfolders;
+        return folders;
     }
 
     @Override
     public void build(Path parent) {
-        subfolders.forEach(subfolder -> subfolder.build(parent.resolve(name)));
+        folders.forEach(folder -> folder.build(parent.resolve(name)));
     }
 
     @Override
     public String toString() {
         return String.format("namespace=[Name: %s\nFolders:  %s]",
-                name,subfolders);
+                name, folders);
     }
 }
