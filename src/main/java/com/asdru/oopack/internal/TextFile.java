@@ -8,6 +8,10 @@ public class TextFile extends AbstractFile<String> {
         super(name, content);
     }
 
+    public TextFile(String name, String content, Object... args) {
+        this(name, String.format(content, args));
+    }
+
     @Override
     public void build(Path parent) {
 

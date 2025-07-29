@@ -15,7 +15,7 @@ public class Namespace implements FileSystemObject {
 
     private final List<Folder> folders = new ArrayList<>();
 
-    public Namespace addSubfolder(Folder folder) {
+    public Namespace addFolder(Folder folder) {
         folders.add(folder);
         return this;
     }
