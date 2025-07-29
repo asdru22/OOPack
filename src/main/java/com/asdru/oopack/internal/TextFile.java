@@ -4,11 +4,11 @@ import java.nio.file.Path;
 
 public class TextFile extends AbstractFile<String> {
 
-    public TextFile(String name, String content) {
+    protected TextFile(String name, String content) {
         super(name, content);
     }
 
-    public TextFile(String name, String content, Object... args) {
+    protected TextFile(String name, String content, Object... args) {
         this(name, String.format(content, args));
     }
 
