@@ -17,4 +17,9 @@ public non-sealed class Model extends AssetsJson {
     public Model(String content, Object... args) {
         super(content, args);
     }
+
+    @Override
+    public String getFolderName() {
+        return "model";
+    }
 }

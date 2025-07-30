@@ -2,7 +2,7 @@ import com.asdru.oopack.Project;
 
 public class MyProject extends Project {
     public MyProject() {
-        super("new world","MY ptojhect");
+        super("new world","MY project");
     }
 
     public static void main(String[] args) {
@@ -12,9 +12,6 @@ public class MyProject extends Project {
         p.addNamespace(new MyNamespace());
 
         p.build();
-
-        System.out.println(p);
-
 
     }
 }

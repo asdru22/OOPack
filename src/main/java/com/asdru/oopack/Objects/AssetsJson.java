@@ -1,5 +1,7 @@
 package com.asdru.oopack.Objects;
 
+import com.asdru.oopack.Namespace;
+
 sealed public abstract class AssetsJson extends JsonFile permits Model {
     public AssetsJson(String name, String content) {
         super(name, content);
@@ -15,5 +17,10 @@ sealed public abstract class AssetsJson extends JsonFile permits Model {
 
     public AssetsJson(String content, Object... args) {
         super(content, args);
+    }
+
+    @Override
+    public void collectByType(Namespace data, Namespace assets) {
+        assets.add(this);
     }
 }

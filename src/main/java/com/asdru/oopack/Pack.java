@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class Pack implements Buildable {
 
     Image icon;
-    List<Namespace> namespaces ;
+    List<Namespace> namespaces = new ArrayList<>() ;
     final String resourceName;
 
     public Pack(String resourceName) {
@@ -22,8 +22,8 @@ public abstract class Pack implements Buildable {
         namespaces.forEach(namespace -> namespace.build(parent.resolve(resourceName)));
     }
 
-    protected void setNamespaces(List<Namespace> namespaces) {
-        this.namespaces = new ArrayList<>(namespaces);
+    protected void addNamespace(Namespace namespace) {
+        namespaces.add(namespace);
     }
 
     @Override

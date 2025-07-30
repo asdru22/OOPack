@@ -1,6 +1,8 @@
 package com.asdru.oopack.internal;
 
-abstract class AbstractFile<T> implements FileSystemObject {
+import java.nio.file.Path;
+
+abstract class AbstractFile<T> implements FileSystemObject, PackFolder {
     private final String name;
     private final T content;
 
@@ -15,9 +17,20 @@ abstract class AbstractFile<T> implements FileSystemObject {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public String toString() {
         return String.format("file=[Name: %s\nContent:  %s]",
                 name,content);
+    }
+
+    @Override
+    public void build(Path parent) {
+        Path path = parent.resolve(this.getFolderName()).resolve(name);
+        System.out.println(path);
     }
 }
 

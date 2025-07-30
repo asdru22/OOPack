@@ -5,7 +5,7 @@ import com.asdru.oopack.internal.TextFile;
 import java.util.UUID;
 
 
-public sealed class JsonFile extends TextFile
+public abstract sealed class JsonFile extends TextFile
         permits DataJson, AssetsJson {
 
     public JsonFile(String name, String content) {

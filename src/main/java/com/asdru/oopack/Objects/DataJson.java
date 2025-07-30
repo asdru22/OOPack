@@ -1,6 +1,8 @@
 package com.asdru.oopack.Objects;
 
-sealed class DataJson extends JsonFile permits LootTable {
+import com.asdru.oopack.Namespace;
+
+sealed abstract public class DataJson extends JsonFile permits LootTable {
     public DataJson(String name, String content) {
         super(name, content);
     }
@@ -15,5 +17,10 @@ sealed class DataJson extends JsonFile permits LootTable {
 
     public DataJson(String content, Object... args) {
         super(content, args);
+    }
+
+    @Override
+    public void collectByType(Namespace data, Namespace assets) {
+        data.add(this);
     }
 }

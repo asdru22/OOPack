@@ -1,5 +1,10 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.Objects.AssetsJson;
+import com.asdru.oopack.Objects.DataJson;
+import com.asdru.oopack.Objects.Function;
+import com.asdru.oopack.internal.AbstractFolder;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +29,17 @@ public class Project {
     }
 
     public void addNamespace(Namespace namespace) {
-        namespaces.add(namespace);
+        final Namespace data = new Namespace(namespace.getName());
+        final Namespace assets = new Namespace(namespace.getName());
+
+        namespace.getContent().forEach(fso -> fso.collectByType(data, assets));
+        // add separated data and assets to datapack and resourcepack respectively
+        datapack.addNamespace(data);
+        resourcepack.addNamespace(assets);
     }
 
+
     public void build() {
-
-        datapack.setNamespaces(namespaces);
-        resourcepack.setNamespaces(namespaces);
-
         buildPaths.forEach(path -> {
             datapack.build(path.resolve(String.format("saves/%s/datapack-%s", worldName, projectName)));
             resourcepack.build(path.resolve(String.format("resourcepacks/resourcepack-%s", projectName)));

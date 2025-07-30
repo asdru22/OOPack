@@ -17,5 +17,4 @@ public class Folder extends AbstractFolder<FileSystemObject> {
     public List<FileSystemObject> get() {
         return content;
     }
-
 }

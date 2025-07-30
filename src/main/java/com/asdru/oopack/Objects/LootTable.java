@@ -17,4 +17,9 @@ public non-sealed class LootTable extends DataJson {
     public LootTable(String content, Object... args) {
         super(content, args);
     }
+
+    @Override
+    public String getFolderName() {
+        return "loot_table";
+    }
 }
