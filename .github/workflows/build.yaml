@@ -1,9 +1,8 @@
 name: Generate and Upload Zip Artifact
 
 on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+  release:
+    types: [created]
 
 jobs:
   build:
@@ -22,11 +21,20 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+      - name: Extract version from pom.xml
+        id: extract_version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Run the Java program
         run: java -jar target/*-jar-with-dependencies.jar
 
-      - name: Upload output.zip as artifact
+      - name: Rename ZIP with version
+        run: mv output.zip output-${{ steps.extract_version.outputs.version }}.zip
+
+      - name: Upload versioned ZIP as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: generated-zip
-          path: output.zip
+          name: generated-zip-${{ steps.extract_version.outputs.version }}
+          path: output-${{ steps.extract_version.outputs.version }}.zip
