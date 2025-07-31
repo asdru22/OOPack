@@ -1,10 +1,5 @@
 package com.asdru.oopack;
 
-import com.asdru.oopack.Objects.AssetsJson;
-import com.asdru.oopack.Objects.DataJson;
-import com.asdru.oopack.Objects.Function;
-import com.asdru.oopack.internal.AbstractFolder;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +11,6 @@ public class Project {
     Datapack datapack = new Datapack();
     Resourcepack resourcepack = new Resourcepack();
     List<Path> buildPaths = new ArrayList<>();
-    List<Namespace> namespaces = new ArrayList<>();
 
 
     public Project(String worldName, String projectName) {

@@ -1,4 +1,4 @@
-package com.asdru.oopack.Objects;
+package com.asdru.oopack.objects;
 
 public non-sealed class Model extends AssetsJson {
 

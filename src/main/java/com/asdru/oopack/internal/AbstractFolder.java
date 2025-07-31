@@ -1,9 +1,6 @@
 package com.asdru.oopack.internal;
 
 import com.asdru.oopack.Namespace;
-import com.asdru.oopack.Objects.AssetsJson;
-import com.asdru.oopack.Objects.DataJson;
-import com.asdru.oopack.Objects.Function;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

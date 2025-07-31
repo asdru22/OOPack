@@ -1,4 +1,4 @@
-package com.asdru.oopack.Objects;
+package com.asdru.oopack.objects;
 
 import com.asdru.oopack.Namespace;
 

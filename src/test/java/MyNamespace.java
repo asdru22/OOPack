@@ -1,8 +1,8 @@
 import com.asdru.oopack.Namespace;
-import com.asdru.oopack.Objects.LootTable;
-import com.asdru.oopack.Objects.Model;
+import com.asdru.oopack.objects.LootTable;
+import com.asdru.oopack.objects.Model;
 import com.asdru.oopack.internal.Folder;
-import com.asdru.oopack.Objects.Function;
+import com.asdru.oopack.objects.Function;
 
 public class MyNamespace extends Namespace {
 
