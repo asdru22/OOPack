@@ -33,8 +33,9 @@ jobs:
       - name: Rename ZIP with version
         run: mv output.zip output-${{ steps.extract_version.outputs.version }}.zip
 
-      - name: Upload versioned ZIP as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-zip-${{ steps.extract_version.outputs.version }}
-          path: output-${{ steps.extract_version.outputs.version }}.zip
+      - name: Upload ZIP to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} output-${{ steps.extract_version.outputs.version }}.zip --clobber
+      
