@@ -23,13 +23,13 @@ abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extensio
 
     @Override
     public String toString() {
-        return name;
+        return name+": {"+content+"} ";
     }
 
     @Override
     public void build(Path parent) {
         Path path = parent.resolve(this.getFolderName()).resolve(name+this.getExtension());
-        System.out.println(path);
+        System.out.println(this);
     }
 }
 

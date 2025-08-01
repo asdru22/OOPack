@@ -8,9 +8,14 @@ public class Folder extends AbstractFolder<FileSystemObject> {
         super(name);
     }
 
-    public Folder add(FileSystemObject child) {
+    public FileSystemObject add(FileSystemObject child) {
         content.add(child);
-        return this;
+        return child;
+    }
+
+    public FileSystemObject[] add(FileSystemObject... children) {
+        content.addAll(List.of(children)); // Java 9+
+        return children;
     }
 
     public List<FileSystemObject> get() {

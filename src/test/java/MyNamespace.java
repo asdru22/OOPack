@@ -9,14 +9,14 @@ public class MyNamespace extends Namespace {
     public MyNamespace() {
         super("foo");
 
+        var nested = new Function("nested","say hi");
         var s1 = new Folder("s1");
-        s1.add(new Function("test","1"))
-                .add(new Function("2"))
-                .add(new LootTable("%s",3))
-                .add(new Function("test2","%s",4))
-                .add(new Folder("subfolder").add(new Model("This is number %s",5)));
+        s1.add(new Function("test","1"),
+                new Function("2"),
+                new LootTable("%s",3),
+                new Function("test2","function %s",s1.add(nested)),
+                new Folder("subfolder").add(new Model("This is number %s",5)));
         this.add(s1);
 
-        System.out.println(new Function("bobob"));
     }
 }
