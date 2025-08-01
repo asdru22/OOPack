@@ -9,7 +9,7 @@ public abstract sealed class JsonFile extends TextFile
         permits DataJson, AssetsJson {
 
     public JsonFile(String name, String content) {
-        super(String.format("%s.json",name), content);
+        super(name, content);
     }
 
     public JsonFile(String name, String content, Object... args) {
@@ -22,5 +22,10 @@ public abstract sealed class JsonFile extends TextFile
 
     public JsonFile(String content, Object... args) {
         this(String.format(content, args));
+    }
+
+    @Override
+    public String getExtension() {
+        return ".json";
     }
 }

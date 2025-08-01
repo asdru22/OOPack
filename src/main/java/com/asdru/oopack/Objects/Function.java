@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Function extends TextFile {
 
     public Function(String name, String content) {
-        super(String.format("%s.mcfunction", name), content);
+        super(name, content);
     }
 
     public Function(String name, String content, Object... args) {
@@ -33,5 +33,10 @@ public class Function extends TextFile {
     @Override
     public void collectByType(Namespace data, Namespace assets) {
         data.add(this);
+    }
+
+    @Override
+    public String getExtension() {
+        return ".mcfunction";
     }
 }

@@ -6,7 +6,6 @@ public class Folder extends AbstractFolder<FileSystemObject> {
 
     public Folder(String name) {
         super(name);
-
     }
 
     public Folder add(FileSystemObject child) {

@@ -16,5 +16,7 @@ public class MyNamespace extends Namespace {
                 .add(new Function("test2","%s",4))
                 .add(new Folder("subfolder").add(new Model("This is number %s",5)));
         this.add(s1);
+
+        System.out.println(new Function("bobob"));
     }
 }

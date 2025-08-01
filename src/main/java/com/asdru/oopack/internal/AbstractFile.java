@@ -2,7 +2,7 @@ package com.asdru.oopack.internal;
 
 import java.nio.file.Path;
 
-abstract class AbstractFile<T> implements FileSystemObject, PackFolder {
+abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
     private final String name;
     private final T content;
 
@@ -23,13 +23,12 @@ abstract class AbstractFile<T> implements FileSystemObject, PackFolder {
 
     @Override
     public String toString() {
-        return String.format("file=[Name: %s\nContent:  %s]",
-                name,content);
+        return name;
     }
 
     @Override
     public void build(Path parent) {
-        Path path = parent.resolve(this.getFolderName()).resolve(name);
+        Path path = parent.resolve(this.getFolderName()).resolve(name+this.getExtension());
         System.out.println(path);
     }
 }
