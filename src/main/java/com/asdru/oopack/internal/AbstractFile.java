@@ -11,14 +11,13 @@ abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extensio
         this.content = content;
     }
 
-    @Override
-    public T getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public T getContent() {
+        return content;
     }
 
     @Override

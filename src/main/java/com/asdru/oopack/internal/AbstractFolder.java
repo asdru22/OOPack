@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractFolder <T extends FileSystemObject> implements FileSystemObject {
-    protected final String name;
     protected final List<T> content = new ArrayList<>();
 
-    public AbstractFolder(String name) {
-        this.name = name;
+    public AbstractFolder() {
     }
 
 
@@ -25,15 +23,12 @@ public abstract class AbstractFolder <T extends FileSystemObject> implements Fil
         return content;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
+
 
 
     @Override
     public String toString() {
-        return String.format("folder=[Name: %s\nContent:  %s]", name, content);
+        return content.toString();
     }
 
     @Override

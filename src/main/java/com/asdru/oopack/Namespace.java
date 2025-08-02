@@ -15,9 +15,8 @@ public class Namespace implements Buildable {
 
     private final List<FileSystemObject> children = new ArrayList<>();
 
-    public Namespace add(FileSystemObject fso) {
+    public void add(FileSystemObject fso) {
         children.add(fso);
-        return this;
     }
 
     public String getName() {

@@ -10,13 +10,12 @@ public class MyNamespace extends Namespace {
         super("foo");
 
         var nested = new Function("nested","say hi");
-        var s1 = new Folder("s1");
+        var s1 = new Folder(this);
         s1.add(new Function("test","1"),
                 new Function("2"),
                 new LootTable("%s",3),
                 new Function("test2","function %s",s1.add(nested)),
-                new Folder("subfolder").add(new Model("This is number %s",5)));
-        this.add(s1);
+                new Folder(this).add(new Model("This is number %s",5)));
 
     }
 }

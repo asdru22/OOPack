@@ -1,11 +1,16 @@
 package com.asdru.oopack.internal;
 
+import com.asdru.oopack.Namespace;
+
 import java.util.List;
 
 public class Folder extends AbstractFolder<FileSystemObject> {
 
-    public Folder(String name) {
-        super(name);
+    private final Namespace parent;
+
+    public Folder(Namespace parent){
+        this.parent = parent;
+        parent.add(this);
     }
 
     public FileSystemObject add(FileSystemObject child) {
@@ -14,7 +19,7 @@ public class Folder extends AbstractFolder<FileSystemObject> {
     }
 
     public FileSystemObject[] add(FileSystemObject... children) {
-        content.addAll(List.of(children)); // Java 9+
+        content.addAll(List.of(children));
         return children;
     }
 
