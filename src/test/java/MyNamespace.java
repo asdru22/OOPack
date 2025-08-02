@@ -8,9 +8,8 @@ public class MyNamespace extends Namespace {
 
     public MyNamespace() {
         super("foo");
-
-        var nested = new Function("nested","say hi");
         var s1 = new Folder(this);
+        var nested = new Function("nested","say hi");
         s1.add(new Function("test","1"),
                 new Function("2"),
                 new LootTable("%s",3),

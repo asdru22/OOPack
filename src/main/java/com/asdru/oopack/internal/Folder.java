@@ -2,28 +2,41 @@ package com.asdru.oopack.internal;
 
 import com.asdru.oopack.Namespace;
 
-import java.util.List;
 
 public class Folder extends AbstractFolder<FileSystemObject> {
 
-    private final Namespace parent;
+    private Namespace parent;
 
     public Folder(Namespace parent){
-        this.parent = parent;
+        setParent(parent);
         parent.add(this);
     }
 
     public FileSystemObject add(FileSystemObject child) {
-        content.add(child);
+        child.setParent(this);
+
+        // Walk up the tree to find the Namespace
+        FileSystemObject current = this;
+        while (current != null && !(current instanceof Namespace)) {
+            current = current.getParent();
+        }
+
+        if (current instanceof Namespace ns && child instanceof AbstractFile<?> file) {
+            file.setNamespaceId(ns.getName());
+        }
+
+        children.add(child);
         return child;
     }
 
     public FileSystemObject[] add(FileSystemObject... children) {
-        content.addAll(List.of(children));
+        for(FileSystemObject child : children){
+            add(child);
+        }
         return children;
     }
 
-    public List<FileSystemObject> get() {
-        return content;
+    public Namespace getNamespace() {
+        return parent;
     }
 }

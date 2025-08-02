@@ -13,6 +13,8 @@ public class MyProject extends Project {
 
         p.build();
 
+        System.out.println(p);
+
 
     }
 }
