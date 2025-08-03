@@ -4,6 +4,7 @@ import com.asdru.oopack.internal.Buildable;
 import com.asdru.oopack.internal.Resource;
 
 import java.awt.*;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,6 @@ import java.util.Map;
 
 public abstract class Pack implements Buildable {
     private final Project project;
-    private Image icon;
     private final Map<String, Namespace> namespaces = new HashMap<>();
     private final Resource resource; // assets or data
 
@@ -23,6 +23,9 @@ public abstract class Pack implements Buildable {
 
     @Override
     public void build(Path parent) {
+        FileUtils.createGenericTextFile(parent.resolve("pack.mcmeta") , project.getMcMeta() );
+        FileUtils.createGenericPng(parent.resolve("pack.png") , FileUtils.loadTexture(project.getIcon()) );
+
         namespaces.values().forEach(namespace -> namespace.build(parent.resolve(resource.toString())));
     }
 
@@ -38,4 +41,5 @@ public abstract class Pack implements Buildable {
     public String toString() {
         return String.format("%s: [%s]",resource,namespaces);
     }
+
 }

@@ -10,7 +10,9 @@ public class MyProject extends Project {
         p.addBuildPath("_build");
 
         p.addNamespace(new MyNamespace());
-
+        p.setIcon("icon");
+        p.setMcMeta("temp");
+        p.disableLogger();
         p.build(true);
     }
 }

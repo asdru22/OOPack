@@ -1,8 +1,8 @@
 package com.asdru.oopack.internal;
 
 
-import java.io.IOException;
-import java.nio.file.Files;
+import com.asdru.oopack.FileUtils;
+
 import java.nio.file.Path;
 
 public abstract class TextFile extends AbstractFile<String> {
@@ -16,9 +16,8 @@ public abstract class TextFile extends AbstractFile<String> {
     }
 
     @Override
-    public void writeContent(Path path) throws IOException {
-        Files.createDirectories(path.getParent());
-        Files.writeString(path, getContent());
+    public void writeContent(Path path) {
+        FileUtils.createGenericTextFile(path,getContent());
     }
 }
 

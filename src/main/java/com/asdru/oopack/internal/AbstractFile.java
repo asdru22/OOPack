@@ -51,7 +51,7 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     @Override
     public void build(Path parent) {
         FileUtils.createFile(this,
-                parent.resolve(this.getFolderName()).resolve(name+this.getExtension()));
+                parent.resolve(this.getFolderName()).resolve(name+"."+this.getExtension()));
     }
 
     public abstract void writeContent(Path path) throws IOException;

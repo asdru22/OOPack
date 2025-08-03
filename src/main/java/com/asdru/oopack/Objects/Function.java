@@ -37,6 +37,6 @@ public class Function extends TextFile {
 
     @Override
     public String getExtension() {
-        return ".mcfunction";
+        return "mcfunction";
     }
 }

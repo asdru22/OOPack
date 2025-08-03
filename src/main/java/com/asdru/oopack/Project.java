@@ -1,19 +1,18 @@
 package com.asdru.oopack;
 
-import com.asdru.oopack.internal.Loggable;
-
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Project implements Loggable {
+public class Project {
     private final String worldName;
     private final String projectName;
     private final Datapack datapack;
     private Resourcepack resourcepack;
     private final List<Path> buildPaths = new ArrayList<>();
+    private String mcMeta, icon;
 
     public Project(String worldName, String projectName) {
         this.worldName = worldName;
@@ -32,6 +31,7 @@ public class Project implements Loggable {
         namespace.getContent().forEach(fso -> fso.collectByType(data, assets));
         // add separated data and assets to datapack and resourcepack respectively
         datapack.addNamespace(data);
+
         if(assets.getContent().isEmpty()){
             resourcepack = null;
         } else {
@@ -45,15 +45,25 @@ public class Project implements Loggable {
         build(false);
     }
 
+    public void setIcon(String path) {
+        this.icon = path;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setMcMeta(String mcMeta) {
+        this.mcMeta = mcMeta;
+    }
+
+    public String getMcMeta() {
+        return mcMeta;
+    }
+
     public void build(boolean clear) {
         if (clear) {
-            buildPaths.forEach(path -> {
-                try {
-                    FileUtils.deleteAllFilesInDirectory(path);
-                } catch (IOException e) {
-                    logger().log(Level.WARNING, "Failed to delete folder ", e);
-                }
-            });
+            buildPaths.forEach(path -> FileUtils.deleteAllFilesInDirectory(this, path));
         }
 
         buildPaths.forEach(path -> {
@@ -68,6 +78,11 @@ public class Project implements Loggable {
     public String toString() {
         return String.format("World name: %s,\nProject Name: %s\nDatapack:  %s,\nResourcePack: %s",
                 worldName, projectName,datapack,resourcepack);
+    }
+
+    public void disableLogger(){
+        Logger logger = FileUtils.getLogger();
+        logger.setLevel(Level.OFF);
     }
 
 }

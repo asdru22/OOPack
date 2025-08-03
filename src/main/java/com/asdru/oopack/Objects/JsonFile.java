@@ -26,6 +26,6 @@ public abstract sealed class JsonFile extends TextFile
 
     @Override
     public String getExtension() {
-        return ".json";
+        return "json";
     }
 }
