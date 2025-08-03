@@ -17,5 +17,6 @@ public class MyNamespace extends Namespace {
                 new Folder(this).add(new Model("This is number %s",5))
                 );
 
+        System.out.println(this);
     }
 }

@@ -4,10 +4,9 @@ import com.asdru.oopack.Namespace;
 
 
 public class Folder extends AbstractFolder<FileSystemObject> {
-    private final Namespace namespace;
 
     public Folder(Namespace parent){
-        this.namespace = parent;   // save reference without type conflict
+        this.parent = parent;   // save reference without type conflict
         parent.add(this);
     }
 

@@ -1,12 +1,15 @@
 package com.asdru.oopack.internal;
 
+import com.asdru.oopack.FileUtils;
+
+import java.io.IOException;
 import java.nio.file.Path;
 
-abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
+public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
     private final String name;
     private final T content;
     private FileSystemObject parent;
-    private String namespaceid;
+    private String namespaceId;
 
     public AbstractFile(String name, T content) {
         this.name = name;
@@ -14,11 +17,11 @@ abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extensio
     }
 
     public void setNamespaceId(String ns) {
-        namespaceid = ns;
+        namespaceId = ns;
     }
 
     public String getNamespaceId() {
-        return namespaceid;
+        return namespaceId;
     }
 
     public String getName() {
@@ -42,12 +45,15 @@ abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extensio
 
     @Override
     public String toString() {
-        return String.format("%s:%s{%s}", getNamespaceId(), getName(),getContent());
+        return String.format("%s:%s", getNamespaceId(), getName());
     }
 
     @Override
     public void build(Path parent) {
-        Path path = parent.resolve(this.getFolderName()).resolve(name+this.getExtension());
+        FileUtils.createFile(this,
+                parent.resolve(this.getFolderName()).resolve(name+this.getExtension()));
     }
+
+    public abstract void writeContent(Path path) throws IOException;
 }
 
