@@ -1,6 +1,4 @@
-package com.asdru.oopack.test;
-
-import com.asdru.oopack.Project;
+package com.asdru.oopack;
 
 public class MyProject extends Project {
     public MyProject() {

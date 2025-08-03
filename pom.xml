@@ -60,7 +60,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.asdru.oopack.test.MyProject</mainClass>
+                            <mainClass>com.asdru.oopack.MyProject</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
