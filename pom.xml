@@ -60,7 +60,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.asdru.oopack.MavenZipTest</mainClass>
+                            <mainClass>com.asdru.oopack.MyProject</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

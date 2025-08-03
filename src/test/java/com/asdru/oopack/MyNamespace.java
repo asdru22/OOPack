@@ -1,4 +1,5 @@
-import com.asdru.oopack.Namespace;
+package com.asdru.oopack;
+
 import com.asdru.oopack.internal.Texture;
 import com.asdru.oopack.objects.LootTable;
 import com.asdru.oopack.objects.Model;

@@ -1,4 +1,4 @@
-import com.asdru.oopack.Project;
+package com.asdru.oopack;
 
 public class MyProject extends Project {
     public MyProject() {
@@ -11,7 +11,7 @@ public class MyProject extends Project {
 
         p.addNamespace(new MyNamespace());
         p.setIcon("icon");
-        p.setMcMeta("temp");
+        p.setMcMeta("poop fart");
         p.disableLogger();
         p.build(true);
     }
