@@ -5,17 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Project {
-
-    String worldName;
-    String projectName;
-    Datapack datapack = new Datapack();
-    Resourcepack resourcepack = new Resourcepack();
-    List<Path> buildPaths = new ArrayList<>();
-
+    private final String worldName;
+    private final String projectName;
+    private final Datapack datapack;
+    private Resourcepack resourcepack;
+    private final List<Path> buildPaths = new ArrayList<>();
 
     public Project(String worldName, String projectName) {
         this.worldName = worldName;
         this.projectName = projectName;
+        this.datapack = new Datapack(this);
     }
 
     public void addBuildPath(String path) {
@@ -29,14 +28,20 @@ public class Project {
         namespace.getContent().forEach(fso -> fso.collectByType(data, assets));
         // add separated data and assets to datapack and resourcepack respectively
         datapack.addNamespace(data);
-        resourcepack.addNamespace(assets);
+        if(assets.getContent().isEmpty()){
+            resourcepack = null;
+        } else {
+            resourcepack = new Resourcepack(this);
+            resourcepack.addNamespace(assets);
+        }
     }
-
 
     public void build() {
         buildPaths.forEach(path -> {
             datapack.build(path.resolve(String.format("saves/%s/datapack-%s", worldName, projectName)));
-            resourcepack.build(path.resolve(String.format("resourcepacks/resourcepack-%s", projectName)));
+            if (resourcepack != null) {
+                resourcepack.build(path.resolve(String.format("resourcepacks/resourcepack-%s", projectName)));
+            }
         });
     }
 

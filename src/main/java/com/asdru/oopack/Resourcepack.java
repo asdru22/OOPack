@@ -1,8 +1,9 @@
 package com.asdru.oopack;
 
-public class Resourcepack extends Pack {
+import com.asdru.oopack.internal.Resource;
 
-    public Resourcepack() {
-        super("assets");
+public class Resourcepack extends Pack {
+    public Resourcepack(Project project) {
+        super(project, Resource.ASSETS);
     }
 }

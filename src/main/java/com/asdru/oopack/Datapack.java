@@ -1,8 +1,10 @@
 package com.asdru.oopack;
 
-public class Datapack extends Pack{
-    public Datapack() {
-        super("data");
+import com.asdru.oopack.internal.Resource;
+
+public class Datapack extends Pack {
+    public Datapack(Project project) {
+        super(project, Resource.DATA);
     }
 
 }
