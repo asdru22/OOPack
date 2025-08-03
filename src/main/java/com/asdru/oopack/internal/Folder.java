@@ -5,7 +5,7 @@ import com.asdru.oopack.Namespace;
 
 public class Folder extends AbstractFolder<FileSystemObject> {
 
-    private Namespace parent;
+    private Buildable parent;
 
     public Folder(Namespace parent){
         setParent(parent);
@@ -16,7 +16,7 @@ public class Folder extends AbstractFolder<FileSystemObject> {
         child.setParent(this);
 
         // Walk up the tree to find the Namespace
-        FileSystemObject current = this;
+        Buildable current = this;
         while (current != null && !(current instanceof Namespace)) {
             current = current.getParent();
         }
@@ -36,7 +36,7 @@ public class Folder extends AbstractFolder<FileSystemObject> {
         return children;
     }
 
-    public Namespace getNamespace() {
+    public Buildable getNamespace() {
         return parent;
     }
 }

@@ -11,7 +11,7 @@ public class MyProject extends Project {
 
         p.addNamespace(new MyNamespace());
 
-        p.build();
+        p.build(null);
 
         System.out.println(p);
 

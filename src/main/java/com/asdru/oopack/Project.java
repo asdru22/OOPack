@@ -1,10 +1,12 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.internal.Buildable;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Project {
+public class Project implements Buildable {
 
     String worldName;
     String projectName;
@@ -32,8 +34,14 @@ public class Project {
         resourcepack.addNamespace(assets);
     }
 
+    @Override
+    public String toString() {
+        return String.format("World name: %s,\nProject Name: %s\nDatapack:  %s,\nResourcePack: %s",
+                worldName, projectName,datapack,resourcepack);
+    }
 
-    public void build() {
+    @Override
+    public void build(Path parent) {
         buildPaths.forEach(path -> {
             datapack.build(path.resolve(String.format("saves/%s/datapack-%s", worldName, projectName)));
             resourcepack.build(path.resolve(String.format("resourcepacks/resourcepack-%s", projectName)));
@@ -41,9 +49,12 @@ public class Project {
     }
 
     @Override
-    public String toString() {
-        return String.format("World name: %s,\nProject Name: %s\nDatapack:  %s,\nResourcePack: %s",
-                worldName, projectName,datapack,resourcepack);
+    public void setParent(Buildable parent) {
+
     }
 
+    @Override
+    public Buildable getParent() {
+        return null;
+    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AbstractFolder <T extends FileSystemObject> implements FileSystemObject {
     protected final List<T> children = new ArrayList<>();
-    private FileSystemObject parent;
+    private Buildable parent;
 
     @Override
     public void build(Path parent) {
@@ -21,12 +21,12 @@ public abstract class AbstractFolder <T extends FileSystemObject> implements Fil
     }
 
     @Override
-    public FileSystemObject getParent() {
+    public Buildable getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(FileSystemObject parent) {
+    public void setParent(Buildable parent) {
         this.parent = parent;
     }
 

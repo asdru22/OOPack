@@ -12,6 +12,7 @@ public abstract class Pack implements Buildable {
     Image icon;
     List<Namespace> namespaces = new ArrayList<>() ;
     final String resourceName;
+    private Buildable project;
 
     public Pack(String resourceName) {
         this.resourceName = resourceName;
@@ -29,5 +30,15 @@ public abstract class Pack implements Buildable {
     @Override
     public String toString() {
         return String.format("%s: [%s]",resourceName,namespaces);
+    }
+
+    @Override
+    public void setParent(Buildable parent) {
+        this.project = parent;
+    }
+
+    @Override
+    public Buildable getParent() {
+        return project;
     }
 }

@@ -4,4 +4,7 @@ import java.nio.file.Path;
 
 public interface Buildable {
     void build(Path parent);
+
+    void setParent(Buildable parent);
+    Buildable getParent();
 }

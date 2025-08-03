@@ -5,7 +5,7 @@ import java.nio.file.Path;
 abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
     private final String name;
     private final T content;
-    private FileSystemObject parent;
+    private Buildable parent;
     private String namespaceid;
 
     public AbstractFile(String name, T content) {
@@ -26,12 +26,12 @@ abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extensio
     }
 
     @Override
-    public FileSystemObject getParent() {
+    public Buildable getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(FileSystemObject parent) {
+    public void setParent(Buildable parent) {
         this.parent = parent;
     }
 

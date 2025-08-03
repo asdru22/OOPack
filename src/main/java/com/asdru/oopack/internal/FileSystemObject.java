@@ -7,7 +7,4 @@ public interface FileSystemObject extends Buildable {
     Object getContent();
 
     void collectByType(Namespace data, Namespace assets);
-
-    void setParent(FileSystemObject parent);
-    FileSystemObject getParent();
 }
