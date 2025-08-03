@@ -14,7 +14,8 @@ public class MyNamespace extends Namespace {
                 new Function("2"),
                 new LootTable("%s",3),
                 new Function("test2","function %s",s1.add(nested)),
-                new Folder(this).add(new Model("This is number %s",5)));
+                new Folder(this).add(new Model("This is number %s",5))
+                );
 
     }
 }

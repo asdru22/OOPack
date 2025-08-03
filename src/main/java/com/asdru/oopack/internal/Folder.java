@@ -4,11 +4,10 @@ import com.asdru.oopack.Namespace;
 
 
 public class Folder extends AbstractFolder<FileSystemObject> {
-
-    private Namespace parent;
+    private final Namespace namespace;
 
     public Folder(Namespace parent){
-        setParent(parent);
+        this.namespace = parent;   // save reference without type conflict
         parent.add(this);
     }
 
@@ -34,9 +33,5 @@ public class Folder extends AbstractFolder<FileSystemObject> {
             add(child);
         }
         return children;
-    }
-
-    public Namespace getNamespace() {
-        return parent;
     }
 }

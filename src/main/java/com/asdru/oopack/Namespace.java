@@ -1,12 +1,13 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.internal.Buildable;
 import com.asdru.oopack.internal.FileSystemObject;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Namespace implements FileSystemObject {
+public class Namespace implements Buildable {
     private final String name;
     public Namespace(String name) {
         this.name = name;
@@ -26,24 +27,9 @@ public class Namespace implements FileSystemObject {
         return children;
     }
 
-
-    // FIX WITH MORE SPECIFIC INTERFACE
-    @Override
-    public void collectByType(Namespace data, Namespace assets) {
-    }
-    @Override
-    public void setParent(FileSystemObject parent) {
-
-    }
-    @Override
-    public FileSystemObject getParent() {
-        return null;
-    }
-
     @Override
     public String toString() {
-        return String.format("namespace=[Name: %s\nFolders:  %s]",
-                name, children);
+        return String.format("%s{%s}", name, children);
     }
 
     @Override
