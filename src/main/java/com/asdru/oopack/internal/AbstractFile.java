@@ -8,7 +8,7 @@ import java.nio.file.Path;
 
 public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
     private final String name;
-    private final T content;
+    private T content;
     private FileSystemObject parent;
     private String namespaceId;
     private Project project;
@@ -67,5 +67,9 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     }
 
     public abstract void writeContent(Path path) throws IOException;
+
+    protected void setContent(T content) {
+        this.content = content;
+    }
 }
 

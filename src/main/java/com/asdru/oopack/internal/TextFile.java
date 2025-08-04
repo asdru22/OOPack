@@ -19,5 +19,9 @@ public abstract class TextFile extends AbstractFile<String> {
     public void writeContent(Path path) {
         FileUtils.createGenericTextFile(path,getContent());
     }
+
+    public void append(String content){
+        setContent(content + getContent());
+    }
 }
 

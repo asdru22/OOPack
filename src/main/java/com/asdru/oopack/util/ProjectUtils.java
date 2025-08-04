@@ -16,7 +16,16 @@ public final class ProjectUtils {
         this.project = project;
     }
 
+
     public void addFunctionToLoadTag(Function f){
+        addFunctionToTag(f,"load");
+    }
+
+    public void addFunctionToTickTag(Function f){
+        addFunctionToTag(f,"tick");
+    }
+
+    private void addFunctionToTag(Function f, String target){
 
         if (f.getParent() == null) {
             throw new IllegalStateException(
@@ -27,12 +36,12 @@ public final class ProjectUtils {
         MinecraftNamespace minecraft = project.getDefaultNamespace();
         FunctionTag loadTag;
         FileSystemObject res = FileSystemObject.find(minecraft, fso ->
-                fso instanceof FunctionTag functionTag && functionTag.getName().equals("load"));
+                fso instanceof FunctionTag functionTag && functionTag.getName().equals(target));
 
         if(res != null){
             loadTag = (FunctionTag)res;
         } else {
-            loadTag = new FunctionTag("load", """
+            loadTag = new FunctionTag(target, """
                 {"values":[]}
                 """);
             minecraft.add(new Folder(minecraft).add(loadTag));
