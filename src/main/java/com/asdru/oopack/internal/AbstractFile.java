@@ -1,6 +1,6 @@
 package com.asdru.oopack.internal;
 
-import com.asdru.oopack.FileUtils;
+import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.Project;
 
 import java.io.IOException;

@@ -2,13 +2,10 @@ package com.asdru.oopack;
 
 import com.asdru.oopack.internal.Buildable;
 import com.asdru.oopack.internal.Resource;
+import com.asdru.oopack.util.FileUtils;
 
-import java.awt.*;
-import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Pack implements Buildable {

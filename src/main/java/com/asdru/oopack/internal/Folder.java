@@ -13,7 +13,8 @@ public class Folder extends AbstractFolder<FileSystemObject> {
         parent.add(this);
     }
 
-    public FileSystemObject add(FileSystemObject child) {
+    // Use generics to avoid downcasting in return
+    public <T extends FileSystemObject> T add(T child) {
         child.setParent(this);
 
         // Walk up the tree to find the Namespace

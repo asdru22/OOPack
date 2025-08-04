@@ -1,6 +1,6 @@
 package com.asdru.oopack.internal;
 
-import com.asdru.oopack.FileUtils;
+import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.Namespace;
 
 import java.awt.image.BufferedImage;

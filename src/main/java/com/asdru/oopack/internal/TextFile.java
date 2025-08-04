@@ -1,7 +1,7 @@
 package com.asdru.oopack.internal;
 
 
-import com.asdru.oopack.FileUtils;
+import com.asdru.oopack.util.FileUtils;
 
 import java.nio.file.Path;
 

@@ -1,18 +1,20 @@
 package com.asdru.oopack.objects;
 
-import com.asdru.oopack.FileUtils;
+import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.internal.AbstractFile;
+import com.asdru.oopack.util.JsonUtil;
+import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
 import java.util.UUID;
 
 
-public abstract sealed class JsonFile extends AbstractFile<String> permits DataJson, AssetsJson {
+public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits DataJson, AssetsJson {
 
-    private Object[] args;
+    private Object[] args = {};
 
     public JsonFile(String name, String content) {
-        super(name, content);
+        super(name, JsonUtil.toJson(content) );
     }
 
     public JsonFile(String name, String content, Object... args) {
@@ -21,7 +23,10 @@ public abstract sealed class JsonFile extends AbstractFile<String> permits DataJ
     }
 
     public JsonFile(String content) {
-        this(UUID.randomUUID().toString().replace("-", ""),content);
+        super(UUID.randomUUID().
+                toString().
+                replace("-", ""),
+                JsonUtil.toJson(content));
     }
 
     public JsonFile(String content, Object... args) {
@@ -29,10 +34,18 @@ public abstract sealed class JsonFile extends AbstractFile<String> permits DataJ
         this.args = args;
     }
 
+    public JsonFile(String name, JsonObject content) {
+        super(name, content);
+    }
+
     @Override
     public void writeContent(Path path)  {
-        String jsonContent = getContent();
-        FileUtils.createGenericTextFile(path,getContent());
+        JsonObject jsonContent = getContent();
+        String jsonString = JsonUtil.toString(jsonContent);
+        if(args.length > 0) {
+            jsonString = String.format(jsonString, args);
+        }
+        FileUtils.createGenericTextFile(path,jsonString);
     }
 
     @Override

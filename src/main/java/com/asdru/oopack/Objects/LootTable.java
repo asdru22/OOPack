@@ -1,5 +1,7 @@
 package com.asdru.oopack.objects;
 
+import com.google.gson.JsonObject;
+
 public non-sealed class LootTable extends DataJson {
 
     public LootTable(String name, String content) {
@@ -16,6 +18,10 @@ public non-sealed class LootTable extends DataJson {
 
     public LootTable(String content, Object... args) {
         super(content, args);
+    }
+
+    public LootTable(String name, JsonObject content) {
+        super(name, content);
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.asdru.oopack;
+package com.asdru.oopack.util;
 
+import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 
 import javax.imageio.ImageIO;

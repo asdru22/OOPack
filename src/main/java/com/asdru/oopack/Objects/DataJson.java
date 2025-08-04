@@ -2,7 +2,8 @@ package com.asdru.oopack.objects;
 
 import com.asdru.oopack.Namespace;
 
-sealed abstract public class DataJson extends JsonFile permits LootTable {
+sealed abstract public class DataJson extends JsonFile
+        permits LootTable, FunctionTag {
     public DataJson(String name, String content) {
         super(name, content);
     }

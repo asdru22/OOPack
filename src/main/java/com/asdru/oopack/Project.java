@@ -1,6 +1,8 @@
 package com.asdru.oopack;
 
 import com.asdru.oopack.objects.MinecraftNamespace;
+import com.asdru.oopack.util.FileUtils;
+import com.asdru.oopack.util.ProjectUtils;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,16 +14,18 @@ public class Project {
     private final String worldName;
     private final String projectName;
     private final Datapack datapack;
-    private Resourcepack resourcepack;
+    private Resourcepack resourcepack = null;
     private final List<Path> buildPaths = new ArrayList<>();
     private String mcMeta, icon;
     private final MinecraftNamespace defaultNamespace;
+    public final ProjectUtils utils ;
 
     public Project(String worldName, String projectName) {
         this.worldName = worldName;
         this.projectName = projectName;
         this.datapack = new Datapack(this);
         this.defaultNamespace = new MinecraftNamespace(this);
+        this.utils = new ProjectUtils(this);
     }
 
     public void addBuildPath(String path) {
@@ -36,12 +40,11 @@ public class Project {
         // add separated data and assets to datapack and resourcepack respectively
         datapack.addNamespace(data);
 
-        if(assets.getContent().isEmpty()){
-            resourcepack = null;
-        } else {
+        if (!assets.getContent().isEmpty()) {
             resourcepack = new Resourcepack(this);
             resourcepack.addNamespace(assets);
         }
+
     }
 
 
