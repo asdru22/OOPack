@@ -1,6 +1,7 @@
 package com.asdru.oopack.internal;
 
 import com.asdru.oopack.FileUtils;
+import com.asdru.oopack.Project;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     private final T content;
     private FileSystemObject parent;
     private String namespaceId;
+    private Project project;
 
     public AbstractFile(String name, T content) {
         this.name = name;
@@ -52,6 +54,16 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     public void build(Path parent) {
         FileUtils.createFile(this,
                 parent.resolve(this.getFolderName()).resolve(name+"."+this.getExtension()));
+    }
+
+    @Override
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @Override
+    public Project getProject() {
+        return project;
     }
 
     public abstract void writeContent(Path path) throws IOException;

@@ -8,14 +8,18 @@ import java.util.List;
 
 public class Namespace implements FileSystemObject {
     private final String name;
-    public Namespace(String name) {
+    private Project project;
+
+    public Namespace(Project project, String name) {
         this.name = name;
+        this.project = project;
     }
 
     private final List<FileSystemObject> children = new ArrayList<>();
 
     public void add(FileSystemObject fso) {
         children.add(fso);
+        fso.setProject(project);
     }
 
     public String getName() {
@@ -43,4 +47,14 @@ public class Namespace implements FileSystemObject {
     public void setParent(FileSystemObject parent) {}
     @Override
     public FileSystemObject getParent() {return null;}
+
+    @Override
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @Override
+    public Project getProject() {
+        return this.project;
+    }
 }

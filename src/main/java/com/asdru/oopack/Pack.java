@@ -21,20 +21,20 @@ public abstract class Pack implements Buildable {
         this.resource = resource;
     }
 
-    @Override
-    public void build(Path parent) {
-        FileUtils.createGenericTextFile(parent.resolve("pack.mcmeta") , project.getMcMeta() );
-        FileUtils.createGenericPng(parent.resolve("pack.png") , FileUtils.loadTexture(project.getIcon()) );
-
-        namespaces.values().forEach(namespace -> namespace.build(parent.resolve(resource.toString())));
-    }
-
     protected void addNamespace(Namespace namespace) {
         namespaces.put(namespace.getName(),namespace);
     }
 
     public Namespace getNamespace(String name) {
         return namespaces.get(name);
+    }
+
+    @Override
+    public void build(Path parent) {
+        FileUtils.createGenericTextFile(parent.resolve("pack.mcmeta") , project.getMcMeta() );
+        FileUtils.createGenericPng(parent.resolve("pack.png") , FileUtils.loadTexture(project.getIcon()) );
+
+        namespaces.values().forEach(namespace -> namespace.build(parent.resolve(resource.toString())));
     }
 
     @Override

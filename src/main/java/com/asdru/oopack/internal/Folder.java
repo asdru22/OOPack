@@ -1,12 +1,15 @@
 package com.asdru.oopack.internal;
 
 import com.asdru.oopack.Namespace;
+import com.asdru.oopack.Project;
 
 
 public class Folder extends AbstractFolder<FileSystemObject> {
 
+    private Project project;
+
     public Folder(Namespace parent){
-        this.parent = parent;   // save reference without type conflict
+        this.parent = parent;
         parent.add(this);
     }
 
@@ -21,6 +24,7 @@ public class Folder extends AbstractFolder<FileSystemObject> {
 
         if (current instanceof Namespace ns && child instanceof AbstractFile<?> file) {
             file.setNamespaceId(ns.getName());
+            file.setProject(this.getProject());
         }
 
         children.add(child);
@@ -32,5 +36,15 @@ public class Folder extends AbstractFolder<FileSystemObject> {
             add(child);
         }
         return children;
+    }
+
+    @Override
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @Override
+    public Project getProject() {
+        return this.project;
     }
 }

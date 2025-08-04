@@ -9,7 +9,9 @@ public class MyProject extends Project {
         MyProject p = new MyProject();
         p.addBuildPath("_build");
 
-        p.addNamespace(new MyNamespace());
+        MyNamespace ns = new MyNamespace(p);
+
+        p.addNamespace(ns);
         p.setIcon("icon");
         p.setMcMeta("testing");
         p.disableLogger();
