@@ -21,7 +21,7 @@ public abstract class TextFile extends AbstractFile<String> {
     }
 
     public void append(String content){
-        setContent(content + getContent());
+        setContent(getContent() + content);
     }
 }
 
