@@ -10,4 +10,3 @@ Java Library to increase productivity in minecraft pack development
 - try to remove unused interface methods from namespace
 - load mcmeta versions from web
 - improve constructors in pack objects
-- refactor TextFile to use a StringBuilder for better performance when adding lines
