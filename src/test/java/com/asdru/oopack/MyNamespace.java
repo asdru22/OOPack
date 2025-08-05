@@ -6,6 +6,8 @@ import com.asdru.oopack.objects.Model;
 import com.asdru.oopack.internal.Folder;
 import com.asdru.oopack.objects.Function;
 
+import java.util.Locale;
+
 public class MyNamespace extends Namespace {
     public LootTable nested = new LootTable("nested", """
             {"loot_table":true}
@@ -26,8 +28,11 @@ public class MyNamespace extends Namespace {
                         """,5)),
                 new Texture("sub/test","icon")
                 );
-        getProject().utils.addFunctionToLoadTag(s1.add(new Function("say load")));
-        getProject().utils.addFunctionToLoadTag(s1.add(new Function("say load 2")));
+        
+        utils().addFunctionToLoadTag(s1.add(new Function("say load")));
+        utils().addFunctionToLoadTag(s1.add(new Function("say load 2")));
+        addTranslation(Locale.ITALY,"key","value");
+        addTranslation("key","value");
 
     }
 

@@ -5,6 +5,7 @@ import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface FileSystemObject extends Buildable {
@@ -18,24 +19,34 @@ public interface FileSystemObject extends Buildable {
     void setProject(Project project);
     Project getProject();
 
-    static FileSystemObject find(FileSystemObject root, Predicate<FileSystemObject> condition) {
-        if (condition.test(root)) return root;
+    static <T extends FileSystemObject> Optional<T> find(
+            FileSystemObject root,
+            Class<T> clazz,
+            Predicate<T> condition
+    ) {
+        if (clazz.isInstance(root)) {
+            // cast to searched class to avoid downcasting in return object
+            T casted = clazz.cast(root);
+            if (condition.test(casted)) {
+                return Optional.of(casted);
+            }
+        }
 
-        // polymorphic call to get children of either namespace or folder
         Object content = root.getContent();
-
         if (content instanceof List<?> children) {
             for (Object child : children) {
-                if (child instanceof FileSystemObject fso) {
-                    FileSystemObject found = find(fso, condition);
-                    if (found != null) System.out.println("Found: " + found);
-                    if (found != null) return found;
+                Optional<T> found = find((FileSystemObject) child, clazz, condition);
+                if (found.isPresent()) {
+                        return found;
                 }
             }
         }
 
-        return null;
+        return Optional.empty();
     }
+
+
+
 
 
 }

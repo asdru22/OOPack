@@ -2,7 +2,7 @@ package com.asdru.oopack.objects;
 
 import com.asdru.oopack.Namespace;
 
-sealed public abstract class AssetsJson extends JsonFile permits Model {
+sealed public abstract class AssetsJson extends JsonFile permits Model, Lang {
     public AssetsJson(String name, String content) {
         super(name, content);
     }

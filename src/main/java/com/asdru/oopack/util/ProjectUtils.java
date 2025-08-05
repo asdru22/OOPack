@@ -1,13 +1,19 @@
 package com.asdru.oopack.util;
 
+import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
+import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
 import com.asdru.oopack.internal.Folder;
 import com.asdru.oopack.objects.Function;
 import com.asdru.oopack.objects.FunctionTag;
-import com.asdru.oopack.objects.MinecraftNamespace;
+import com.asdru.oopack.objects.Lang;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public final class ProjectUtils {
     private final Project project;
@@ -25,31 +31,53 @@ public final class ProjectUtils {
         addFunctionToTag(f,"tick");
     }
 
-    private void addFunctionToTag(Function f, String target){
+    private <T extends AbstractFile<JsonObject>> JsonObject getOrCreateJsonFile(
+            Namespace namespace,
+            Class<T> clazz,
+            String name,
+            Supplier<T> creator // create the object only if needed
+    ) {
 
+        Optional<T> optional = FileSystemObject.find(
+                namespace, clazz, file -> file.getName().equals(name)
+        );
+
+        // file is either the result of the find method
+        // or created with supplier if the search returned a null value
+        T file = optional.orElseGet(() -> {
+            T newFile = creator.get();
+            namespace.add(new Folder(namespace).add(newFile));
+            return newFile;
+        });
+
+        return file.getContent();
+    }
+
+    private void addFunctionToTag(Function f, String target) {
         if (f.getParent() == null) {
             throw new IllegalStateException(
                     String.format("FileSystemObject %s has no parent assigned", f)
             );
         }
 
-        MinecraftNamespace minecraft = project.getDefaultNamespace();
-        FunctionTag loadTag;
-        FileSystemObject res = FileSystemObject.find(minecraft, fso ->
-                fso instanceof FunctionTag functionTag && functionTag.getName().equals(target));
-
-        if(res != null){
-            loadTag = (FunctionTag)res;
-        } else {
-            loadTag = new FunctionTag(target, """
+        JsonObject content = getOrCreateJsonFile(
+                project.getDefaultNamespace(),
+                FunctionTag.class,
+                target,
+                () -> new FunctionTag(target, """
                 {"values":[]}
-                """);
-            minecraft.add(new Folder(minecraft).add(loadTag));
-        }
+            """)
+        );
 
-        JsonObject content = loadTag.getContent();
         JsonArray valuesArray = content.getAsJsonArray("values");
         valuesArray.add(f.toString());
+    }
 
+    public void addTranslation(Namespace namespace, Locale locale, String key, String value) {
+        String formattedLocale = LocaleUtils.formatLocale(locale);
+        JsonObject content = getOrCreateJsonFile(namespace, Lang.class, formattedLocale, () ->
+                new Lang(formattedLocale, "{}")
+        );
+        content.addProperty(key, value);
     }
 }
