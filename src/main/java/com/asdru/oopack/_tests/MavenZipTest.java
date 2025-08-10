@@ -1,4 +1,4 @@
-package com.asdru.oopack;
+package com.asdru.oopack._tests;
 
 import java.io.*;
 import java.nio.file.*;

@@ -2,7 +2,7 @@ package com.asdru.oopack.objects;
 
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.internal.AbstractFile;
-import com.asdru.oopack.util.JsonUtil;
+import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
@@ -14,7 +14,7 @@ public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits D
     private Object[] args = {};
 
     public JsonFile(String name, String content) {
-        super(name, JsonUtil.toJson(content) );
+        super(name, JsonUtils.toJson(content) );
     }
 
     public JsonFile(String name, String content, Object... args) {
@@ -26,7 +26,7 @@ public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits D
         super(UUID.randomUUID().
                 toString().
                 replace("-", ""),
-                JsonUtil.toJson(content));
+                JsonUtils.toJson(content));
     }
 
     public JsonFile(String content, Object... args) {
@@ -41,7 +41,7 @@ public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits D
     @Override
     public void writeContent(Path path)  {
         JsonObject jsonContent = getContent();
-        String jsonString = JsonUtil.toString(jsonContent);
+        String jsonString = JsonUtils.toString(jsonContent);
         if(args.length > 0) {
             jsonString = String.format(jsonString, args);
         }

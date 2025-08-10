@@ -7,4 +7,14 @@ public class Datapack extends Pack {
         super(project, Resource.DATA);
     }
 
+
+    @Override
+    public int getMajor() {
+        return getProject().getVersion().getDatapackVersion();
+    }
+
+    @Override
+    public int getMinor() {
+        return getProject().getVersion().getDatapackVersionMinor();
+    }
 }

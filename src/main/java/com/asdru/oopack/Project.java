@@ -4,6 +4,9 @@ import com.asdru.oopack.objects.MinecraftNamespace;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.ProjectUtils;
 
+import com.asdru.oopack.Version;
+import com.google.gson.JsonObject;
+
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +16,21 @@ import java.util.logging.Logger;
 public class Project {
     private final String worldName;
     private final String projectName;
+    private final Version version;
     private final Datapack datapack;
-    private Resourcepack resourcepack = null;
     private final List<Path> buildPaths = new ArrayList<>();
-    private String mcMeta, icon;
+
     private final MinecraftNamespace defaultNamespace;
     public final ProjectUtils utils ;
 
-    public Project(String worldName, String projectName) {
+    private Resourcepack resourcepack = null;
+    private JsonObject description;
+    private String icon;
+
+    public Project(String worldName, String projectName, Version version) {
         this.worldName = worldName;
         this.projectName = projectName;
+        this.version = version;
         this.datapack = new Datapack(this);
         this.defaultNamespace = new MinecraftNamespace(this);
         this.utils = new ProjectUtils(this);
@@ -47,7 +55,6 @@ public class Project {
 
     }
 
-
     public void build(){
         build(false);
     }
@@ -60,12 +67,18 @@ public class Project {
         return icon;
     }
 
-    public void setMcMeta(String mcMeta) {
-        this.mcMeta = mcMeta;
+    public void setDescription(JsonObject description) {
+        this.description = description;
     }
 
-    public String getMcMeta() {
-        return mcMeta;
+    public void setDescription(String description) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("text", description);
+        this.description = obj;
+    }
+
+    public JsonObject getDescription() {
+        return description;
     }
 
     public void build(boolean clear) {
@@ -97,5 +110,9 @@ public class Project {
 
     public MinecraftNamespace getDefaultNamespace() {
         return defaultNamespace;
+    }
+
+    public Version getVersion(){
+        return version;
     }
 }

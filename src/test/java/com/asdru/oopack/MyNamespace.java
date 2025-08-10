@@ -30,7 +30,7 @@ public class MyNamespace extends Namespace {
                 );
         
         utils().addFunctionToLoadTag(s1.add(new Function("say load")));
-        utils().addFunctionToLoadTag(s1.add(new Function("say load 2")));
+        utils().addFunctionToTickTag(s1.add(new Function("say tick")));
         addTranslation(Locale.ITALY,"key","value");
         addTranslation("key","value");
 
