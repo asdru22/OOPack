@@ -11,7 +11,7 @@ public class CodeGen {
 
     private static final String
             packageName = "com.asdru.oopack",
-            fileName = "Version";
+            fileName = "version";
 
     public static void generateVersionsEnum(Map<String, VersionInfo> versionInfoMap) throws Exception {
         // Create enum builder

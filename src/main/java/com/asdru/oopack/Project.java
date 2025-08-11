@@ -1,5 +1,6 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.version.Version;
 import com.asdru.oopack.objects.MinecraftNamespace;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.ProjectUtils;
