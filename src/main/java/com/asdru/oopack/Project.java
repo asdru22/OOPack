@@ -1,10 +1,10 @@
 package com.asdru.oopack;
 
-import com.asdru.oopack.version.Version;
 import com.asdru.oopack.objects.MinecraftNamespace;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.ProjectUtils;
 
+import com.asdru.oopack.version.Version;
 import com.google.gson.JsonObject;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -170,6 +170,5 @@ public class Project {
             throw new RuntimeException(e);
         }
     }
-
 
 }

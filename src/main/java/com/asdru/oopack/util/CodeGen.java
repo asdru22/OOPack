@@ -11,7 +11,7 @@ public class CodeGen {
 
     private static final String
             packageName = "com.asdru.oopack",
-            fileName = "version";
+            fileName = "Version";
 
     public static void generateVersionsEnum(Map<String, VersionInfo> versionInfoMap) throws Exception {
         // Create enum builder
@@ -102,7 +102,7 @@ public class CodeGen {
         // Build the enum
         TypeSpec enumType = enumBuilder.build();
 
-        // Write to target/generated-sources/java
+        // Write to target/generated-sources/com/asdru/oopack/Version.java
         JavaFile javaFile = JavaFile.builder(packageName, enumType)
                 .build();
         Path path = Paths.get("target/generated-sources");

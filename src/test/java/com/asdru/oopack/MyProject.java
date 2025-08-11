@@ -1,5 +1,6 @@
 package com.asdru.oopack;
 
+
 import com.asdru.oopack.version.Version;
 
 public class MyProject extends Project {

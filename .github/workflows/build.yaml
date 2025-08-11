@@ -37,7 +37,7 @@ jobs:
         run: |
           VERSION=${{ steps.extract_version.outputs.version }}
 
-          # Rinomina datapack zip (se esiste)
+          # Rename datapack
           if ls datapack-*.zip 1> /dev/null 2>&1; then
             for f in datapack-*.zip; do
               mv "$f" "${f%.zip}-$VERSION.zip"
@@ -46,7 +46,7 @@ jobs:
             echo "No datapack zip found"
           fi
 
-          # Rinomina resourcepack zip (se esiste)
+          # Rename resourcepack if present
           if ls resourcepack-*.zip 1> /dev/null 2>&1; then
             for f in resourcepack-*.zip; do
               mv "$f" "${f%.zip}-$VERSION.zip"
@@ -61,7 +61,7 @@ jobs:
         run: |
           VERSION=${{ steps.extract_version.outputs.version }}
 
-          # Carica tutti i zip rinominati (datapack e resourcepack)
+          # Upload the renamed files
           for f in datapack-*-$VERSION.zip resourcepack-*-$VERSION.zip; do
             if [ -f "$f" ]; then
               gh release upload ${{ github.event.release.tag_name }} "$f" --clobber
