@@ -4,14 +4,20 @@ import com.asdru.oopack.objects.MinecraftNamespace;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.ProjectUtils;
 
-import com.asdru.oopack.Version;
 import com.google.gson.JsonObject;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class Project {
     private final String worldName;
@@ -86,7 +92,7 @@ public class Project {
         this.addNamespace(defaultNamespace);
 
         if (clear) {
-            buildPaths.forEach(path -> FileUtils.deleteAllFilesInDirectory(this, path));
+            buildPaths.forEach(FileUtils::deleteAllFilesInDirectory);
         }
 
         buildPaths.forEach(path -> {
@@ -115,4 +121,54 @@ public class Project {
     public Version getVersion(){
         return version;
     }
+
+    public void buildZip() {
+
+        this.addNamespace(defaultNamespace);
+
+        // Datapack zip in root
+        Path datapackZipPath = Path.of(String.format("datapack-%s.zip", projectName));
+        try (ZipArchiveOutputStream zipOut = new ZipArchiveOutputStream(Files.newOutputStream(datapackZipPath))) {
+            Path tempDatapackDir = Files.createTempDirectory("datapack-temp");
+            datapack.build(tempDatapackDir);
+            zipDirectory(tempDatapackDir, zipOut, tempDatapackDir);
+            FileUtils.deleteAllFilesInDirectory(tempDatapackDir);
+        } catch (IOException e) {
+            throw new RuntimeException("Error creating datapack zip", e);
+        }
+
+        // Optional resourcepack zip in root
+        if (resourcepack != null) {
+            Path resourcepackZipPath = Path.of(String.format("resourcepack-%s.zip", projectName));
+            try (ZipArchiveOutputStream zipOut = new ZipArchiveOutputStream(Files.newOutputStream(resourcepackZipPath))) {
+                Path tempResourceDir = Files.createTempDirectory("resourcepack-temp");
+                resourcepack.build(tempResourceDir);
+                zipDirectory(tempResourceDir, zipOut, tempResourceDir);
+                FileUtils.deleteAllFilesInDirectory(tempResourceDir);
+            } catch (IOException e) {
+                throw new RuntimeException("Error creating resourcepack zip", e);
+            }
+        }
+    }
+
+    private void zipDirectory(Path folder, ZipArchiveOutputStream zipOut, Path basePath) {
+        try (Stream<Path> paths = Files.walk(folder)) {
+            paths.filter(Files::isRegularFile)
+                    .forEach(file -> {
+                        Path relativePath = basePath.relativize(file);
+                        try (InputStream in = Files.newInputStream(file)) {
+                            ZipArchiveEntry entry = new ZipArchiveEntry(file.toFile(), relativePath.toString().replace("\\", "/"));
+                            zipOut.putArchiveEntry(entry);
+                            IOUtils.copy(in, zipOut);
+                            zipOut.closeArchiveEntry();
+                        } catch (IOException e) {
+                            throw new RuntimeException("Error zipping file: " + file, e);
+                        }
+                    });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

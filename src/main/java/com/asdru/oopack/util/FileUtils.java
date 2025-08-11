@@ -76,7 +76,7 @@ public class FileUtils {
         }
     }
 
-    public static void deleteAllFilesInDirectory(Project project, Path directory) {
+    public static void deleteAllFilesInDirectory(Path directory) {
         if (!Files.isDirectory(directory)) {
             String msg = directory + " is not a directory.";
             LOGGER.severe(msg);

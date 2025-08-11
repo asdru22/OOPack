@@ -9,7 +9,7 @@ import com.asdru.oopack.objects.Function;
 import java.util.Locale;
 
 public class MyNamespace extends Namespace {
-    public LootTable nested = new LootTable("nested", """
+    public Function nested = new Function("nested", """
             {"loot_table":true}
             """);
 

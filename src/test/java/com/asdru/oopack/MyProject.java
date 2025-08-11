@@ -15,6 +15,6 @@ public class MyProject extends Project {
         p.setIcon("icon");
         p.setDescription("hi twin");
         p.disableLogger();
-        p.build(true);
+        p.buildZip();
     }
 }
