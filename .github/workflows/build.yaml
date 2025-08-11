@@ -33,12 +33,39 @@ jobs:
       - name: Run the Java program
         run: java -jar target/*-jar-with-dependencies.jar
 
-      - name: Rename ZIP with version
-        run: mv output.zip output-${{ steps.extract_version.outputs.version }}.zip
+      - name: Rename generated ZIP files with version
+        run: |
+          VERSION=${{ steps.extract_version.outputs.version }}
 
-      - name: Upload ZIP to GitHub Release
+          # Rinomina datapack zip (se esiste)
+          if ls datapack-*.zip 1> /dev/null 2>&1; then
+            for f in datapack-*.zip; do
+              mv "$f" "${f%.zip}-$VERSION.zip"
+            done
+          else
+            echo "No datapack zip found"
+          fi
+
+          # Rinomina resourcepack zip (se esiste)
+          if ls resourcepack-*.zip 1> /dev/null 2>&1; then
+            for f in resourcepack-*.zip; do
+              mv "$f" "${f%.zip}-$VERSION.zip"
+            done
+          else
+            echo "No resourcepack zip found"
+          fi
+
+      - name: Upload ZIPs to GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload ${{ github.event.release.tag_name }} output-${{ steps.extract_version.outputs.version }}.zip --clobber
-      
+          VERSION=${{ steps.extract_version.outputs.version }}
+
+          # Carica tutti i zip rinominati (datapack e resourcepack)
+          for f in datapack-*-$VERSION.zip resourcepack-*-$VERSION.zip; do
+            if [ -f "$f" ]; then
+              gh release upload ${{ github.event.release.tag_name }} "$f" --clobber
+            else
+              echo "File $f does not exist, skipping upload."
+            fi
+          done
