@@ -4,11 +4,11 @@ import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 
 
-public class Folder extends AbstractFolder<FileSystemObject> {
+public class Folder extends AbstractFolder<FileSystemObject> implements ContextItem {
 
     private Project project;
 
-    public Folder(Namespace parent){
+    public Folder(Namespace parent) {
         this.parent = parent;
         parent.add(this);
     }
@@ -33,19 +33,19 @@ public class Folder extends AbstractFolder<FileSystemObject> {
     }
 
     public FileSystemObject[] add(FileSystemObject... children) {
-        for(FileSystemObject child : children){
+        for (FileSystemObject child : children) {
             add(child);
         }
         return children;
     }
 
     @Override
-    public void setProject(Project project) {
-        this.project = project;
+    public Project getProject() {
+        return project;
     }
 
     @Override
-    public Project getProject() {
-        return this.project;
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

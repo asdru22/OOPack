@@ -16,7 +16,7 @@ public class MyProject extends Project {
 
         p.addNamespace(ns);
         p.setIcon("icon");
-        p.setDescription("hi twin");
+        p.setDescription("test project");
         p.disableLogger();
         p.buildZip();
     }

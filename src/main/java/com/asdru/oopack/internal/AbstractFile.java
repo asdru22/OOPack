@@ -61,7 +61,6 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
         this.project = project;
     }
 
-    @Override
     public Project getProject() {
         return project;
     }

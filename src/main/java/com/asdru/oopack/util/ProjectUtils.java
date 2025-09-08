@@ -23,12 +23,12 @@ public final class ProjectUtils {
     }
 
 
-    public void addFunctionToLoadTag(Function f){
-        addFunctionToTag(f,"load");
+    public void addFunctionToLoadTag(Function f) {
+        addFunctionToTag(f, "load");
     }
 
-    public void addFunctionToTickTag(Function f){
-        addFunctionToTag(f,"tick");
+    public void addFunctionToTickTag(Function f) {
+        addFunctionToTag(f, "tick");
     }
 
     private <T extends AbstractFile<JsonObject>> JsonObject getOrCreateJsonFile(
@@ -65,8 +65,8 @@ public final class ProjectUtils {
                 FunctionTag.class,
                 target,
                 () -> new FunctionTag(target, """
-                {"values":[]}
-            """)
+                            {"values":[]}
+                        """)
         );
 
         JsonArray valuesArray = content.getAsJsonArray("values");

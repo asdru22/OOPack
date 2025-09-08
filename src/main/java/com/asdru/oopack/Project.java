@@ -34,6 +34,8 @@ public class Project {
     private JsonObject description;
     private String icon;
 
+    private final Context context = new Context();
+
     public Project(String worldName, String projectName, Version version) {
         this.worldName = worldName;
         this.projectName = projectName;
@@ -169,6 +171,10 @@ public class Project {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Context getContext(){
+        return context;
     }
 
 }
