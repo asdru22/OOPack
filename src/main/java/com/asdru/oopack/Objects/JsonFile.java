@@ -1,17 +1,14 @@
 package com.asdru.oopack.objects;
 
-import com.asdru.oopack.internal.AbstractFile;
+import com.asdru.oopack.internal.PlainFile;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
-import java.util.UUID;
 
 
-public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits DataJson, AssetsJson {
-
-    private Object[] args = {};
+public abstract sealed class JsonFile extends PlainFile<JsonObject> permits DataJson, AssetsJson {
 
     protected JsonFile(String name, JsonObject content) {
         super(name, content);
@@ -20,6 +17,16 @@ public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits D
     protected JsonFile(String name, JsonObject content, Object... args) {
         this(name, content);
         this.args = args;
+    }
+
+    // name + JsonObject content
+    public static <T extends JsonFile> T of(Class<T> clazz, String name, JsonObject json) {
+        return createInstance(clazz, name, json);
+    }
+
+    // JsonObject content only, random name
+    public static <T extends JsonFile> T of(Class<T> clazz, JsonObject json) {
+        return createInstance(clazz, randomName(), json);
     }
 
     @Override

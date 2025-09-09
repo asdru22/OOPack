@@ -5,10 +5,7 @@ import com.asdru.oopack.util.FileUtils;
 
 import java.nio.file.Path;
 
-public abstract class TextFile extends AbstractFile<StringBuilder> {
-
-    private Object[] args = {};
-
+public abstract class TextFile extends PlainFile<StringBuilder> {
 
     protected TextFile(String name, String content) {
         super(name, new StringBuilder(content));
