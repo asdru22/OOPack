@@ -1,22 +1,17 @@
 package com.asdru.oopack.objects;
 
 import com.asdru.oopack.Namespace;
+import com.google.gson.JsonObject;
 
 sealed public abstract class AssetsJson extends JsonFile permits Model, Lang {
-    public AssetsJson(String name, String content) {
+
+
+    public AssetsJson(String name, JsonObject content) {
         super(name, content);
     }
 
-    public AssetsJson(String name, String content, Object... args) {
+    public AssetsJson(String name, JsonObject content, Object... args) {
         super(name, content, args);
-    }
-
-    public AssetsJson(String content) {
-        super(content);
-    }
-
-    public AssetsJson(String content, Object... args) {
-        super(content, args);
     }
 
     @Override

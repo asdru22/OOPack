@@ -5,6 +5,7 @@ import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
 import com.asdru.oopack.internal.Folder;
+import com.asdru.oopack.internal.JsonFileFactory;
 import com.asdru.oopack.objects.Function;
 import com.asdru.oopack.objects.FunctionTag;
 import com.asdru.oopack.objects.Lang;
@@ -64,7 +65,7 @@ public final class ProjectUtils {
                 project.getDefaultNamespace(),
                 FunctionTag.class,
                 target,
-                () -> new FunctionTag(target, """
+                () -> JsonFileFactory.of(FunctionTag.class, target, """
                             {"values":[]}
                         """)
         );
@@ -76,7 +77,7 @@ public final class ProjectUtils {
     public void addTranslation(Namespace namespace, Locale locale, String key, String value) {
         String formattedLocale = LocaleUtils.formatLocale(locale);
         JsonObject content = getOrCreateJsonFile(namespace, Lang.class, formattedLocale, () ->
-                new Lang(formattedLocale, "{}")
+                JsonFileFactory.of(Lang.class, formattedLocale, "{}")
         );
         content.addProperty(key, value);
     }

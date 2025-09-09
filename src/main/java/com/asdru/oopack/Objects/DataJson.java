@@ -1,23 +1,18 @@
 package com.asdru.oopack.objects;
 
 import com.asdru.oopack.Namespace;
+import com.google.gson.JsonObject;
 
 sealed abstract public class DataJson extends JsonFile
         permits LootTable, FunctionTag {
-    public DataJson(String name, String content) {
+
+
+    protected DataJson(String name, JsonObject content) {
         super(name, content);
     }
 
-    public DataJson(String name, String content, Object... args) {
+    protected DataJson(String name, JsonObject content, Object... args) {
         super(name, content, args);
-    }
-
-    public DataJson(String content) {
-        super(content);
-    }
-
-    public DataJson(String content, Object... args) {
-        super(content, args);
     }
 
     @Override
