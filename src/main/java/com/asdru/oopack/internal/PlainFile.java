@@ -30,27 +30,27 @@ public abstract class PlainFile<T> extends AbstractFile<T> {
     }
 
     // name + String content
-    public static <T extends JsonFile> T of(Class<T> clazz, String name, String content) {
+    public static <T extends PlainFile<T>> T of(Class<T> clazz, String name, String content) {
         return createInstance(clazz, name, JsonUtils.toJson(content));
     }
 
     // name + String content + args
-    public static <T extends JsonFile> T of(Class<T> clazz, String name, String content, Object... args) {
+    public static <T extends PlainFile<T>> T of(Class<T> clazz, String name, String content, Object... args) {
         return createInstance(clazz, name, JsonUtils.toJson(formatContent(content, args)), args);
     }
 
     // content only, random name
-    public static <T extends JsonFile> T of(Class<T> clazz, String content) {
+    public static <T extends PlainFile<T>> T of(Class<T> clazz, String content) {
         return createInstance(clazz, randomName(), JsonUtils.toJson(content));
     }
 
     // content + args, random name
-    public static <T extends JsonFile> T of(Class<T> clazz, String content, Object... args) {
+    public static <T extends PlainFile<T>> T of(Class<T> clazz, String content, Object... args) {
         return createInstance(clazz, randomName(), JsonUtils.toJson(formatContent(content, args)), args);
     }
 
     // Internal helper to call constructor
-    protected static <T extends JsonFile> T createInstance(Class<T> clazz, String name, JsonObject json, Object... args) {
+    protected static <T extends PlainFile<T>> T createInstance(Class<T> clazz, String name, JsonObject json, Object... args) {
         try {
             if (args != null && args.length > 0) {
                 return clazz.getConstructor(String.class, JsonObject.class, Object[].class)
