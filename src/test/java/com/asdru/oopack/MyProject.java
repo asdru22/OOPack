@@ -3,21 +3,20 @@ package com.asdru.oopack;
 
 import com.asdru.oopack.version.Version;
 
-public class MyProject extends Project {
-    public MyProject() {
-        super("new world","MY project", Version.LATEST);
-    }
+public class MyProject {
 
     public static void main(String[] args) {
-        MyProject p = new MyProject();
-        p.addBuildPath("_build");
+        Project p = Project.builder().
+                worldName("new world").
+                projectName("MY project").
+                version(Version.LATEST).
+                addBuildPath("_build").
+                icon("icon").
+                description("test project").build();
 
-        MyNamespace ns = new MyNamespace(p);
+        p.addNamespace(new MyNamespace(p));
 
-        p.addNamespace(ns);
-        p.setIcon("icon");
-        p.setDescription("test project");
-        p.disableLogger();
+        Project.disableLogger();
         p.buildZip();
     }
 }
