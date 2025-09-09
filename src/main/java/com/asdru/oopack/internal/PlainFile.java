@@ -1,7 +1,5 @@
 package com.asdru.oopack.internal;
 
-
-import com.asdru.oopack.objects.JsonFile;
 import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonObject;
 
@@ -20,7 +18,6 @@ public abstract class PlainFile<T> extends AbstractFile<T> {
         this.args = args;
     }
 
-
     protected static String randomName() {
         return UUID.randomUUID().toString().replace("-", "");
     }
@@ -29,28 +26,13 @@ public abstract class PlainFile<T> extends AbstractFile<T> {
         return args.length > 0 ? content.formatted(args) : content;
     }
 
-    // name + String content
-    public static <T extends PlainFile<T>> T of(Class<T> clazz, String name, String content) {
-        return createInstance(clazz, name, JsonUtils.toJson(content));
-    }
-
-    // name + String content + args
-    public static <T extends PlainFile<T>> T of(Class<T> clazz, String name, String content, Object... args) {
-        return createInstance(clazz, name, JsonUtils.toJson(formatContent(content, args)), args);
-    }
-
-    // content only, random name
-    public static <T extends PlainFile<T>> T of(Class<T> clazz, String content) {
-        return createInstance(clazz, randomName(), JsonUtils.toJson(content));
-    }
-
-    // content + args, random name
-    public static <T extends PlainFile<T>> T of(Class<T> clazz, String content, Object... args) {
-        return createInstance(clazz, randomName(), JsonUtils.toJson(formatContent(content, args)), args);
-    }
-
-    // Internal helper to call constructor
-    protected static <T extends PlainFile<T>> T createInstance(Class<T> clazz, String name, JsonObject json, Object... args) {
+    // constructor call
+    protected static <T extends PlainFile<T>> T createInstance(
+            Class<T> clazz,
+            String name,
+            JsonObject json,
+            Object... args
+    ) {
         try {
             if (args != null && args.length > 0) {
                 return clazz.getConstructor(String.class, JsonObject.class, Object[].class)
@@ -63,5 +45,32 @@ public abstract class PlainFile<T> extends AbstractFile<T> {
             throw new RuntimeException("Failed to create JsonFile instance", e);
         }
     }
-}
 
+    public static class Factory<T extends PlainFile<?>> {
+        private final Class<T> clazz;
+
+        protected Factory(Class<T> clazz) {
+            this.clazz = clazz;
+        }
+
+        // name + string content
+        public T of(String name, String content) {
+            return createInstance(clazz, name, JsonUtils.toJson(content));
+        }
+
+        // name + string content + args
+        public T of(String name, String content, Object... args) {
+            return createInstance(clazz, name, JsonUtils.toJson(formatContent(content, args)), args);
+        }
+
+        // string content only, random name
+        public T of(String content) {
+            return createInstance(clazz, randomName(), JsonUtils.toJson(content));
+        }
+
+        // string content + args, random name
+        public T of(String content, Object... args) {
+            return createInstance(clazz, randomName(), JsonUtils.toJson(formatContent(content, args)), args);
+        }
+    }
+}

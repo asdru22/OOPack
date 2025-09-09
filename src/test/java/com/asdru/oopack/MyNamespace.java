@@ -19,12 +19,12 @@ public class MyNamespace extends Namespace {
         var s1 = new Folder(this);
         s1.add(new Function("test", "1"),
                 new Function("2"),
-                JsonFile.of(LootTable.class, """
+                LootTable.FACTORY.of("""
                         {"amount" : "%s"}
                         """, 3
                 ),
                 new Function("test2", "function %s", s1.add(nested)),
-                new Folder(this).add(JsonFile.of(Model.class, """
+                new Folder(this).add(Model.FACTORY.of( """
                         {"model": %s}
                         """, 5)),
                 new Texture("sub/test", "icon")

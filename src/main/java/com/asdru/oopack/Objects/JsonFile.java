@@ -19,16 +19,6 @@ public abstract sealed class JsonFile extends PlainFile<JsonObject> permits Data
         this.args = args;
     }
 
-    // name + JsonObject content
-    public static <T extends PlainFile<T>> T of(Class<T> clazz, String name, JsonObject json) {
-        return createInstance(clazz, name, json);
-    }
-
-    // JsonObject content only, random name
-    public static <T extends PlainFile<T>> T of(Class<T> clazz, JsonObject json) {
-        return createInstance(clazz, randomName(), json);
-    }
-
     @Override
     public void writeContent(Path path) {
         JsonObject jsonContent = getContent();
