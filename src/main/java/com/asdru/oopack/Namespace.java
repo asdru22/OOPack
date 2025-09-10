@@ -51,18 +51,6 @@ public class Namespace implements FileSystemObject, ContextItem {
         return children;
     }
 
-    public void addTranslation(Locale locale, String key, String value) {
-        project.utils.addTranslation(this,locale, key, value);
-    }
-
-    public void addTranslation(String key, String value) {
-        project.utils.addTranslation(this,Locale.US, key, value);
-    }
-
-    public ProjectUtils utils() {
-        return getProject().utils;
-    }
-
     @Override
     public String toString() {
         return String.format("%s{%s}", name, children);
@@ -90,4 +78,9 @@ public class Namespace implements FileSystemObject, ContextItem {
     public void setParent(FileSystemObject parent) {}
     @Override
     public FileSystemObject getParent() {return null;}
+
+    @Override
+    public void exit() {
+        Project.getInstance().addNamespace(this);
+    }
 }

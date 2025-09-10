@@ -3,7 +3,7 @@ package com.asdru.oopack;
 
 import com.asdru.oopack.internal.Folder;
 import com.asdru.oopack.objects.Function;
-import com.asdru.oopack.objects.PlainFile;
+import com.asdru.oopack.util.ProjectUtils;
 import com.asdru.oopack.version.Version;
 
 public class MyProject {
@@ -19,9 +19,13 @@ public class MyProject {
         Project.disableLogger();
 
         Namespace.of("gg");
-            Folder.of();
-                Function.FACTORY.of("test", "function %s", Function.FACTORY.of("say hji"));
-        Context.exit();
+        Folder.of();
+        Function.FACTORY.of("test", "function %s", Function.FACTORY.of("say hji"));
+        ProjectUtils.addTranslation("a","b");
+        ProjectUtils.addTranslation("b","c");
+        ProjectUtils.addTranslation("a","b");
+
+        Context.clear();
         p.build(true);
     }
 }

@@ -18,7 +18,7 @@ public class Folder extends AbstractFolder<FileSystemObject> implements ContextI
         try {
             Context ctx = Project.getInstance().getContext();
             T folder = clazz.getDeclaredConstructor(Namespace.class)
-                    .newInstance((Namespace)ctx.peek());
+                    .newInstance(ctx.peek());
             ctx.push(folder);
 
             return folder;

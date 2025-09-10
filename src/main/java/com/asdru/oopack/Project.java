@@ -30,7 +30,6 @@ public class Project {
     private final List<Path> buildPaths = new ArrayList<>();
 
     private final MinecraftNamespace defaultNamespace;
-    public final ProjectUtils utils;
 
     private Resourcepack resourcepack = null;
     private JsonObject description;
@@ -119,7 +118,6 @@ public class Project {
         this.version = version;
         this.datapack = new Datapack(this);
         this.defaultNamespace = new MinecraftNamespace(this);
-        this.utils = new ProjectUtils(this);
     }
 
     public void addBuildPath(String path) {
