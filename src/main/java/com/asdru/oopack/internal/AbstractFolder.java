@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractFolder <T extends FileSystemObject> implements FileSystemObject {
+public abstract class AbstractFolder<T extends FileSystemObject> implements FileSystemObject {
     protected final List<T> children = new ArrayList<>();
     protected FileSystemObject parent;
 
@@ -33,7 +33,9 @@ public abstract class AbstractFolder <T extends FileSystemObject> implements Fil
 
     @Override
     public String toString() {
-        return children.toString();
+        StringBuilder builder = new StringBuilder();
+        children.forEach(f -> builder.append(f.toString()));
+        return builder.toString();
     }
 
     @Override

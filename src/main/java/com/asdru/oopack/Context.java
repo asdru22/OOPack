@@ -21,4 +21,8 @@ public class Context {
     public String toString() {
         return stack.toString();
     }
+
+    public static ContextItem exit() {
+        return stack.pop();
+    }
 }

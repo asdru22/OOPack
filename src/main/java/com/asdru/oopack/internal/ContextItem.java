@@ -1,5 +1,6 @@
 package com.asdru.oopack.internal;
 
+import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 
 public interface ContextItem {
@@ -10,8 +11,11 @@ public interface ContextItem {
         getProject().getContext().push(this);
     }
 
-
     default void exit() {
         getProject().getContext().pop();
+        Project.getInstance().addNamespace((Namespace) this);
+
     }
+    FileSystemObject add(FileSystemObject fso);
+
 }

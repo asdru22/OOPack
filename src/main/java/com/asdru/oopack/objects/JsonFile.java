@@ -47,22 +47,12 @@ public abstract sealed class JsonFile extends PlainFile<JsonObject> permits Data
 
         @Override
         protected F createInstance(String name, String content) {
-            try {
-                // Convert String to JsonObject first
-                return clazz.getDeclaredConstructor(String.class, JsonObject.class)
-                        .newInstance(name, JsonUtils.toJson(content));
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to create JsonFile instance", e);
-            }
+            return instantiate(name, JsonUtils.toJson(content));
         }
 
         protected F createInstance(String name, JsonObject content) {
-            try {
-                return clazz.getDeclaredConstructor(String.class, JsonObject.class)
-                        .newInstance(name, content);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to create JsonFile instance", e);
-            }
+            return instantiate(name, content);
         }
+
     }
 }

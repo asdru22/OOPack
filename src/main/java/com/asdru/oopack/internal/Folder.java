@@ -1,5 +1,6 @@
 package com.asdru.oopack.internal;
 
+import com.asdru.oopack.Context;
 import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 
@@ -13,8 +14,26 @@ public class Folder extends AbstractFolder<FileSystemObject> implements ContextI
         parent.add(this);
     }
 
+    public static <T extends Folder> T of(Class<T> clazz) {
+        try {
+            Context ctx = Project.getInstance().getContext();
+            T folder = clazz.getDeclaredConstructor(Namespace.class)
+                    .newInstance((Namespace)ctx.peek());
+            ctx.push(folder);
+
+            return folder;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create Folder instance", e);
+        }
+    }
+
+    public static Folder of() {
+        return of(Folder.class);
+    }
+
+
     // Use generics to avoid downcasting in return
-    public <T extends FileSystemObject> T add(T child) {
+    public FileSystemObject add(FileSystemObject child) {
         child.setParent(this);
 
         // Walk up the tree to find the Namespace

@@ -18,18 +18,29 @@ public class Namespace implements FileSystemObject, ContextItem {
         this.project = project;
     }
 
-    public static Namespace of(String name){
-        Project p = Project.getInstance();
-        Namespace ns = new Namespace(p,name);
-        p.getContext().push(ns);
-        return ns;
+    public static <T extends Namespace> T of(Class<T> clazz, String name) {
+        try {
+            Project p = Project.getInstance();
+            T ns = clazz.getDeclaredConstructor(Project.class, String.class)
+                    .newInstance(Project.getInstance(), name);
+            p.getContext().push(ns);
+            return ns;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create Namespace instance", e);
+        }
+    }
+
+    public static Namespace of(String name) {
+        return of(Namespace.class, name);
     }
 
     private final List<FileSystemObject> children = new ArrayList<>();
 
-    public void add(FileSystemObject fso) {
+    @Override
+    public FileSystemObject add(FileSystemObject fso) {
         children.add(fso);
         fso.setProject(project);
+        return fso;
     }
 
     public String getName() {

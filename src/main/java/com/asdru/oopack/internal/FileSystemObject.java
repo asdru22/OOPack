@@ -43,9 +43,4 @@ public interface FileSystemObject extends Buildable {
 
         return Optional.empty();
     }
-
-
-
-
-
 }
