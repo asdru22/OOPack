@@ -2,7 +2,6 @@ package com.asdru.oopack.objects;
 
 
 import com.asdru.oopack.Namespace;
-import com.asdru.oopack.internal.TextFile;
 
 
 public class Function extends TextFile {
@@ -11,8 +10,8 @@ public class Function extends TextFile {
         super(name, content);
     }
 
-    public static final Factory<Function, StringBuilder> FACTORY =
-            new TextFile.Factory<>(Function.class);
+    public static final PlainFile.Factory<Function, StringBuilder> FACTORY =
+            new PlainFile.Factory<>(Function.class);
 
     @Override
     public String getFolderName() {

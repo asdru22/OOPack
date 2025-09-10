@@ -1,4 +1,4 @@
-package com.asdru.oopack.internal;
+package com.asdru.oopack.objects;
 
 
 import com.asdru.oopack.util.FileUtils;

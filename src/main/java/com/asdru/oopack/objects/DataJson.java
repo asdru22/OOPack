@@ -6,13 +6,8 @@ import com.google.gson.JsonObject;
 sealed abstract public class DataJson extends JsonFile
         permits LootTable, FunctionTag {
 
-
     protected DataJson(String name, JsonObject content) {
         super(name, content);
-    }
-
-    protected DataJson(String name, JsonObject content, Object... args) {
-        super(name, content, args);
     }
 
     @Override

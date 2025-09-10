@@ -7,13 +7,10 @@ public non-sealed class LootTable extends DataJson {
     public static final JsonFile.Factory<LootTable> FACTORY =
             new JsonFile.Factory<>(LootTable.class);
 
-    public LootTable(String name, JsonObject content) {
+    protected LootTable(String name, JsonObject content) {
         super(name, content);
     }
 
-    public LootTable(String name, JsonObject content, Object... args) {
-        super(name, content, args);
-    }
 
     @Override
     public String getFolderName() {

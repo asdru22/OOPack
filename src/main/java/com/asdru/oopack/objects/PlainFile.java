@@ -1,4 +1,6 @@
-package com.asdru.oopack.internal;
+package com.asdru.oopack.objects;
+
+import com.asdru.oopack.internal.AbstractFile;
 
 public abstract class PlainFile<C> extends AbstractFile<C> {
     protected Object[] args = {};
@@ -36,7 +38,7 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
 
         protected F createInstance(String name, String content) {
             try {
-                return clazz.getConstructor(String.class, String.class)
+                return clazz.getDeclaredConstructor(String.class, String.class)
                         .newInstance(name, content);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to create PlainFile instance", e);

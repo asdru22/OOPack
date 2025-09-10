@@ -5,13 +5,8 @@ import com.google.gson.JsonObject;
 
 sealed public abstract class AssetsJson extends JsonFile permits Model, Lang {
 
-
-    public AssetsJson(String name, JsonObject content) {
+    protected AssetsJson(String name, JsonObject content) {
         super(name, content);
-    }
-
-    public AssetsJson(String name, JsonObject content, Object... args) {
-        super(name, content, args);
     }
 
     @Override

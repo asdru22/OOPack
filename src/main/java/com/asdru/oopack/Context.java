@@ -16,4 +16,9 @@ public class Context {
     public ContextItem peek(){
         return stack.peek();
     }
+
+    @Override
+    public String toString() {
+        return stack.toString();
+    }
 }

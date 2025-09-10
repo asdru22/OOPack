@@ -13,9 +13,16 @@ public class Namespace implements FileSystemObject, ContextItem {
     private final String name;
     private Project project;
 
-    public Namespace(Project project, String name) {
+    protected Namespace(Project project, String name) {
         this.name = name;
         this.project = project;
+    }
+
+    public static Namespace of(String name){
+        Project p = Project.getInstance();
+        Namespace ns = new Namespace(p,name);
+        p.getContext().push(ns);
+        return ns;
     }
 
     private final List<FileSystemObject> children = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.asdru.oopack.objects;
 
-import com.asdru.oopack.internal.PlainFile;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonObject;
@@ -15,11 +14,6 @@ public abstract sealed class JsonFile extends PlainFile<JsonObject> permits Data
 
     protected JsonFile(String name, JsonObject content) {
         super(name, content);
-    }
-
-    protected JsonFile(String name, JsonObject content, Object... args) {
-        this(name, content);
-        this.args = args;
     }
 
     @Override
@@ -54,7 +48,8 @@ public abstract sealed class JsonFile extends PlainFile<JsonObject> permits Data
         @Override
         protected F createInstance(String name, String content) {
             try {
-                return clazz.getConstructor(String.class, JsonObject.class)
+                // Convert String to JsonObject first
+                return clazz.getDeclaredConstructor(String.class, JsonObject.class)
                         .newInstance(name, JsonUtils.toJson(content));
             } catch (Exception e) {
                 throw new RuntimeException("Failed to create JsonFile instance", e);
@@ -63,7 +58,7 @@ public abstract sealed class JsonFile extends PlainFile<JsonObject> permits Data
 
         protected F createInstance(String name, JsonObject content) {
             try {
-                return clazz.getConstructor(String.class, JsonObject.class)
+                return clazz.getDeclaredConstructor(String.class, JsonObject.class)
                         .newInstance(name, content);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to create JsonFile instance", e);

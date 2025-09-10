@@ -7,12 +7,8 @@ public non-sealed class FunctionTag extends DataJson {
     public static final FunctionTag.Factory<FunctionTag> FACTORY =
             new JsonFile.Factory<>(FunctionTag.class);
 
-    public FunctionTag(String name, JsonObject content) {
+    protected FunctionTag(String name, JsonObject content) {
         super(name, content);
-    }
-
-    public FunctionTag(String name, JsonObject content, Object... args) {
-        super(name, content, args);
     }
 
     @Override
