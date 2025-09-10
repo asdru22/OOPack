@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 public non-sealed class FunctionTag extends DataJson {
 
+    public static final FunctionTag.Factory<FunctionTag> FACTORY =
+            new JsonFile.Factory<>(FunctionTag.class);
 
     public FunctionTag(String name, JsonObject content) {
         super(name, content);

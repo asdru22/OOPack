@@ -5,19 +5,14 @@ import com.asdru.oopack.util.FileUtils;
 
 import java.nio.file.Path;
 
-public abstract class TextFile extends AbstractFile<StringBuilder> {
-
-    private Object[] args = {};
-
+public abstract class TextFile extends PlainFile<StringBuilder> {
 
     protected TextFile(String name, String content) {
         super(name, new StringBuilder(content));
     }
 
-    protected TextFile(String name, String content, Object... args) {
-        this(name, content);
-        this.args = args;
-    }
+    public static final Factory<TextFile, StringBuilder> FACTORY = new Factory<>(TextFile.class);
+
 
     @Override
     public void writeContent(Path path) {

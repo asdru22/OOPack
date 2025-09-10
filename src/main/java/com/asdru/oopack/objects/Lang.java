@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 public non-sealed class Lang extends AssetsJson {
 
+    public static final JsonFile.Factory<Lang> FACTORY =
+            new JsonFile.Factory<>(Lang.class);
 
     public Lang(String name, JsonObject content) {
         super(name, content);

@@ -1,17 +1,17 @@
 package com.asdru.oopack.objects;
 
-import com.asdru.oopack.internal.AbstractFile;
+import com.asdru.oopack.internal.PlainFile;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
-import java.util.UUID;
 
 
-public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits DataJson, AssetsJson {
+public abstract sealed class JsonFile extends PlainFile<JsonObject> permits DataJson, AssetsJson {
 
-    private Object[] args = {};
+    public static final PlainFile.Factory<JsonFile, JsonObject> FACTORY =
+            new PlainFile.Factory<>(JsonFile.class);
 
     protected JsonFile(String name, JsonObject content) {
         super(name, content);
@@ -33,5 +33,41 @@ public abstract sealed class JsonFile extends AbstractFile<JsonObject> permits D
     @Override
     public String getExtension() {
         return "json";
+    }
+
+    public static class Factory<F extends JsonFile> extends PlainFile.Factory<F, JsonObject> {
+
+        public Factory(Class<F> clazz) {
+            super(clazz);
+        }
+
+        // name + json content
+        public <T extends JsonFile> T of(Class<T> clazz, String name, JsonObject json) {
+            return new Factory<>(clazz).createInstance(name, json);
+        }
+
+        // random name + json content
+        public <T extends JsonFile> T of(Class<T> clazz, JsonObject json) {
+            return new Factory<>(clazz).createInstance(randomName(), json);
+        }
+
+        @Override
+        protected F createInstance(String name, String content) {
+            try {
+                return clazz.getConstructor(String.class, JsonObject.class)
+                        .newInstance(name, JsonUtils.toJson(content));
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create JsonFile instance", e);
+            }
+        }
+
+        protected F createInstance(String name, JsonObject content) {
+            try {
+                return clazz.getConstructor(String.class, JsonObject.class)
+                        .newInstance(name, content);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create JsonFile instance", e);
+            }
+        }
     }
 }
