@@ -17,16 +17,24 @@ public class CodeGen {
             String folderName
     ) throws IOException {
 
+        // derive subpackage: remove "Json" suffix, lowercase remainder
+        String subPackage = superClassName.replace("Json", "").toLowerCase();
+        String fullPackage = packageName + "." + subPackage;
+
         // imports
         ClassName jsonObject = ClassName.get("com.google.gson", "JsonObject");
         ClassName jsonFileFactory = ClassName.get("com.asdru.oopack.internal", "JsonFileFactory");
-        ClassName superClass = ClassName.get("com.asdru.oopack.objects", superClassName);
+        ClassName superClass = ClassName.get(packageName, superClassName);
 
         // static factory
-        TypeName factoryType = ParameterizedTypeName.get(jsonFileFactory, ClassName.get(packageName, className));
+        TypeName factoryType = ParameterizedTypeName.get(
+                jsonFileFactory,
+                ClassName.get(fullPackage, className)
+        );
 
         FieldSpec factoryField = FieldSpec.builder(factoryType, "f", Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .initializer("new JsonFile.Factory<>($T.class)", ClassName.get(packageName, className))
+                // fully qualify JsonFile so it doesn’t import
+                .initializer("new com.asdru.oopack.internal.JsonFile.Factory<>($T.class)", ClassName.get(fullPackage, className))
                 .build();
 
         // Protected constructor
@@ -52,18 +60,18 @@ public class CodeGen {
                 .addMethod(getFolderName)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder(packageName, generatedClass)
+        JavaFile javaFile = JavaFile.builder(fullPackage, generatedClass)
                 .skipJavaLangImports(true)
                 .build();
 
         // patch "public class" to "public non-sealed class"
-        String source = javaFile.toString().replace("public class", "public non-sealed class");
 
-        Path outputPath = outputDir.resolve(packageName.replace('.', '/'))
+        Path outputPath = outputDir.resolve(fullPackage.replace('.', '/'))
                 .resolve(className + ".java");
         java.nio.file.Files.createDirectories(outputPath.getParent());
-        java.nio.file.Files.writeString(outputPath, source);
+        java.nio.file.Files.writeString(outputPath, javaFile.toString());
     }
+
 
     private static void genData(String className, String folderName) throws IOException {
         gen(className, "DataJson", folderName);

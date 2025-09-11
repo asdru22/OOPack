@@ -3,7 +3,7 @@ package com.asdru.oopack.objects;
 import com.asdru.oopack.internal.JsonFileFactory;
 import com.google.gson.JsonObject;
 
-public non-sealed class Lang extends AssetsJson {
+public class Lang extends AssetsJson {
 
     public static final JsonFileFactory<Lang> f =
             new JsonFile.Factory<>(Lang.class);

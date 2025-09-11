@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import java.nio.file.Path;
 
 
-public abstract sealed class JsonFile extends PlainFile<JsonObject> permits DataJson, AssetsJson {
+public abstract class JsonFile extends PlainFile<JsonObject> {
 
     protected JsonFile(String name, JsonObject content) {
         super(name, content);
