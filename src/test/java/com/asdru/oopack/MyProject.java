@@ -1,7 +1,5 @@
 package com.asdru.oopack;
 
-
-import com.asdru.oopack.internal.Folder;
 import com.asdru.oopack.objects.Function;
 import com.asdru.oopack.util.ProjectUtils;
 
@@ -18,11 +16,11 @@ public class MyProject {
         Project.disableLogger();
 
         Namespace.of("gg");
-        Folder.of();
-        Function.f.of("test", "function %s", Function.f.of("say hji"));
-        ProjectUtils.addTranslation("a","b");
-        ProjectUtils.addTranslation("b","c");
-        ProjectUtils.addTranslation("a","b");
+        ProjectUtils.addTranslation("dsaasda", "b");
+        Function.f.of("AAAA","bob");
+        Module.register(
+                MyModule.class
+        );
 
         Context.clear();
         p.build(true);

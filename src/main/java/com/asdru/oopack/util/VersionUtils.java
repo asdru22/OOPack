@@ -113,11 +113,19 @@ public class VersionUtils {
         }
 
         JsonObject versions = existingRoot.getAsJsonObject("versions");
+
+        if ("latest".equals(versionKey)) {
+            // get the first item
+            Map.Entry<String, JsonElement> firstEntry =
+                    versions.entrySet().iterator().next();
+
+            return GSON.fromJson(firstEntry.getValue(), VersionInfo.class);
+        }
+
         if (!versions.has(versionKey)) {
             throw new IllegalArgumentException("Version key not found: " + versionKey);
         }
 
-        // Deserialize into VersionInfo
         return GSON.fromJson(versions.get(versionKey), VersionInfo.class);
     }
 
