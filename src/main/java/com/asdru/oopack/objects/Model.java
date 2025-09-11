@@ -4,14 +4,17 @@ import com.asdru.oopack.internal.JsonFileFactory;
 import com.google.gson.JsonObject;
 
 public non-sealed class Model extends AssetsJson {
-  public static final JsonFileFactory<Model> f = new JsonFile.Factory<>(Model.class);
 
-  protected Model(String name, JsonObject content) {
-    super(name, content);
-  }
+    public static final JsonFileFactory<Model> f =
+            new JsonFile.Factory<>(Model.class);
 
-  @Override
-  public String getFolderName() {
-    return "models";
-  }
+    protected Model(String name, JsonObject content) {
+        super(name, content);
+    }
+
+
+    @Override
+    public String getFolderName() {
+        return "model";
+    }
 }

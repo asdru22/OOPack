@@ -112,5 +112,7 @@ public class CodeGen {
         genAssets("Item", "items");
         genAssets("Lang", "lang");
         genAssets("Model", "models");
+
+
     }
 }
