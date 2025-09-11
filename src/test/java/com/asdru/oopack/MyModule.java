@@ -1,6 +1,6 @@
 package com.asdru.oopack;
 
-import com.asdru.oopack.objects.Function;
+import com.asdru.oopack.objects.data.Function;
 import com.asdru.oopack.util.ProjectUtils;
 
 public class MyModule extends Module {

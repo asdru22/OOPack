@@ -8,11 +8,11 @@ import com.asdru.oopack.internal.FileFactory;
 public abstract class PlainFile<C> extends AbstractFile<C> {
     protected Object[] args = {};
 
-    protected PlainFile(String name, C content) {
+    public PlainFile(String name, C content) {
         super(name, content);
     }
 
-    static class Factory<F extends PlainFile<C>, C> implements FileFactory<F> {
+    protected static class Factory<F extends PlainFile<C>, C> implements FileFactory<F> {
         protected final Class<F> clazz;
 
         public Factory(Class<F> clazz) {

@@ -27,7 +27,7 @@ public abstract class JsonFile extends PlainFile<JsonObject> {
         return "json";
     }
 
-    static class Factory<F extends JsonFile> extends PlainFile.Factory<F, JsonObject>
+    protected static class Factory<F extends JsonFile> extends PlainFile.Factory<F, JsonObject>
             implements JsonFileFactory<F> {
 
         public Factory(Class<F> clazz) {

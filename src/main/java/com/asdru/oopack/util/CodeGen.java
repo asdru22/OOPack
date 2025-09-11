@@ -24,6 +24,7 @@ public class CodeGen {
         // imports
         ClassName jsonObject = ClassName.get("com.google.gson", "JsonObject");
         ClassName jsonFileFactory = ClassName.get("com.asdru.oopack.internal", "JsonFileFactory");
+        ClassName jsonFile = ClassName.get("com.asdru.oopack.objects", "JsonFile");
         ClassName superClass = ClassName.get(packageName, superClassName);
 
         // static factory
@@ -33,8 +34,7 @@ public class CodeGen {
         );
 
         FieldSpec factoryField = FieldSpec.builder(factoryType, "f", Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                // fully qualify JsonFile so it doesn’t import
-                .initializer("new com.asdru.oopack.internal.JsonFile.Factory<>($T.class)", ClassName.get(fullPackage, className))
+                .initializer("new $T.Factory<>($T.class)", jsonFile, ClassName.get(fullPackage, className)) // changed
                 .build();
 
         // Protected constructor
@@ -64,7 +64,6 @@ public class CodeGen {
                 .skipJavaLangImports(true)
                 .build();
 
-        // patch "public class" to "public non-sealed class"
 
         Path outputPath = outputDir.resolve(fullPackage.replace('.', '/'))
                 .resolve(className + ".java");
