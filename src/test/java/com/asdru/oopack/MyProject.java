@@ -20,7 +20,7 @@ public class MyProject {
 
         Namespace.of("gg");
         Folder.of();
-        Function.FACTORY.of("test", "function %s", Function.FACTORY.of("say hji"));
+        Function.f.of("test", "function %s", Function.f.of("say hji"));
         ProjectUtils.addTranslation("a","b");
         ProjectUtils.addTranslation("b","c");
         ProjectUtils.addTranslation("a","b");

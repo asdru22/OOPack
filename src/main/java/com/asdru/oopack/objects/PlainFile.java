@@ -3,7 +3,6 @@ package com.asdru.oopack.objects;
 import com.asdru.oopack.Context;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
-import com.asdru.oopack.internal.Folder;
 
 public abstract class PlainFile<C> extends AbstractFile<C> {
     protected Object[] args = {};
@@ -12,29 +11,19 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
         super(name, content);
     }
 
-    public static class Factory<F extends PlainFile<C>, C> {
+    static class Factory<F extends PlainFile<C>, C> implements FileFactory<F> {
         protected final Class<F> clazz;
 
         public Factory(Class<F> clazz) {
             this.clazz = clazz;
         }
 
-        // name + content
-        public F of(String name, String content) {
-            return createInstance(name, content);
-        }
-
-        // random name + content
-        public F of(String content) {
-            return createInstance(randomName(), content);
-        }
-
-        // name + content + args
+        @Override
         public F of(String name, String content, Object... args) {
             return createInstance(name, formatContent(content, args));
         }
 
-        // random name + formatted content
+        @Override
         public F of(String content, Object... args) {
             return createInstance(randomName(), formatContent(content, args));
         }

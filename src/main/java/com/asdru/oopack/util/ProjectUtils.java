@@ -71,7 +71,7 @@ public final class ProjectUtils {
     private static void addTranslation(Namespace namespace, Locale locale, String key, String value) {
         String formattedLocale = LocaleUtils.formatLocale(locale);
         JsonObject content = getOrCreateJsonFile(namespace, Lang.class, formattedLocale, () ->
-                Lang.FACTORY.of(formattedLocale, "{}")
+                Lang.f.of(formattedLocale, "{}")
         );
         content.addProperty(key, value);
     }
@@ -96,6 +96,6 @@ public final class ProjectUtils {
                 namespace,
                 Lang.class,
                 formattedLocale,
-                () -> Lang.FACTORY.of(formattedLocale, "{}"));
+                () -> Lang.f.of(formattedLocale, "{}"));
     }
 }

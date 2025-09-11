@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 public non-sealed class LootTable extends DataJson {
 
-    public static final JsonFile.Factory<LootTable> FACTORY =
+    public static final JsonFileFactory<LootTable> f =
             new JsonFile.Factory<>(LootTable.class);
 
     protected LootTable(String name, JsonObject content) {

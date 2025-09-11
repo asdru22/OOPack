@@ -11,7 +11,7 @@ public abstract class TextFile extends PlainFile<StringBuilder> {
         super(name, new StringBuilder(content));
     }
 
-    public static final Factory<TextFile, StringBuilder> FACTORY = new Factory<>(TextFile.class);
+    static final Factory<TextFile, StringBuilder> f = new Factory<>(TextFile.class);
 
 
     @Override

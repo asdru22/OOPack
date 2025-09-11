@@ -10,8 +10,7 @@ public class Function extends TextFile {
         super(name, content);
     }
 
-    public static final PlainFile.Factory<Function, StringBuilder> FACTORY =
-            new PlainFile.Factory<>(Function.class);
+    public static final FileFactory<Function> f = new PlainFile.Factory<>(Function.class);
 
     @Override
     public String getFolderName() {
