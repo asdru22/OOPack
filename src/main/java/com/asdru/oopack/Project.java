@@ -1,9 +1,9 @@
 package com.asdru.oopack;
 
 import com.asdru.oopack.util.FileUtils;
-import com.asdru.oopack.util.ProjectUtils;
 
-import com.asdru.oopack.version.Version;
+import com.asdru.oopack.util.VersionUtils;
+import com.asdru.oopack.internal.VersionInfo;
 import com.google.gson.JsonObject;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -25,7 +25,7 @@ public class Project {
 
     private final String worldName;
     private final String projectName;
-    private final Version version;
+    private final VersionInfo version;
     private final Datapack datapack;
     private final List<Path> buildPaths = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class Project {
     public static class Builder {
         private String worldName;
         private String projectName;
-        private Version version;
+        private VersionInfo version;
         private String icon;
         private JsonObject description;
         private final List<String> buildPaths = new ArrayList<>();
@@ -61,8 +61,8 @@ public class Project {
             return this;
         }
 
-        public Builder version(Version version) {
-            this.version = version;
+        public Builder version(String version) {
+            this.version = VersionUtils.getVersionInfo(version);
             return this;
         }
 
@@ -112,7 +112,7 @@ public class Project {
         return instance;
     }
 
-    private Project(String worldName, String projectName, Version version) {
+    private Project(String worldName, String projectName, VersionInfo version) {
         this.worldName = worldName;
         this.projectName = projectName;
         this.version = version;
@@ -196,7 +196,7 @@ public class Project {
         return defaultNamespace;
     }
 
-    public Version getVersion() {
+    public VersionInfo getVersion() {
         return version;
     }
 

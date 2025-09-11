@@ -9,11 +9,11 @@ public class Resourcepack extends Pack {
 
     @Override
     public int getMajor() {
-        return getProject().getVersion().getResourcepackVersion();
+        return getProject().getVersion().resourcepackVersion();
     }
 
     @Override
     public int getMinor() {
-        return getProject().getVersion().getResourcepackVersionMinor();
+        return getProject().getVersion().resourcepackVersionMinor();
     }
 }

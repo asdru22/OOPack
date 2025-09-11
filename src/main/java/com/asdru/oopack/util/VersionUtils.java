@@ -1,37 +1,142 @@
 package com.asdru.oopack.util;
 
 import com.asdru.oopack.internal.VersionInfo;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 
 public class VersionUtils {
 
+    private static final Logger LOGGER = Logger.getLogger(VersionUtils.class.getName());
+    private static final Path resourcesPath = Path.of("src", "main", "resources",
+            "_generated", "versions.json");
     private static final String VERSIONS_URL =
             "https://raw.githubusercontent.com/misode/mcmeta/refs/heads/summary/versions/data.json";
 
-    public static Optional<Map<String, VersionInfo>> getVersion() {
+    private static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
+
+    public static void generateVersionFile() {
         try {
-            JsonArray jsonArray = fetchJsonArrayFromUrl();
+            Files.createDirectories(resourcesPath.getParent());
+
+            if (!needsUpdate()) return;
+
+            Optional<Map<String, VersionInfo>> optionalVersions = VersionUtils.getVersionOptional();
+
+            if (optionalVersions.isEmpty()) {
+                LOGGER.severe("Failed to fetch version data, file not created.");
+                return;
+            }
+
+            Map<String, VersionInfo> versions = optionalVersions.get();
+
+            JsonObject root = new JsonObject();
+            root.addProperty("created_at", DateTimeFormatter.ISO_INSTANT.format(Instant.now()));
+            root.add("versions", GSON.toJsonTree(versions));
+
+            try (FileWriter writer = new FileWriter(resourcesPath.toFile(), StandardCharsets.UTF_8)) {
+                GSON.toJson(root, writer);
+            }
+            LOGGER.info("Version file generated: " + resourcesPath.toAbsolutePath());
+        } catch (IOException e) {
+            LOGGER.severe("Error writing version file: " + e.getMessage());
+        }
+    }
+
+    private static boolean needsUpdate() {
+        Optional<JsonObject> jsonOpt = loadExistingJson();
+
+        if (jsonOpt.isEmpty()) {
+            return true; // file missing, need to create it
+        }
+
+        JsonObject existingRoot = jsonOpt.get();
+        if (existingRoot.has("created_at")) {
+            try {
+                Instant createdAt = Instant.parse(existingRoot.get("created_at").getAsString());
+                long ageMillis = System.currentTimeMillis() - createdAt.toEpochMilli();
+
+                if (ageMillis < 24 * 60 * 60 * 1000L) {
+                    LOGGER.info("Version file is less than one day old, skipping fetch.");
+                    return false;
+                }
+                return true;
+            } catch (Exception e) {
+                LOGGER.warning("Invalid created_at format, forcing update. Reason: " + e.getMessage());
+                return true;
+            }
+        }
+
+        return true; // if no created_at field, force update
+    }
+
+    // Reads the existing JSON file if present and valid
+    private static Optional<JsonObject> loadExistingJson() {
+        if (!Files.exists(resourcesPath)) {
+            return Optional.empty();
+        }
+
+        try (var reader = Files.newBufferedReader(resourcesPath, StandardCharsets.UTF_8)) {
+            JsonObject existingRoot = JsonParser.parseReader(reader).getAsJsonObject();
+            return Optional.of(existingRoot);
+        } catch (Exception e) {
+            LOGGER.warning("Could not parse existing version file: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    // Gets a specific VersionInfo by version key from the local JSON file
+    public static VersionInfo getVersionInfo(String versionKey) {
+        Optional<JsonObject> existingRootOpt = loadExistingJson();
+
+        if (existingRootOpt.isEmpty()) {
+            throw new IllegalStateException("No version file found at " + resourcesPath);
+        }
+
+        JsonObject existingRoot = existingRootOpt.get();
+        if (!existingRoot.has("versions")) {
+            throw new IllegalStateException("Version file is missing 'versions' object.");
+        }
+
+        JsonObject versions = existingRoot.getAsJsonObject("versions");
+        if (!versions.has(versionKey)) {
+            throw new IllegalArgumentException("Version key not found: " + versionKey);
+        }
+
+        // Deserialize into VersionInfo
+        return GSON.fromJson(versions.get(versionKey), VersionInfo.class);
+    }
+
+
+    private static Optional<Map<String, VersionInfo>> getVersionOptional() {
+        try {
+            JsonArray jsonArray = getJsonArray();
             return Optional.of(parseAndSortVersions(jsonArray));
         } catch (Exception e) {
-            System.err.println("Error fetching version data: " + e.getMessage());
+            LOGGER.severe("Error fetching version data: " + e.getMessage());
             return Optional.empty();
         }
     }
 
     // Opens the URL and parses the response as a JsonArray
-    private static JsonArray fetchJsonArrayFromUrl() throws IOException {
-        URL url = URI.create(VERSIONS_URL).toURL(); // Usa URI.create() per URL remoti
+    private static JsonArray getJsonArray() throws IOException {
+        URL url = URI.create(VERSIONS_URL).toURL();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
