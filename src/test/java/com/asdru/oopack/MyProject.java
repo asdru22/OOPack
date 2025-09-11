@@ -1,23 +1,30 @@
 package com.asdru.oopack;
 
 
-import com.asdru.oopack.version.Version;
+import com.asdru.oopack.internal.Folder;
+import com.asdru.oopack.objects.Function;
+import com.asdru.oopack.util.ProjectUtils;
 
-public class MyProject extends Project {
-    public MyProject() {
-        super("new world","MY project", Version.LATEST);
-    }
+public class MyProject {
 
     public static void main(String[] args) {
-        MyProject p = new MyProject();
-        p.addBuildPath("_build");
+        Project p = Project.builder().
+                worldName("new world").
+                projectName("MY project").
+                version("latest").
+                addBuildPath("_build").
+                icon("icon").
+                description("test project").build();
+        Project.disableLogger();
 
-        MyNamespace ns = new MyNamespace(p);
+        Namespace.of("gg");
+        Folder.of();
+        Function.f.of("test", "function %s", Function.f.of("say hji"));
+        ProjectUtils.addTranslation("a","b");
+        ProjectUtils.addTranslation("b","c");
+        ProjectUtils.addTranslation("a","b");
 
-        p.addNamespace(ns);
-        p.setIcon("icon");
-        p.setDescription("hi twin");
-        p.disableLogger();
-        p.buildZip();
+        Context.clear();
+        p.build(true);
     }
 }

@@ -13,7 +13,7 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     private String namespaceId;
     private Project project;
 
-    public AbstractFile(String name, T content) {
+    protected AbstractFile(String name, T content) {
         this.name = name;
         this.content = content;
     }
@@ -61,7 +61,6 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
         this.project = project;
     }
 
-    @Override
     public Project getProject() {
         return project;
     }

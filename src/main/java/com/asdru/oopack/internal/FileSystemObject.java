@@ -17,7 +17,6 @@ public interface FileSystemObject extends Buildable {
     FileSystemObject getParent();
 
     void setProject(Project project);
-    Project getProject();
 
     static <T extends FileSystemObject> Optional<T> find(
             FileSystemObject root,
@@ -44,9 +43,4 @@ public interface FileSystemObject extends Buildable {
 
         return Optional.empty();
     }
-
-
-
-
-
 }

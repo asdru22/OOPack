@@ -10,11 +10,11 @@ public class Datapack extends Pack {
 
     @Override
     public int getMajor() {
-        return getProject().getVersion().getDatapackVersion();
+        return getProject().getVersion().datapackVersion();
     }
 
     @Override
     public int getMinor() {
-        return getProject().getVersion().getDatapackVersionMinor();
+        return getProject().getVersion().datapackVersionMinor();
     }
 }

@@ -1,26 +1,14 @@
 package com.asdru.oopack.objects;
 
+import com.asdru.oopack.internal.JsonFileFactory;
 import com.google.gson.JsonObject;
 
 public non-sealed class Lang extends AssetsJson {
 
-    public Lang(String name, String content) {
-        super(name, content);
-    }
+    public static final JsonFileFactory<Lang> f =
+            new JsonFile.Factory<>(Lang.class);
 
-    public Lang(String name, String content, Object... args) {
-        super(name, content, args);
-    }
-
-    public Lang(String content) {
-        super(content);
-    }
-
-    public Lang(String content, Object... args) {
-        super(content, args);
-    }
-
-    public Lang(String name, JsonObject content) {
+    protected Lang(String name, JsonObject content) {
         super(name, content);
     }
 

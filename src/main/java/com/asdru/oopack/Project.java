@@ -1,10 +1,9 @@
 package com.asdru.oopack;
 
-import com.asdru.oopack.objects.MinecraftNamespace;
 import com.asdru.oopack.util.FileUtils;
-import com.asdru.oopack.util.ProjectUtils;
 
-import com.asdru.oopack.version.Version;
+import com.asdru.oopack.util.VersionUtils;
+import com.asdru.oopack.internal.VersionInfo;
 import com.google.gson.JsonObject;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -21,26 +20,104 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Project {
+
+    private static Project instance;
+
     private final String worldName;
     private final String projectName;
-    private final Version version;
+    private final VersionInfo version;
     private final Datapack datapack;
     private final List<Path> buildPaths = new ArrayList<>();
 
     private final MinecraftNamespace defaultNamespace;
-    public final ProjectUtils utils ;
 
     private Resourcepack resourcepack = null;
     private JsonObject description;
     private String icon;
 
-    public Project(String worldName, String projectName, Version version) {
+    private final Context context = new Context();
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    // builder class
+    public static class Builder {
+        private String worldName;
+        private String projectName;
+        private VersionInfo version;
+        private String icon;
+        private JsonObject description;
+        private final List<String> buildPaths = new ArrayList<>();
+
+
+        public Builder worldName(String worldName) {
+            this.worldName = worldName;
+            return this;
+        }
+
+        public Builder projectName(String projectName) {
+            this.projectName = projectName;
+            return this;
+        }
+
+        public Builder version(String version) {
+            this.version = VersionUtils.getVersionInfo(version);
+            return this;
+        }
+
+
+        public Builder icon(String iconPath) {
+            this.icon = iconPath;
+            return this;
+        }
+
+        public Builder description(JsonObject description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder description(String description) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("text", description);
+            this.description = obj;
+            return this;
+        }
+
+        public Builder addBuildPath(String path) {
+            buildPaths.add(path);
+            return this;
+        }
+
+        public Project build() {
+            if (Project.instance == null) {
+                Project.instance = new Project(worldName, projectName, version);
+
+                buildPaths.forEach(Project.instance::addBuildPath);
+                if (icon != null) {
+                    Project.instance.setIcon(icon);
+                }
+                if (description != null) {
+                    Project.instance.setDescription(description);
+                }
+            }
+            return Project.instance;
+        }
+    }
+
+    public static Project getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Project not initialized. Use the builder first.");
+        }
+        return instance;
+    }
+
+    private Project(String worldName, String projectName, VersionInfo version) {
         this.worldName = worldName;
         this.projectName = projectName;
         this.version = version;
         this.datapack = new Datapack(this);
         this.defaultNamespace = new MinecraftNamespace(this);
-        this.utils = new ProjectUtils(this);
     }
 
     public void addBuildPath(String path) {
@@ -48,7 +125,7 @@ public class Project {
     }
 
     public void addNamespace(Namespace namespace) {
-        final Namespace data = new Namespace(this,namespace.getName());
+        final Namespace data = new Namespace(this, namespace.getName());
         final Namespace assets = new Namespace(this, namespace.getName());
 
         namespace.getContent().forEach(fso -> fso.collectByType(data, assets));
@@ -62,7 +139,7 @@ public class Project {
 
     }
 
-    public void build(){
+    public void build() {
         build(false);
     }
 
@@ -107,10 +184,10 @@ public class Project {
     @Override
     public String toString() {
         return String.format("World name: %s,\nProject Name: %s\nDatapack:  %s,\nResourcePack: %s",
-                worldName, projectName,datapack,resourcepack);
+                worldName, projectName, datapack, resourcepack);
     }
 
-    public void disableLogger(){
+    public static void disableLogger() {
         Logger logger = FileUtils.getLogger();
         logger.setLevel(Level.OFF);
     }
@@ -119,7 +196,7 @@ public class Project {
         return defaultNamespace;
     }
 
-    public Version getVersion(){
+    public VersionInfo getVersion() {
         return version;
     }
 
@@ -169,6 +246,10 @@ public class Project {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Context getContext() {
+        return context;
     }
 
 }

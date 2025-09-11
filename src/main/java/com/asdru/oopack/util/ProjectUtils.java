@@ -1,5 +1,6 @@
 package com.asdru.oopack.util;
 
+import com.asdru.oopack.Context;
 import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
@@ -16,22 +17,16 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class ProjectUtils {
-    private final Project project;
 
-    public ProjectUtils(Project project) {
-        this.project = project;
+    public static void addFunctionToLoadTag(Function f) {
+        addFunctionToTag(f, "load");
     }
 
-
-    public void addFunctionToLoadTag(Function f){
-        addFunctionToTag(f,"load");
+    public static void addFunctionToTickTag(Function f) {
+        addFunctionToTag(f, "tick");
     }
 
-    public void addFunctionToTickTag(Function f){
-        addFunctionToTag(f,"tick");
-    }
-
-    private <T extends AbstractFile<JsonObject>> JsonObject getOrCreateJsonFile(
+    private static <T extends AbstractFile<JsonObject>> JsonObject getOrCreateJsonFile(
             Namespace namespace,
             Class<T> clazz,
             String name,
@@ -53,7 +48,7 @@ public final class ProjectUtils {
         return file.getContent();
     }
 
-    private void addFunctionToTag(Function f, String target) {
+    private static void addFunctionToTag(Function f, String target) {
         if (f.getParent() == null) {
             throw new IllegalStateException(
                     String.format("FileSystemObject %s has no parent assigned", f)
@@ -61,23 +56,46 @@ public final class ProjectUtils {
         }
 
         JsonObject content = getOrCreateJsonFile(
-                project.getDefaultNamespace(),
+                Project.getInstance().getDefaultNamespace(),
                 FunctionTag.class,
                 target,
-                () -> new FunctionTag(target, """
-                {"values":[]}
-            """)
+                () -> FunctionTag.f.of(target, """
+                            {"values":[]}
+                        """)
         );
 
         JsonArray valuesArray = content.getAsJsonArray("values");
         valuesArray.add(f.toString());
     }
 
-    public void addTranslation(Namespace namespace, Locale locale, String key, String value) {
+    private static void addTranslation(Namespace namespace, Locale locale, String key, String value) {
         String formattedLocale = LocaleUtils.formatLocale(locale);
         JsonObject content = getOrCreateJsonFile(namespace, Lang.class, formattedLocale, () ->
-                new Lang(formattedLocale, "{}")
+                Lang.f.of(formattedLocale, "{}")
         );
         content.addProperty(key, value);
+    }
+
+    public static void addTranslation(Locale locale, String key, String value) {
+        Namespace namespace = Context.getActiveNamespace()
+                .orElseThrow(() -> new IllegalStateException("No active Namespace in context"));
+
+        JsonObject json = getOrCreateLangFile(namespace, locale);
+
+        json.addProperty(key, value);
+    }
+
+    public static void addTranslation(String key, String value) {
+        addTranslation(Locale.US, key, value);
+    }
+
+    private static JsonObject getOrCreateLangFile(Namespace namespace, Locale locale) {
+        String formattedLocale = LocaleUtils.formatLocale(locale);
+
+        return getOrCreateJsonFile(
+                namespace,
+                Lang.class,
+                formattedLocale,
+                () -> Lang.f.of(formattedLocale, "{}"));
     }
 }

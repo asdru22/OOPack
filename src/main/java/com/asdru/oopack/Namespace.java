@@ -1,5 +1,6 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.internal.ContextItem;
 import com.asdru.oopack.internal.FileSystemObject;
 import com.asdru.oopack.util.ProjectUtils;
 
@@ -8,20 +9,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Namespace implements FileSystemObject {
+public class Namespace implements FileSystemObject, ContextItem {
     private final String name;
     private Project project;
 
-    public Namespace(Project project, String name) {
+    protected Namespace(Project project, String name) {
         this.name = name;
         this.project = project;
     }
 
+    public static <T extends Namespace> T of(Class<T> clazz, String name) {
+        try {
+            Project p = Project.getInstance();
+            T ns = clazz.getDeclaredConstructor(Project.class, String.class)
+                    .newInstance(Project.getInstance(), name);
+            p.getContext().push(ns);
+            return ns;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create Namespace instance", e);
+        }
+    }
+
+    public static Namespace of(String name) {
+        return of(Namespace.class, name);
+    }
+
     private final List<FileSystemObject> children = new ArrayList<>();
 
-    public void add(FileSystemObject fso) {
+    @Override
+    public FileSystemObject add(FileSystemObject fso) {
         children.add(fso);
         fso.setProject(project);
+        return fso;
     }
 
     public String getName() {
@@ -30,18 +49,6 @@ public class Namespace implements FileSystemObject {
 
     public List<FileSystemObject> getContent() {
         return children;
-    }
-
-    public void addTranslation(Locale locale, String key, String value) {
-        project.utils.addTranslation(this,locale, key, value);
-    }
-
-    public void addTranslation(String key, String value) {
-        project.utils.addTranslation(this,Locale.US, key, value);
-    }
-
-    public ProjectUtils utils() {
-        return getProject().utils;
     }
 
     @Override
@@ -71,4 +78,9 @@ public class Namespace implements FileSystemObject {
     public void setParent(FileSystemObject parent) {}
     @Override
     public FileSystemObject getParent() {return null;}
+
+    @Override
+    public void exit() {
+        Project.getInstance().addNamespace(this);
+    }
 }
