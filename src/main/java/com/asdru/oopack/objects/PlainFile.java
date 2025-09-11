@@ -3,6 +3,7 @@ package com.asdru.oopack.objects;
 import com.asdru.oopack.Context;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
+import com.asdru.oopack.internal.FileFactory;
 
 public abstract class PlainFile<C> extends AbstractFile<C> {
     protected Object[] args = {};
@@ -27,7 +28,6 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
         public F of(String content, Object... args) {
             return createInstance(randomName(), formatContent(content, args));
         }
-
 
         protected F instantiate(String name, Object content) {
             try {

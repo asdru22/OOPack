@@ -1,5 +1,6 @@
 package com.asdru.oopack.objects;
 
+import com.asdru.oopack.internal.JsonFileFactory;
 import com.google.gson.JsonObject;
 
 public non-sealed class LootTable extends DataJson {

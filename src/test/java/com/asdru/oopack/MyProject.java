@@ -4,7 +4,6 @@ package com.asdru.oopack;
 import com.asdru.oopack.internal.Folder;
 import com.asdru.oopack.objects.Function;
 import com.asdru.oopack.util.ProjectUtils;
-import com.asdru.oopack.version.Version;
 
 public class MyProject {
 
@@ -12,7 +11,7 @@ public class MyProject {
         Project p = Project.builder().
                 worldName("new world").
                 projectName("MY project").
-                version(Version.LATEST).
+                version("latest").
                 addBuildPath("_build").
                 icon("icon").
                 description("test project").build();

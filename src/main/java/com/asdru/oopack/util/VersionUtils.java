@@ -86,7 +86,6 @@ public class VersionUtils {
         return true; // if no created_at field, force update
     }
 
-    // Reads the existing JSON file if present and valid
     private static Optional<JsonObject> loadExistingJson() {
         if (!Files.exists(resourcesPath)) {
             return Optional.empty();
@@ -101,7 +100,6 @@ public class VersionUtils {
         }
     }
 
-    // Gets a specific VersionInfo by version key from the local JSON file
     public static VersionInfo getVersionInfo(String versionKey) {
         Optional<JsonObject> existingRootOpt = loadExistingJson();
 
@@ -134,7 +132,7 @@ public class VersionUtils {
         }
     }
 
-    // Opens the URL and parses the response as a JsonArray
+    // opens the URL and parses the response as a JsonArray
     private static JsonArray getJsonArray() throws IOException {
         URL url = URI.create(VERSIONS_URL).toURL();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

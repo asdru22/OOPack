@@ -1,5 +1,6 @@
 package com.asdru.oopack.objects;
 
+import com.asdru.oopack.internal.JsonFileFactory;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonObject;

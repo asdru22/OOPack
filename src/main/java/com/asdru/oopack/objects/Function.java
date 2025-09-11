@@ -2,6 +2,7 @@ package com.asdru.oopack.objects;
 
 
 import com.asdru.oopack.Namespace;
+import com.asdru.oopack.internal.FileFactory;
 
 
 public class Function extends TextFile {

@@ -59,7 +59,7 @@ public final class ProjectUtils {
                 Project.getInstance().getDefaultNamespace(),
                 FunctionTag.class,
                 target,
-                () -> FunctionTag.FACTORY.of(target, """
+                () -> FunctionTag.f.of(target, """
                             {"values":[]}
                         """)
         );
