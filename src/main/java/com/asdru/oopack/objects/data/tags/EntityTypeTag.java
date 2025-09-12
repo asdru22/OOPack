@@ -1,4 +1,4 @@
-package com.asdru.oopack.objects.data;
+package com.asdru.oopack.objects.data.tags;
 
 import com.asdru.oopack.internal.JsonFileFactory;
 import com.asdru.oopack.objects.DataJson;

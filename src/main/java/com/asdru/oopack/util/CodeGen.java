@@ -4,6 +4,7 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class CodeGen {
@@ -19,7 +20,17 @@ public class CodeGen {
 
         // derive subpackage: remove "Json" suffix, lowercase remainder
         String subPackage = superClassName.replace("Json", "").toLowerCase();
-        String fullPackage = packageName + "." + subPackage;
+
+        // check if className has subpackage path
+        String actualClassName = className;
+        String extraSubPackage = "";
+        if (className.contains("/")) {
+            int idx = className.lastIndexOf('/');
+            extraSubPackage = "." + className.substring(0, idx).replace('/', '.').toLowerCase();
+            actualClassName = className.substring(idx + 1);
+        }
+
+        String fullPackage = packageName + "." + subPackage + extraSubPackage;
 
         // imports
         ClassName jsonObject = ClassName.get("com.google.gson", "JsonObject");
@@ -30,11 +41,11 @@ public class CodeGen {
         // static factory
         TypeName factoryType = ParameterizedTypeName.get(
                 jsonFileFactory,
-                ClassName.get(fullPackage, className)
+                ClassName.get(fullPackage, actualClassName)
         );
 
         FieldSpec factoryField = FieldSpec.builder(factoryType, "f", Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                .initializer("new $T.Factory<>($T.class)", jsonFile, ClassName.get(fullPackage, className)) // changed
+                .initializer("new $T.Factory<>($T.class)", jsonFile, ClassName.get(fullPackage, actualClassName))
                 .build();
 
         // Protected constructor
@@ -52,7 +63,7 @@ public class CodeGen {
                 .addStatement("return $S", folderName)
                 .build();
 
-        TypeSpec generatedClass = TypeSpec.classBuilder(className)
+        TypeSpec generatedClass = TypeSpec.classBuilder(actualClassName)
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(superClass)
                 .addField(factoryField)
@@ -64,12 +75,12 @@ public class CodeGen {
                 .skipJavaLangImports(true)
                 .build();
 
-
         Path outputPath = outputDir.resolve(fullPackage.replace('.', '/'))
-                .resolve(className + ".java");
-        java.nio.file.Files.createDirectories(outputPath.getParent());
-        java.nio.file.Files.writeString(outputPath, javaFile.toString());
+                .resolve(actualClassName + ".java");
+        Files.createDirectories(outputPath.getParent());
+        Files.writeString(outputPath, javaFile.toString());
     }
+
 
 
     private static void genData(String className, String folderName) throws IOException {
@@ -77,7 +88,7 @@ public class CodeGen {
     }
 
     private static void genTag(String className, String foldernName) throws IOException {
-        genData(className + "Tag", "tags/" + foldernName);
+        genData("tags/"+className + "Tag", "tags/" + foldernName);
     }
 
     private static void genAssets(String className, String folderName) throws IOException {

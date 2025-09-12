@@ -5,10 +5,9 @@ import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
-import com.asdru.oopack.internal.Folder;
 import com.asdru.oopack.objects.data.Function;
-import com.asdru.oopack.objects.data.FunctionTag;
 import com.asdru.oopack.objects.assets.Lang;
+import com.asdru.oopack.objects.data.tags.FunctionTag;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
