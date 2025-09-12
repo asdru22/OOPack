@@ -117,7 +117,7 @@ public class Project {
         this.projectName = projectName;
         this.version = version;
         this.datapack = new Datapack(this);
-        this.defaultNamespace = new MinecraftNamespace(this);
+        this.defaultNamespace = new MinecraftNamespace();
     }
 
     public void addBuildPath(String path) {
@@ -125,8 +125,8 @@ public class Project {
     }
 
     public void addNamespace(Namespace namespace) {
-        final Namespace data = new Namespace(this, namespace.getName());
-        final Namespace assets = new Namespace(this, namespace.getName());
+        final Namespace data = new Namespace(namespace.getName());
+        final Namespace assets = new Namespace(namespace.getName());
 
         namespace.getContent().forEach(fso -> fso.collectByType(data, assets));
         // add separated data and assets to datapack and resourcepack respectively

@@ -22,5 +22,10 @@ public abstract class Module extends Folder {
         }
     }
 
+    @Override
+    public String toString() {
+        return "module(" + getClass().getSimpleName() + ")";
+    }
+
     abstract void content();
 }

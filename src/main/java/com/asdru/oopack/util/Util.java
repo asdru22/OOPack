@@ -33,18 +33,15 @@ public final class Util {
             Supplier<T> creator // create the object only if needed
     ) {
 
-        Optional<T> optional = FileSystemObject.find(
-                namespace, clazz, file -> file.getName().equals(name)
-        );
+        Optional<T> optional = namespace.getContent().stream()
+                .map(child -> FileSystemObject.find(child, clazz, file -> file.getName().equals(name)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
 
         // file is either the result of the find method
         // or created with supplier if the search returned a null value
-        T file = optional.orElseGet(() -> {
-            T newFile = creator.get();
-            namespace.add(new Folder(namespace).add(newFile));
-            return newFile;
-        });
-
+        T file = optional.orElseGet(creator);
         return file.getContent();
     }
 
@@ -70,32 +67,21 @@ public final class Util {
 
     private static void addTranslation(Namespace namespace, Locale locale, String key, String value) {
         String formattedLocale = LocaleUtils.formatLocale(locale);
-        JsonObject content = getOrCreateJsonFile(namespace, Lang.class, formattedLocale, () ->
-                Lang.f.of(formattedLocale, "{}")
+        JsonObject content = getOrCreateJsonFile(namespace,
+                Lang.class,
+                formattedLocale,
+                () -> Lang.f.of(formattedLocale, "{}")
         );
         content.addProperty(key, value);
     }
 
     public static void addTranslation(Locale locale, String key, String value) {
-        Namespace namespace = Context.getActiveNamespace()
-                .orElseThrow(() -> new IllegalStateException("No active Namespace in context"));
-
-        JsonObject json = getOrCreateLangFile(namespace, locale);
-
-        json.addProperty(key, value);
+        addTranslation(Context.getActiveNamespace()
+                .orElseThrow(() -> new IllegalStateException("No active Namespace in context")),
+                locale, key, value);
     }
 
     public static void addTranslation(String key, String value) {
         addTranslation(Locale.US, key, value);
-    }
-
-    private static JsonObject getOrCreateLangFile(Namespace namespace, Locale locale) {
-        String formattedLocale = LocaleUtils.formatLocale(locale);
-
-        return getOrCreateJsonFile(
-                namespace,
-                Lang.class,
-                formattedLocale,
-                () -> Lang.f.of(formattedLocale, "{}"));
     }
 }

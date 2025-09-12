@@ -9,6 +9,7 @@ import com.asdru.oopack.Namespace;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 
+
 public class Texture extends AbstractFile<BufferedImage> {
 
     private Texture(String name, String path) {

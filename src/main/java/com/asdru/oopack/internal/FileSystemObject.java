@@ -13,10 +13,9 @@ public interface FileSystemObject extends Buildable {
 
     void collectByType(Namespace data, Namespace assets);
 
-    void setParent(FileSystemObject parent);
-    FileSystemObject getParent();
+    ContextItem getParent();
 
-    void setProject(Project project);
+    String getName();
 
     static <T extends FileSystemObject> Optional<T> find(
             FileSystemObject root,

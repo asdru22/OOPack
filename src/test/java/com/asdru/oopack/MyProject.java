@@ -18,15 +18,15 @@ public class MyProject {
 
         Namespace.of("gg");
         Util.addTranslation("dsaasda", "b");
-        var f = Function.f.of("AAAA", "bob");
-        System.out.println(f);
+        Util.addTranslation("another", "a");
+
+        Function.f.of("AAAA", "bob");
         Texture.of("icon", "b");
 
-        Module.register(
-                MyModule.class
-        );
-        System.out.println(Context.getActiveNamespace());
-
+//        Module.register(
+//                MyModule.class
+//        );
+        System.out.println(Context.getActiveNamespace().orElse(null));
         Context.clear();
         p.build(true);
     }

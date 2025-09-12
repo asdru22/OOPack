@@ -1,5 +1,7 @@
 package com.asdru.oopack.internal;
 
+import com.asdru.oopack.Context;
+import com.asdru.oopack.Namespace;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.Project;
 
@@ -9,35 +11,29 @@ import java.nio.file.Path;
 public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
     private final String name;
     private T content;
-    private FileSystemObject parent;
-    private String namespaceId;
-    private Project project;
+    private final ContextItem parent;
+    private final Namespace namespace;
 
     protected AbstractFile(String name, T content) {
         this.name = name;
         this.content = content;
+        this.namespace = Context.getActiveNamespace().orElse(null);
+        this.parent = Context.getStack().peek();
     }
 
-    public void setNamespaceId(String ns) {
-        namespaceId = ns;
-    }
 
     public String getNamespaceId() {
-        return namespaceId;
+        return namespace.getName();
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public FileSystemObject getParent() {
+    public ContextItem getParent() {
         return parent;
-    }
-
-    @Override
-    public void setParent(FileSystemObject parent) {
-        this.parent = parent;
     }
 
     @Override
@@ -53,17 +49,9 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     @Override
     public void build(Path parent) {
         FileUtils.createFile(this,
-                parent.resolve(this.getFolderName()).resolve(name+"."+this.getExtension()));
+                parent.resolve(this.getFolderName()).resolve(name + "." + this.getExtension()));
     }
 
-    @Override
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public Project getProject() {
-        return project;
-    }
 
     public abstract void writeContent(Path path) throws IOException;
 

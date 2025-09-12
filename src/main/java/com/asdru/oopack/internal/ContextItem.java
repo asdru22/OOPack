@@ -1,13 +1,12 @@
 package com.asdru.oopack.internal;
 
-import com.asdru.oopack.Project;
+import com.asdru.oopack.Context;
 
 public interface ContextItem {
 
-    Project getProject();
 
     default void enter() {
-        getProject().getContext().push(this);
+        Context.getStack().push(this);
     }
 
     default void exit() {
