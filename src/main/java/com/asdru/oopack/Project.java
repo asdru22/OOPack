@@ -35,8 +35,6 @@ public class Project {
     private JsonObject description;
     private String icon;
 
-    private final Context context = new Context();
-
     public static Builder builder() {
         return new Builder();
     }
@@ -188,8 +186,12 @@ public class Project {
     }
 
     public static void disableLogger() {
-        Logger logger = FileUtils.getLogger();
+        Logger logger;
+        logger = FileUtils.getLogger();
         logger.setLevel(Level.OFF);
+        logger = VersionUtils.getLogger();
+        logger.setLevel(Level.OFF);
+
     }
 
     public MinecraftNamespace getDefaultNamespace() {
@@ -247,9 +249,4 @@ public class Project {
             throw new RuntimeException(e);
         }
     }
-
-    public Context getContext() {
-        return context;
-    }
-
 }

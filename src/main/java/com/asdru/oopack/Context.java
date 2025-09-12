@@ -8,15 +8,15 @@ import java.util.Stack;
 public class Context {
     private static final Stack<ContextItem> stack = new Stack<>();
 
-    public void push(ContextItem item) {
+    public static void push(ContextItem item) {
         stack.push(item);
     }
 
-    public ContextItem pop() {
+    public static ContextItem pop() {
         return stack.pop();
     }
 
-    public ContextItem peek() {
+    public static ContextItem peek() {
         return stack.peek();
     }
 
@@ -33,18 +33,14 @@ public class Context {
         stack.forEach(ContextItem::exit);
         stack.clear();
     }
-
-    public static Stack<ContextItem> getStack() {
-        return stack;
-    }
-
-    public static Optional<Namespace> getActiveNamespace() {
+    
+    public static Namespace getActiveNamespace() {
         for (int i = stack.size() - 1; i >= 0; i--) {
             ContextItem item = stack.get(i);
             if (item instanceof Namespace ns) {
-                return Optional.of(ns);
+                return ns;
             }
         }
-        return Optional.empty();
+        throw new IllegalStateException("No active Namespace found in the context stack.");
     }
 }

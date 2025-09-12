@@ -6,7 +6,7 @@ public interface ContextItem {
 
 
     default void enter() {
-        Context.getStack().push(this);
+        Context.push(this);
     }
 
     default void exit() {

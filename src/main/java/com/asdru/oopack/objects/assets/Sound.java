@@ -1,7 +1,6 @@
 package com.asdru.oopack.objects.assets;
 
 import com.asdru.oopack.Context;
-import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.util.FileUtils;
 import com.asdru.oopack.Namespace;
@@ -19,9 +18,8 @@ public class Sound extends AbstractFile<byte[]> {
     }
 
     public static Sound of(String src, String dst) {
-        Context ctx = Project.getInstance().getContext();
         Sound instance = new Sound(dst, src);
-        ctx.peek().add(instance);
+        Context.peek().add(instance);
         return instance;
     }
 

@@ -13,7 +13,7 @@ public class Folder extends AbstractFolder<FileSystemObject> implements ContextI
     }
 
     public static Folder of() {
-        return new Folder(Context.getStack().peek());
+        return new Folder(Context.peek());
     }
 
     // Use generics to avoid downcasting in return

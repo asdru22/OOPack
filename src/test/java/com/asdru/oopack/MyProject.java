@@ -24,12 +24,14 @@ public class MyProject {
         Function.f.of("AAAA", "bob");
         Texture.of("icon", "b");
 
-        Sound.of("test");
 
         Module.register(
                 MyModule.class
         );
-        System.out.println(Context.getActiveNamespace().orElse(null));
+
+        Util.addSound("my_sound",
+                Sound.of("test","destination/cool"));
+
         Context.clear();
         p.build(true);
     }

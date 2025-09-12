@@ -22,6 +22,11 @@ import java.util.stream.Collectors;
 public class VersionUtils {
 
     private static final Logger LOGGER = Logger.getLogger(VersionUtils.class.getName());
+
+    public static Logger getLogger() {
+        return LOGGER;
+    }
+
     private static final Path resourcesPath = Path.of("src", "main", "resources",
             "_generated", "versions.json");
     private static final String VERSIONS_URL =

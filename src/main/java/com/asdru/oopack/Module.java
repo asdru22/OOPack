@@ -5,8 +5,7 @@ import com.asdru.oopack.internal.Folder;
 public abstract class Module extends Folder {
 
     protected Module() {
-        super(Context.getActiveNamespace()
-                .orElseThrow(() -> new IllegalStateException("No active Namespace in context")));
+        super(Context.getActiveNamespace());
         content();
         this.exit();
     }

@@ -17,8 +17,8 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
     protected AbstractFile(String name, T content) {
         this.name = name;
         this.content = content;
-        this.namespace = Context.getActiveNamespace().orElse(null);
-        this.parent = Context.getStack().peek();
+        this.namespace = Context.getActiveNamespace();
+        this.parent = Context.peek();
     }
 
 

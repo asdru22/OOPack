@@ -5,6 +5,9 @@ import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
+import com.asdru.oopack.objects.JsonFile;
+import com.asdru.oopack.objects.SoundFile;
+import com.asdru.oopack.objects.assets.Sound;
 import com.asdru.oopack.objects.data.Function;
 import com.asdru.oopack.objects.assets.Lang;
 import com.asdru.oopack.objects.data.tags.FunctionTag;
@@ -75,12 +78,53 @@ public final class Util {
     }
 
     public static void addTranslation(Locale locale, String key, String value) {
-        addTranslation(Context.getActiveNamespace()
-                .orElseThrow(() -> new IllegalStateException("No active Namespace in context")),
-                locale, key, value);
+        addTranslation(Context.getActiveNamespace(), locale, key, value);
     }
 
     public static void addTranslation(String key, String value) {
         addTranslation(Locale.US, key, value);
     }
+
+    public static void addSound(Namespace namespace, String key, String category,
+                                String subtitle, Sound... sounds) {
+
+        if(sounds.length == 0) {
+            throw new IllegalStateException("Sounds array is empty.");
+        }
+
+        String dst = "sounds";
+        JsonObject content = getOrCreateJsonFile(namespace,
+                SoundFile.class,
+                dst,
+                () -> SoundFile.f.of(dst, "{}")
+        );
+
+        JsonObject soundEntry = new JsonObject();
+
+        JsonArray soundsArray = new JsonArray();
+        for (Sound s : sounds) {
+            soundsArray.add(s.toString());
+        }
+        soundEntry.add("sounds", soundsArray);
+
+        soundEntry.addProperty("subtitle", subtitle);
+        soundEntry.addProperty("category", category);
+
+        content.add(key, soundEntry);
+    }
+
+    public static void addSound(String key, String category, String subtitle, Sound... sounds) {
+        addSound(Context.getActiveNamespace(), key, category, subtitle, sounds);
+    }
+
+    public static void addSound(String key, String category, Sound... sounds) {
+        addSound(key, category,
+                String.format("subtitle.%s.%s", Context.getActiveNamespace().getName(), key),
+                sounds);
+    }
+
+    public static void addSound(String key, Sound... sounds) {
+        addSound(key, "master", sounds);
+    }
+
 }

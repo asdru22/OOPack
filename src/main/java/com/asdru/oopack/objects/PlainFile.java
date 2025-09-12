@@ -1,7 +1,6 @@
 package com.asdru.oopack.objects;
 
 import com.asdru.oopack.Context;
-import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileFactory;
 
@@ -34,13 +33,12 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
         protected F instantiate(String name, Object content) {
             try {
                 Class<?> contentClass = content.getClass();
-                Context ctx = Project.getInstance().getContext();
 
                 Constructor<F> constructor = clazz.getDeclaredConstructor(String.class, contentClass);
                 constructor.setAccessible(true);
 
                 F instance = constructor.newInstance(name, content);
-                ctx.peek().add(instance);
+                Context.peek().add(instance);
                 return instance;
             } catch (Exception e) {
                 throw new RuntimeException("Failed to create instance of " + clazz.getSimpleName(), e);
