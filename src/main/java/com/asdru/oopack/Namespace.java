@@ -2,12 +2,10 @@ package com.asdru.oopack;
 
 import com.asdru.oopack.internal.ContextItem;
 import com.asdru.oopack.internal.FileSystemObject;
-import com.asdru.oopack.util.ProjectUtils;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Namespace implements FileSystemObject, ContextItem {
     private final String name;

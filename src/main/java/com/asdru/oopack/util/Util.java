@@ -16,7 +16,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public final class ProjectUtils {
+public final class Util {
 
     public static void addFunctionToLoadTag(Function f) {
         addFunctionToTag(f, "load");

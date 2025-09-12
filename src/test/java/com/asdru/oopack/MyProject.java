@@ -1,7 +1,8 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.objects.assets.Texture;
 import com.asdru.oopack.objects.data.Function;
-import com.asdru.oopack.util.ProjectUtils;
+import com.asdru.oopack.util.Util;
 
 public class MyProject {
 
@@ -16,11 +17,15 @@ public class MyProject {
         Project.disableLogger();
 
         Namespace.of("gg");
-        ProjectUtils.addTranslation("dsaasda", "b");
-        Function.f.of("AAAA","bob");
+        Util.addTranslation("dsaasda", "b");
+        var f = Function.f.of("AAAA", "bob");
+        System.out.println(f);
+        Texture.of("icon", "b");
+
         Module.register(
                 MyModule.class
         );
+        System.out.println(Context.getActiveNamespace());
 
         Context.clear();
         p.build(true);

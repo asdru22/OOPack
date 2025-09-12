@@ -5,6 +5,8 @@ import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileFactory;
 
+import java.lang.reflect.Constructor;
+
 public abstract class PlainFile<C> extends AbstractFile<C> {
     protected Object[] args = {};
 
@@ -34,8 +36,10 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
                 Class<?> contentClass = content.getClass();
                 Context ctx = Project.getInstance().getContext();
 
-                F instance = clazz.getDeclaredConstructor(String.class, contentClass)
-                        .newInstance(name, content);
+                Constructor<F> constructor = clazz.getDeclaredConstructor(String.class, contentClass);
+                constructor.setAccessible(true);
+
+                F instance = constructor.newInstance(name, content);
                 ctx.peek().add(instance);
                 return instance;
             } catch (Exception e) {
