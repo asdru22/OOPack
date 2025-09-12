@@ -21,9 +21,8 @@ public class Texture extends AbstractFile<BufferedImage> {
     }
 
     public static Texture of(String src, String dst) {
-        Context ctx = Project.getInstance().getContext();
         Texture instance = new Texture(dst, src);
-        ctx.peek().add(instance);
+        Context.peek().add(instance);
         return instance;
     }
 

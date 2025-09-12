@@ -8,6 +8,8 @@ import com.asdru.oopack.util.Util;
 public class MyProject {
 
     public static void main(String[] args) {
+        Project.disableLogger();
+
         Project p = Project.builder().
                 worldName("new world").
                 projectName("MY project").
@@ -15,7 +17,6 @@ public class MyProject {
                 addBuildPath("_build").
                 icon("icon").
                 description("test project").build();
-        Project.disableLogger();
 
         Namespace.of("gg");
         Util.addTranslation("dsaasda", "b");

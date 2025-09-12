@@ -33,7 +33,7 @@ public class Context {
         stack.forEach(ContextItem::exit);
         stack.clear();
     }
-    
+
     public static Namespace getActiveNamespace() {
         for (int i = stack.size() - 1; i >= 0; i--) {
             ContextItem item = stack.get(i);
