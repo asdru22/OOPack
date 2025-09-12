@@ -1,5 +1,6 @@
 package com.asdru.oopack;
 
+import com.asdru.oopack.objects.assets.Sound;
 import com.asdru.oopack.objects.assets.Texture;
 import com.asdru.oopack.objects.data.Function;
 import com.asdru.oopack.util.Util;
@@ -23,9 +24,11 @@ public class MyProject {
         Function.f.of("AAAA", "bob");
         Texture.of("icon", "b");
 
-//        Module.register(
-//                MyModule.class
-//        );
+        Sound.of("test", "test");
+
+        Module.register(
+                MyModule.class
+        );
         System.out.println(Context.getActiveNamespace().orElse(null));
         Context.clear();
         p.build(true);

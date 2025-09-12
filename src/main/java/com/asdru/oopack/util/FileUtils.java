@@ -16,7 +16,7 @@ public class FileUtils {
 
     private static final Logger LOGGER = Logger.getLogger(FileUtils.class.getName());
 
-    public static Logger getLogger(){
+    public static Logger getLogger() {
         return LOGGER;
     }
 
@@ -55,26 +55,6 @@ public class FileUtils {
         }
     }
 
-    public static void createGenericPng(Path path, BufferedImage image) {
-        try {
-            Files.createDirectories(path.getParent());
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to create directories for PNG: " + path, e);
-            throw new RuntimeException("Directory creation failed for: " + path, e);
-        }
-
-        try {
-            if (!ImageIO.write(image, "png", path.toFile())) {
-                String msg = "No suitable ImageIO writer found for: " + path;
-                LOGGER.severe(msg);
-                throw new IOException(msg);
-            }
-            LOGGER.info("PNG image written to: " + path);
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to write PNG image to file: " + path, e);
-            throw new RuntimeException("Could not write PNG image to: " + path, e);
-        }
-    }
 
     public static void deleteAllFilesInDirectory(Path directory) {
         if (!Files.isDirectory(directory)) {
@@ -98,6 +78,27 @@ public class FileUtils {
             String msg = "Failed to delete contents of directory: " + directory;
             LOGGER.log(Level.SEVERE, msg, e);
             throw new RuntimeException(msg, e);
+        }
+    }
+
+    public static void createGenericPng(Path path, BufferedImage image) {
+        try {
+            Files.createDirectories(path.getParent());
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to create directories for PNG: " + path, e);
+            throw new RuntimeException("Directory creation failed for: " + path, e);
+        }
+
+        try {
+            if (!ImageIO.write(image, "png", path.toFile())) {
+                String msg = "No suitable ImageIO writer found for: " + path;
+                LOGGER.severe(msg);
+                throw new IOException(msg);
+            }
+            LOGGER.info("PNG image written to: " + path);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to write PNG image to file: " + path, e);
+            throw new RuntimeException("Could not write PNG image to: " + path, e);
         }
     }
 
@@ -125,6 +126,44 @@ public class FileUtils {
             String msg = "Error loading image from " + path;
             LOGGER.log(Level.SEVERE, msg, e);
             throw new RuntimeException("Failed to load image: " + name, e);
+        }
+    }
+
+    public static void createGenericOgg(Path path, byte[] data) {
+        try {
+            Files.createDirectories(path.getParent());
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to create directories for OGG: " + path, e);
+            throw new RuntimeException("Directory creation failed for: " + path, e);
+        }
+
+        try {
+            Files.write(path, data);
+            LOGGER.info("OGG file written to: " + path);
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to write OGG file: " + path, e);
+            throw new RuntimeException("Could not write OGG file to: " + path, e);
+        }
+    }
+
+    public static byte[] loadOgg(String name) {
+        String path = "/sounds/" + name + ".ogg";
+
+        try (var stream = FileUtils.class.getResourceAsStream(path)) {
+            if (stream == null) {
+                String msg = "Resource not found: " + path;
+                LOGGER.severe(msg);
+                throw new IllegalArgumentException(msg);
+            }
+
+            byte[] data = stream.readAllBytes();
+            LOGGER.info("OGG file loaded from: " + path);
+            return data;
+
+        } catch (IOException e) {
+            String msg = "Error loading OGG from " + path;
+            LOGGER.log(Level.SEVERE, msg, e);
+            throw new RuntimeException("Failed to load OGG: " + name, e);
         }
     }
 }

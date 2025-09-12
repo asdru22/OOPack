@@ -65,7 +65,7 @@ public final class Util {
         valuesArray.add(f.toString());
     }
 
-    private static void addTranslation(Namespace namespace, Locale locale, String key, String value) {
+    public static void addTranslation(Namespace namespace, Locale locale, String key, String value) {
         String formattedLocale = LocaleUtils.formatLocale(locale);
         JsonObject content = getOrCreateJsonFile(namespace,
                 Lang.class,
