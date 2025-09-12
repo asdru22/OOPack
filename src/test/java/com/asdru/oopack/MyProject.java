@@ -24,7 +24,7 @@ public class MyProject {
         Function.f.of("AAAA", "bob");
         Texture.of("icon", "b");
 
-        Sound.of("test", "test");
+        Sound.of("test");
 
         Module.register(
                 MyModule.class

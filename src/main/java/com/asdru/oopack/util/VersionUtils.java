@@ -35,8 +35,6 @@ public class VersionUtils {
         try {
             Files.createDirectories(resourcesPath.getParent());
 
-            if (!needsUpdate()) return;
-
             Optional<Map<String, VersionInfo>> optionalVersions = VersionUtils.getVersionOptional();
 
             if (optionalVersions.isEmpty()) {
@@ -101,34 +99,43 @@ public class VersionUtils {
     }
 
     public static VersionInfo getVersionInfo(String versionKey) {
-        Optional<JsonObject> existingRootOpt = loadExistingJson();
+        try {
+            // if its missing or needs update, create file
+            if (!Files.exists(resourcesPath) || needsUpdate()) {
+                LOGGER.info("Version file missing or outdated, regenerating...");
+                generateVersionFile();
+            }
 
-        if (existingRootOpt.isEmpty()) {
-            throw new IllegalStateException("No version file found at " + resourcesPath);
+            Optional<JsonObject> existingRootOpt = loadExistingJson();
+            if (existingRootOpt.isEmpty()) {
+                throw new IllegalStateException("No version file found at " + resourcesPath);
+            }
+
+            JsonObject existingRoot = existingRootOpt.get();
+            if (!existingRoot.has("versions")) {
+                throw new IllegalStateException("Version file is missing 'versions' object.");
+            }
+
+            JsonObject versions = existingRoot.getAsJsonObject("versions");
+
+            if ("latest".equals(versionKey)) {
+                Map.Entry<String, JsonElement> firstEntry =
+                        versions.entrySet().iterator().next();
+
+                return GSON.fromJson(firstEntry.getValue(), VersionInfo.class);
+            }
+
+            if (!versions.has(versionKey)) {
+                throw new IllegalArgumentException("Version key not found: " + versionKey);
+            }
+
+            return GSON.fromJson(versions.get(versionKey), VersionInfo.class);
+
+        } catch (Exception e) {
+            LOGGER.severe("Failed to get version info: " + e.getMessage());
+            throw new RuntimeException("Could not get version info for key: " + versionKey, e);
         }
-
-        JsonObject existingRoot = existingRootOpt.get();
-        if (!existingRoot.has("versions")) {
-            throw new IllegalStateException("Version file is missing 'versions' object.");
-        }
-
-        JsonObject versions = existingRoot.getAsJsonObject("versions");
-
-        if ("latest".equals(versionKey)) {
-            // get the first item
-            Map.Entry<String, JsonElement> firstEntry =
-                    versions.entrySet().iterator().next();
-
-            return GSON.fromJson(firstEntry.getValue(), VersionInfo.class);
-        }
-
-        if (!versions.has(versionKey)) {
-            throw new IllegalArgumentException("Version key not found: " + versionKey);
-        }
-
-        return GSON.fromJson(versions.get(versionKey), VersionInfo.class);
     }
-
 
     private static Optional<Map<String, VersionInfo>> getVersionOptional() {
         try {
