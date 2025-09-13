@@ -50,7 +50,6 @@ public class Namespace implements Buildable, ContextItem {
 
     @Override
     public void exit() {
-        System.out.println("exit namespace");
         Context.exit();
         Project.getInstance().addNamespace(this);
     }

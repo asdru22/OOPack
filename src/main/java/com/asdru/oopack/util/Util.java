@@ -172,4 +172,12 @@ public final class Util {
         addToFunction(content, "load");
     }
 
+    public static void addFunctiontoLoadFunction(Function function) {
+        addToLoadFunction("function %s".formatted(function));
+    }
+
+    public static void addFunctiontoTickFunction(Function function) {
+        addToTickFunction("function %s".formatted(function));
+    }
+
 }
