@@ -5,6 +5,7 @@ import com.asdru.oopack.internal.AbstractFile;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -64,6 +65,7 @@ public class IOUtils {
 
         try (var paths = Files.walk(directory)) {
             paths.filter(path -> !path.equals(directory))
+                    .filter(path -> !Files.isSymbolicLink(path)) // skip symlinks/junctions
                     .sorted(Comparator.reverseOrder())
                     .forEach(path -> {
                         try {

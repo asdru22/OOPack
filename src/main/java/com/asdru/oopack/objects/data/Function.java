@@ -1,7 +1,9 @@
 package com.asdru.oopack.objects.data;
 
 
+import com.asdru.oopack.Context;
 import com.asdru.oopack.Namespace;
+import com.asdru.oopack.internal.ContextItem;
 import com.asdru.oopack.internal.FileFactory;
 import com.asdru.oopack.objects.PlainFile;
 import com.asdru.oopack.objects.TextFile;
@@ -13,7 +15,7 @@ public class Function extends TextFile {
         super(name, content);
     }
 
-    public static final FileFactory<Function> f = new PlainFile.Factory<>(Function.class);
+    public static final FunctionFactory f = new FunctionFactory();
 
     @Override
     public String getFolderName() {
@@ -28,5 +30,17 @@ public class Function extends TextFile {
     @Override
     public String getExtension() {
         return "mcfunction";
+    }
+
+    public static class FunctionFactory extends PlainFile.Factory<Function, StringBuilder> {
+
+        protected FunctionFactory() {
+            super(Function.class);
+        }
+
+        @Override
+        protected Function instantiate(String name, Object content) {
+            return super.instantiate(Context.getFunctionPath() + name, content);
+        }
     }
 }

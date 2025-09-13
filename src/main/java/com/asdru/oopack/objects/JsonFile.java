@@ -34,16 +34,18 @@ public abstract class JsonFile extends PlainFile<JsonObject> {
             super(clazz);
         }
 
-        // name + json content
         @Override
-        public F of(Class<? extends F> clazz, String name, JsonObject json) {
-            return new Factory<>(clazz).createInstance(name, json);
+        public F ofName(String name, JsonObject content) {
+            if (name != null && name.contains(":")) {
+                name = name.substring(name.indexOf(":") + 1);
+            }
+            return new Factory<>(clazz).createInstance(name, content);
         }
 
         // random name + json content
         @Override
-        public F of(Class<? extends F> clazz, JsonObject json) {
-            return new Factory<>(clazz).createInstance(randomName(), json);
+        public F of(JsonObject json) {
+            return new Factory<>(clazz).createInstance(randomNameRaw(), json);
         }
 
         @Override

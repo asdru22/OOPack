@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, Extension {
-    private final String name;
+    private String name;
     private T content;
     private final ContextItem parent;
     private final Namespace namespace;

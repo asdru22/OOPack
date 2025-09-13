@@ -21,13 +21,19 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
         }
 
         @Override
-        public F of(String name, String content, Object... args) {
-            return createInstance(name, formatContent(content, args));
+        public F ofName(String name, String content, Object... args) {
+            if (name != null && name.contains(":")) {
+                name = name.substring(name.indexOf(":") + 1);
+            }
+            String formatted = formatContent(content, name, args);
+            return createInstance(name, formatted);
         }
 
         @Override
         public F of(String content, Object... args) {
-            return createInstance(randomName(), formatContent(content, args));
+            String name = randomNameRaw();
+            String formatted = formatContent(content, name, args);
+            return createInstance(name, formatted);
         }
 
         protected F instantiate(String name, Object content) {
@@ -54,12 +60,24 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
             }
         }
 
-        protected String randomName() {
-            return java.util.UUID.randomUUID().toString().replace("-", "");
-        }
 
-        protected String formatContent(String content, Object... args) {
-            return args.length > 0 ? content.formatted(args) : content;
+        protected String formatContent(String content, String name, Object... args) {
+            // first replace a placeholder for the name
+            String withName = content.replace("%name%", name);
+
+            // then do normal formatting
+            return args.length > 0 ? withName.formatted(args) : withName;
         }
     }
+
+    static String randomNameRaw() {
+        return java.util.UUID.randomUUID().toString().replace("-", "");
+    }
+
+    public static String randomName() {
+        return String.format("%s:%s",
+                Context.getActiveNamespace().getName(),
+                java.util.UUID.randomUUID().toString().replace("-", ""));
+    }
+
 }

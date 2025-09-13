@@ -34,6 +34,13 @@ public class Context {
         stack.clear();
     }
 
+    public static String getFunctionPath() {
+        if (stack.peek() instanceof Module mod) {
+            return mod.getFunctionPath();
+        }
+        return "";
+    }
+
     public static Namespace getActiveNamespace() {
         for (int i = stack.size() - 1; i >= 0; i--) {
             ContextItem item = stack.get(i);

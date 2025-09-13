@@ -4,6 +4,8 @@ import com.asdru.oopack.internal.Folder;
 
 public abstract class Module extends Folder {
 
+    private String functionPath = "";
+
     protected Module() {
         super(Context.getActiveNamespace());
         content();
@@ -26,5 +28,13 @@ public abstract class Module extends Folder {
         return "module(" + getClass().getSimpleName() + ")";
     }
 
-    abstract void content();
+    protected abstract void content();
+
+    protected void setFunctionPath(String path){
+        this.functionPath = path;
+    }
+
+    public String getFunctionPath(){
+        return functionPath;
+    }
 }

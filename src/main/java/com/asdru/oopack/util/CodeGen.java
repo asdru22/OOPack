@@ -107,6 +107,7 @@ public class CodeGen {
         genData("Instrument", "instrument");
         genData("JukeboxSong", "jukebox_song");
         genData("LootTable", "loot_table");
+        genData("Predicate", "predicate");
         genData("Recipes", "recipe");
         genData("TrimMaterial", "trim_material");
         genData("TrimPattern", "trim_pattern");

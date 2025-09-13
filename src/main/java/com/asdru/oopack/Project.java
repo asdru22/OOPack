@@ -138,7 +138,7 @@ public class Project {
     }
 
     public void build() {
-        build(false);
+        build(true);
     }
 
     public void setIcon(String path) {
@@ -168,15 +168,40 @@ public class Project {
         this.addNamespace(defaultNamespace);
 
         if (clear) {
-            buildPaths.forEach(IOUtils::deleteAllFilesInDirectory);
+            buildPaths.forEach(
+                    buildPath -> {
+                        IOUtils.deleteAllFilesInDirectory(getDatapackPath(buildPath));
+                        Path rpPath = getResourcePackPath(buildPath);
+                        if (Files.isDirectory(rpPath)) {
+                            IOUtils.deleteAllFilesInDirectory(rpPath);
+                        }
+                    }
+            );
         }
 
         buildPaths.forEach(path -> {
-            datapack.build(path.resolve(String.format("saves/%s/datapack-%s", worldName, projectName)));
-            if (resourcepack != null) {
-                resourcepack.build(path.resolve(String.format("resourcepacks/resourcepack-%s", projectName)));
+            try {
+                var datapackPath = getDatapackPath(path);
+                Files.createDirectories(datapackPath);
+                datapack.build(datapackPath);
+
+                if (resourcepack != null) {
+                    var resourcepackPath = getResourcePackPath(path);
+                    Files.createDirectories(resourcepackPath);
+                    resourcepack.build(resourcepackPath);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to create build directories", e);
             }
         });
+    }
+
+    private Path getDatapackPath(Path path) {
+        return path.resolve(String.format("saves/%s/datapacks/datapack-%s", worldName, projectName));
+    }
+
+    private Path getResourcePackPath(Path path) {
+        return path.resolve(String.format("resourcepacks/resourcepack-%s", projectName));
     }
 
     @Override
