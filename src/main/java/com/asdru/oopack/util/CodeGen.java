@@ -123,6 +123,7 @@ public class CodeGen {
         genTag("Item", "item");
         genTag("PaintingVariant", "painting_variant");
         genTag("Worldgen", "worldgen");
+        genTag("Function", "function");
 
         genAssets("Atlas", "atlases");
         genAssets("Blockstate", "blockstates");

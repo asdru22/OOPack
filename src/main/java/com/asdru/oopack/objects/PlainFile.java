@@ -63,14 +63,14 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
 
         protected String formatContent(String content, String name, Object... args) {
             // first replace a placeholder for the name
-            String withName = content.replace("%name%", name);
-
+            String withName = content.replace("$name$", name);
+            String withNamespace = withName.replace("$ns$", Context.getActiveNamespace().getName());
             // then do normal formatting
-            return args.length > 0 ? withName.formatted(args) : withName;
+            return args.length > 0 ? withNamespace.formatted(args) : withNamespace;
         }
     }
 
-    static String randomNameRaw() {
+    public static String randomNameRaw() {
         return java.util.UUID.randomUUID().toString().replace("-", "");
     }
 

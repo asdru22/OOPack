@@ -39,7 +39,7 @@ public class Namespace implements Buildable, ContextItem {
 
     @Override
     public String toString() {
-        return String.format("%s{%s}", name, children);
+        return String.format("namespace(%s)", name);
     }
 
     @Override
@@ -50,6 +50,8 @@ public class Namespace implements Buildable, ContextItem {
 
     @Override
     public void exit() {
+        System.out.println("exit namespace");
+        Context.exit();
         Project.getInstance().addNamespace(this);
     }
 }

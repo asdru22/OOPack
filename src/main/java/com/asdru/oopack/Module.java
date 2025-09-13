@@ -8,6 +8,7 @@ public abstract class Module extends Folder {
 
     protected Module() {
         super(Context.getActiveNamespace());
+        this.enter();
         content();
         this.exit();
     }

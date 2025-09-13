@@ -6,6 +6,7 @@ import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
 import com.asdru.oopack.objects.JsonFile;
+import com.asdru.oopack.objects.PlainFile;
 import com.asdru.oopack.objects.SoundFile;
 import com.asdru.oopack.objects.assets.Sound;
 import com.asdru.oopack.objects.data.Function;
@@ -47,6 +48,21 @@ public final class Util {
         return file.getContent();
     }
 
+    private static Function getOrCreateFunction(
+            Namespace namespace,
+            String name,
+            Supplier<Function> creator // create the object only if needed
+    ) {
+        return namespace.getContent().stream()
+                .map(child -> FileSystemObject.find(child,
+                        Function.class,
+                        file -> file.getName().equals(name)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst()
+                .orElseGet(creator);
+    }
+
     private static void addFunctionToTag(Function f, String target) {
         if (f.getParent() == null) {
             throw new IllegalStateException(
@@ -58,9 +74,15 @@ public final class Util {
                 Project.getInstance().getDefaultNamespace(),
                 FunctionTag.class,
                 target,
-                () -> FunctionTag.f.of(target, """
-                            {"values":[]}
-                        """)
+                () -> {
+                    Namespace mcns = Project.getInstance().getDefaultNamespace();
+                    mcns.enter();
+                    FunctionTag ft = FunctionTag.f.ofName(target, """
+                                {"values":[]}
+                            """);
+                    mcns.exit();
+                    return ft;
+                }
         );
 
         JsonArray valuesArray = content.getAsJsonArray("values");
@@ -72,7 +94,7 @@ public final class Util {
         JsonObject content = getOrCreateJsonFile(namespace,
                 Lang.class,
                 formattedLocale,
-                () -> Lang.f.of(formattedLocale, "{}")
+                () -> Lang.f.ofName(formattedLocale, "{}")
         );
         content.addProperty(key, value);
     }
@@ -88,7 +110,7 @@ public final class Util {
     public static void addSound(Namespace namespace, String key, String category,
                                 String subtitle, Sound... sounds) {
 
-        if(sounds.length == 0) {
+        if (sounds.length == 0) {
             throw new IllegalStateException("Sounds array is empty.");
         }
 
@@ -125,6 +147,29 @@ public final class Util {
 
     public static void addSound(String key, Sound... sounds) {
         addSound(key, "master", sounds);
+    }
+
+
+    private static void addToFunction(String content, String target) {
+        String functionName = PlainFile.randomNameRaw();
+
+        Function function = getOrCreateFunction(Context.getActiveNamespace(),
+                functionName,
+                () -> {
+                    Function f = Function.f.ofName(functionName, "");
+                    addFunctionToTag(f, target);
+                    return f;
+                }
+        );
+        function.getContent().append(content);
+    }
+
+    public static void addToTickFunction(String content) {
+        addToFunction(content, "tick");
+    }
+
+    public static void addToLoadFunction(String content) {
+        addToFunction(content, "load");
     }
 
 }

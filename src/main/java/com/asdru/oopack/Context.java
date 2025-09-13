@@ -2,17 +2,17 @@ package com.asdru.oopack;
 
 import com.asdru.oopack.internal.ContextItem;
 
-import java.util.Optional;
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Context {
     private static final Stack<ContextItem> stack = new Stack<>();
 
-    public static void push(ContextItem item) {
+    public static void enter(ContextItem item) {
         stack.push(item);
     }
 
-    public static ContextItem pop() {
+    public static ContextItem exit() {
         return stack.pop();
     }
 
@@ -25,13 +25,11 @@ public class Context {
         return stack.toString();
     }
 
-    public static ContextItem exit() {
-        return stack.pop();
-    }
 
     public static void clear() {
-        stack.forEach(ContextItem::exit);
-        stack.clear();
+        // copy of context stack for safe deletion
+        new ArrayList<>(stack).forEach(ContextItem::exit);
+
     }
 
     public static String getFunctionPath() {
@@ -49,5 +47,9 @@ public class Context {
             }
         }
         throw new IllegalStateException("No active Namespace found in the context stack.");
+    }
+
+    public static Stack<ContextItem> getStack() {
+        return stack;
     }
 }
