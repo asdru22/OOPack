@@ -25,34 +25,47 @@ public class StructureUtils {
             return;
         }
 
-        // iterate over namespaces inside "generated"
+        // iterate over namespaces in /_generated
         try (var namespaces = Files.list(generatedRoot)) {
             for (Path namespaceDir : namespaces.toList()) {
-                if (!Files.isDirectory(namespaceDir)) continue;
-
-                Path structuresDir = namespaceDir.resolve("structures");
-                if (!Files.exists(structuresDir)) continue;
-
-                Path targetNamespaceDir = RESOURCES_BASE.resolve(namespaceDir.getFileName().toString());
-                Files.createDirectories(targetNamespaceDir);
-
-                try (var files = Files.walk(structuresDir)) {
-                    files.filter(Files::isRegularFile)
-                            .filter(f -> f.toString().endsWith(".nbt"))
-                            .forEach(src -> {
-                                Path relative = structuresDir.relativize(src);
-                                Path dst = targetNamespaceDir.resolve(relative);
-
-                                try {
-                                    Files.createDirectories(dst.getParent());
-                                    Files.copy(src, dst, StandardCopyOption.REPLACE_EXISTING);
-                                    LOGGER.info("Copied structure: " + src + " -> " + dst);
-                                } catch (IOException e) {
-                                    LOGGER.severe("Failed to copy structure: " + src + " -> " + e.getMessage());
-                                }
-                            });
+                if (Files.isDirectory(namespaceDir)) {
+                    handleNamespaceDir(namespaceDir);
                 }
             }
+        }
+    }
+
+    private static void handleNamespaceDir(Path namespaceDir) throws IOException {
+        Path structuresDir = namespaceDir.resolve("structures");
+        if (Files.exists(structuresDir)) {
+            copyStructures(namespaceDir, structuresDir);
+        }
+    }
+
+
+    // copy .nbt files from structuresDir to the target namespace directory
+    private static void copyStructures(Path namespaceDir, Path structuresDir) throws IOException {
+        Path targetNamespaceDir = RESOURCES_BASE.resolve(namespaceDir.getFileName().toString());
+        Files.createDirectories(targetNamespaceDir);
+
+        try (var files = Files.walk(structuresDir)) {
+            files.filter(Files::isRegularFile)
+                    .filter(f -> f.toString().endsWith(".nbt"))
+                    .forEach(src -> copyFile(src, structuresDir, targetNamespaceDir));
+        }
+    }
+
+    // copy a single file
+    private static void copyFile(Path src, Path structuresDir, Path targetNamespaceDir) {
+        Path relative = structuresDir.relativize(src);
+        Path dst = targetNamespaceDir.resolve(relative);
+
+        try {
+            Files.createDirectories(dst.getParent());
+            Files.copy(src, dst, StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.info("Copied structure: " + src + " -> " + dst);
+        } catch (IOException e) {
+            LOGGER.severe("Failed to copy structure: " + src + " -> " + e.getMessage());
         }
     }
 }

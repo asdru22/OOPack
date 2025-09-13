@@ -34,6 +34,6 @@ public class MyProject {
                 Sound.of("test","destination/cool"));
 
         Context.clear();
-        p.build(true);
+        p.buildZip();
     }
 }
