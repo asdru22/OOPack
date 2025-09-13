@@ -1,6 +1,5 @@
 package com.asdru.oopack.util;
 
-import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 
 import javax.imageio.ImageIO;
@@ -12,9 +11,9 @@ import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileUtils {
+public class IOUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(FileUtils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IOUtils.class.getName());
 
     public static Logger getLogger() {
         return LOGGER;
@@ -105,7 +104,7 @@ public class FileUtils {
     public static BufferedImage loadTexture(String name) {
         String path = "/textures/" + name + ".png";
 
-        try (var stream = FileUtils.class.getResourceAsStream(path)) {
+        try (var stream = IOUtils.class.getResourceAsStream(path)) {
             if (stream == null) {
                 String msg = "Resource not found: " + path;
                 LOGGER.severe(msg);
@@ -149,7 +148,7 @@ public class FileUtils {
     public static byte[] loadOgg(String name) {
         String path = "/sounds/" + name + ".ogg";
 
-        try (var stream = FileUtils.class.getResourceAsStream(path)) {
+        try (var stream = IOUtils.class.getResourceAsStream(path)) {
             if (stream == null) {
                 String msg = "Resource not found: " + path;
                 LOGGER.severe(msg);

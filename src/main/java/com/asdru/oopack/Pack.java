@@ -3,7 +3,7 @@ package com.asdru.oopack;
 import com.asdru.oopack.internal.Buildable;
 import com.asdru.oopack.internal.Resource;
 import com.asdru.oopack.internal.Versionable;
-import com.asdru.oopack.util.FileUtils;
+import com.asdru.oopack.util.IOUtils;
 import com.asdru.oopack.util.JsonUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -55,8 +55,8 @@ public abstract class Pack implements Buildable, Versionable {
 
     @Override
     public void build(Path parent) {
-        FileUtils.createGenericTextFile(parent.resolve("pack.mcmeta"), makeMcMeta());
-        FileUtils.createGenericPng(parent.resolve("pack.png"), FileUtils.loadTexture(project.getIcon()));
+        IOUtils.createGenericTextFile(parent.resolve("pack.mcmeta"), makeMcMeta());
+        IOUtils.createGenericPng(parent.resolve("pack.png"), IOUtils.loadTexture(project.getIcon()));
 
         namespaces.values().forEach(namespace -> handleNamespace(parent, namespace));
     }

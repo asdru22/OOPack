@@ -1,7 +1,7 @@
 package com.asdru.oopack.objects;
 
 
-import com.asdru.oopack.util.FileUtils;
+import com.asdru.oopack.util.IOUtils;
 
 import java.nio.file.Path;
 
@@ -17,7 +17,7 @@ public abstract class TextFile extends PlainFile<StringBuilder> {
     @Override
     public void writeContent(Path path) {
         String formattedContent = getContent().toString().formatted(args);
-        FileUtils.createGenericTextFile(path,formattedContent);
+        IOUtils.createGenericTextFile(path,formattedContent);
     }
 
     public void append(String content){

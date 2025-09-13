@@ -1,6 +1,6 @@
 package com.asdru.oopack;
 
-import com.asdru.oopack.util.FileUtils;
+import com.asdru.oopack.util.IOUtils;
 
 import com.asdru.oopack.util.StructureUtils;
 import com.asdru.oopack.util.VersionUtils;
@@ -8,7 +8,6 @@ import com.asdru.oopack.internal.VersionInfo;
 import com.google.gson.JsonObject;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -169,7 +168,7 @@ public class Project {
         this.addNamespace(defaultNamespace);
 
         if (clear) {
-            buildPaths.forEach(FileUtils::deleteAllFilesInDirectory);
+            buildPaths.forEach(IOUtils::deleteAllFilesInDirectory);
         }
 
         buildPaths.forEach(path -> {
@@ -188,7 +187,7 @@ public class Project {
 
     public static void disableLogger() {
         Logger logger;
-        logger = FileUtils.getLogger();
+        logger = IOUtils.getLogger();
         logger.setLevel(Level.OFF);
         logger = VersionUtils.getLogger();
         logger.setLevel(Level.OFF);
@@ -215,7 +214,7 @@ public class Project {
             Path tempDatapackDir = Files.createTempDirectory("datapack-temp");
             datapack.build(tempDatapackDir);
             zipDirectory(tempDatapackDir, zipOut, tempDatapackDir);
-            FileUtils.deleteAllFilesInDirectory(tempDatapackDir);
+            IOUtils.deleteAllFilesInDirectory(tempDatapackDir);
         } catch (IOException e) {
             throw new RuntimeException("Error creating datapack zip", e);
         }
@@ -227,7 +226,7 @@ public class Project {
                 Path tempResourceDir = Files.createTempDirectory("resourcepack-temp");
                 resourcepack.build(tempResourceDir);
                 zipDirectory(tempResourceDir, zipOut, tempResourceDir);
-                FileUtils.deleteAllFilesInDirectory(tempResourceDir);
+                IOUtils.deleteAllFilesInDirectory(tempResourceDir);
             } catch (IOException e) {
                 throw new RuntimeException("Error creating resourcepack zip", e);
             }
@@ -242,7 +241,7 @@ public class Project {
                         try (InputStream in = Files.newInputStream(file)) {
                             ZipArchiveEntry entry = new ZipArchiveEntry(file.toFile(), relativePath.toString().replace("\\", "/"));
                             zipOut.putArchiveEntry(entry);
-                            IOUtils.copy(in, zipOut);
+                            org.apache.commons.io.IOUtils.copy(in, zipOut);
                             zipOut.closeArchiveEntry();
                         } catch (IOException e) {
                             throw new RuntimeException("Error zipping file: " + file, e);

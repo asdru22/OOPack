@@ -2,8 +2,7 @@ package com.asdru.oopack.internal;
 
 import com.asdru.oopack.Context;
 import com.asdru.oopack.Namespace;
-import com.asdru.oopack.util.FileUtils;
-import com.asdru.oopack.Project;
+import com.asdru.oopack.util.IOUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -48,7 +47,7 @@ public abstract class AbstractFile<T> implements FileSystemObject, PackFolder, E
 
     @Override
     public void build(Path parent) {
-        FileUtils.createFile(this,
+        IOUtils.createFile(this,
                 parent.resolve(this.getFolderName()).resolve(name + "." + this.getExtension()));
     }
 

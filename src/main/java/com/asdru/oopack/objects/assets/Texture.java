@@ -1,9 +1,8 @@
 package com.asdru.oopack.objects.assets;
 
 import com.asdru.oopack.Context;
-import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
-import com.asdru.oopack.util.FileUtils;
+import com.asdru.oopack.util.IOUtils;
 import com.asdru.oopack.Namespace;
 
 import java.awt.image.BufferedImage;
@@ -13,7 +12,7 @@ import java.nio.file.Path;
 public class Texture extends AbstractFile<BufferedImage> {
 
     private Texture(String name, String path) {
-        super(name, FileUtils.loadTexture(path));
+        super(name, IOUtils.loadTexture(path));
     }
 
     public static Texture of(String path) {
@@ -28,7 +27,7 @@ public class Texture extends AbstractFile<BufferedImage> {
 
     @Override
     public void writeContent(Path path) {
-        FileUtils.createGenericPng(path, getContent());
+        IOUtils.createGenericPng(path, getContent());
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.asdru.oopack.objects.assets;
 
 import com.asdru.oopack.Context;
 import com.asdru.oopack.internal.AbstractFile;
-import com.asdru.oopack.util.FileUtils;
+import com.asdru.oopack.util.IOUtils;
 import com.asdru.oopack.Namespace;
 
 import java.nio.file.Path;
@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class Sound extends AbstractFile<byte[]> {
 
     private Sound(String name, String path) {
-        super(name, FileUtils.loadOgg(path));
+        super(name, IOUtils.loadOgg(path));
     }
 
     public static Sound of(String path) {
@@ -25,7 +25,7 @@ public class Sound extends AbstractFile<byte[]> {
 
     @Override
     public void writeContent(Path path) {
-        FileUtils.createGenericOgg(path, getContent());
+        IOUtils.createGenericOgg(path, getContent());
     }
 
     @Override
