@@ -2,6 +2,7 @@ package com.asdru.oopack;
 
 import com.asdru.oopack.util.FileUtils;
 
+import com.asdru.oopack.util.StructureUtils;
 import com.asdru.oopack.util.VersionUtils;
 import com.asdru.oopack.internal.VersionInfo;
 import com.google.gson.JsonObject;
@@ -190,6 +191,8 @@ public class Project {
         logger = FileUtils.getLogger();
         logger.setLevel(Level.OFF);
         logger = VersionUtils.getLogger();
+        logger.setLevel(Level.OFF);
+        logger = StructureUtils.getLogger();
         logger.setLevel(Level.OFF);
 
     }

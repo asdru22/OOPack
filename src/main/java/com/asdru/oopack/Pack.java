@@ -58,9 +58,11 @@ public abstract class Pack implements Buildable, Versionable {
         FileUtils.createGenericTextFile(parent.resolve("pack.mcmeta"), makeMcMeta());
         FileUtils.createGenericPng(parent.resolve("pack.png"), FileUtils.loadTexture(project.getIcon()));
 
-        namespaces.values().forEach(namespace -> {
-            namespace.build(parent.resolve(resource.toString()));
-        });
+        namespaces.values().forEach(namespace -> handleNamespace(parent, namespace));
+    }
+
+    protected void handleNamespace(Path parent, Namespace namespace){
+        namespace.build(parent.resolve(resource.toString()));
     }
 
     @Override
