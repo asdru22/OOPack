@@ -16,7 +16,7 @@ public class Datapack extends Pack {
     @Override
     protected void handleNamespace(Path parent, Namespace namespace) {
         super.handleNamespace(parent, namespace);
-        copyStructures(parent, namespace);
+        copyStructures(parent,namespace);
     }
 
     private void copyStructures(Path parent, Namespace namespace) {
@@ -28,19 +28,20 @@ public class Datapack extends Pack {
         // source: src/main/resources/_generated/structures/<namespace>
         Path generatedRoot = Path.of("src", "main", "resources", "_generated", "structures");
         Path source = generatedRoot.resolve(name);
-        
+
         if (Files.exists(source) && Files.isDirectory(source)) {
             try {
-                // make sure destination exists
+                // ensure destination exists
                 Files.createDirectories(out);
 
-                // copy the whole tree and overwrite existing files
+                // copy whole tree (subfolders + files), overwrite existing
                 FileUtils.copyDirectory(source.toFile(), out.toFile());
             } catch (IOException e) {
                 throw new UncheckedIOException("Error copying namespace " + name, e);
             }
         }
     }
+
 
 
     @Override
