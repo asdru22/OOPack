@@ -17,11 +17,11 @@ public abstract class TextFile extends PlainFile<StringBuilder> {
     @Override
     public void writeContent(Path path) {
         String formattedContent = getContent().toString().formatted(args);
-        IOUtils.createGenericTextFile(path,formattedContent);
+        IOUtils.createGenericTextFile(path, formattedContent);
     }
 
-    public void append(String content){
-        setContent(getContent().append(content));
+    public void append(String content) {
+        setContent(getContent().append(PlainFile.replaceKeywords(content, getName())));
     }
 }
 

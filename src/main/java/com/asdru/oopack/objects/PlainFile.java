@@ -62,12 +62,13 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
 
 
         protected String formatContent(String content, String name, Object... args) {
-            // first replace a placeholder for the name
-            String withName = content.replace("$name$", name);
-            String withNamespace = withName.replace("$ns$", Context.getActiveNamespace().getName());
-            // then do normal formatting
-            return args.length > 0 ? withNamespace.formatted(args) : withNamespace;
+            String replacedContent = replaceKeywords(content, name);
+            return args.length > 0 ? replacedContent.formatted(args) : replacedContent;
         }
+    }
+
+    protected static String replaceKeywords(String content, String name) {
+        return content.replace("$name$", name).replace("$ns$", Context.getActiveNamespace().getName());
     }
 
     public static String randomNameRaw() {

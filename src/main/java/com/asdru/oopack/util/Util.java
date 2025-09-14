@@ -5,7 +5,6 @@ import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
-import com.asdru.oopack.objects.JsonFile;
 import com.asdru.oopack.objects.PlainFile;
 import com.asdru.oopack.objects.SoundFile;
 import com.asdru.oopack.objects.assets.Sound;
@@ -161,23 +160,23 @@ public final class Util {
                     return f;
                 }
         );
-        function.getContent().append(content);
+        function.append(content);
     }
 
-    public static void addToTickFunction(String content) {
+    public static void setOnTick(String content) {
         addToFunction(content, "tick");
     }
 
-    public static void addToLoadFunction(String content) {
+    public static void setOnLoad(String content) {
         addToFunction(content, "load");
     }
 
-    public static void addFunctiontoLoadFunction(Function function) {
-        addToLoadFunction("function %s".formatted(function));
+    public static void setOnLoad(Function function) {
+        setOnLoad("function %s".formatted(function));
     }
 
-    public static void addFunctiontoTickFunction(Function function) {
-        addToTickFunction("function %s".formatted(function));
+    public static void setOnTick(Function function) {
+        setOnTick("function %s".formatted(function));
     }
 
 }
