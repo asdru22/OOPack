@@ -49,6 +49,11 @@ public abstract class JsonFile extends PlainFile<JsonObject> {
         }
 
         @Override
+        public F ofFile(String source) {
+            return of(IOUtils.loadJson(source));
+        }
+
+        @Override
         protected F createInstance(String name, String content) {
             return instantiate(name, JsonUtils.toJson(content));
         }

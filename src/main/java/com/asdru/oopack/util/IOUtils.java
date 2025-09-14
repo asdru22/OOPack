@@ -1,14 +1,18 @@
 package com.asdru.oopack.util;
 
 import com.asdru.oopack.internal.AbstractFile;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -103,33 +107,6 @@ public class IOUtils {
         }
     }
 
-    public static BufferedImage loadTexture(String name) {
-        String path = "/textures/" + name + ".png";
-
-        try (var stream = IOUtils.class.getResourceAsStream(path)) {
-            if (stream == null) {
-                String msg = "Resource not found: " + path;
-                LOGGER.severe(msg);
-                throw new IllegalArgumentException(msg);
-            }
-
-            BufferedImage image = ImageIO.read(stream);
-            if (image == null) {
-                String msg = "ImageIO failed to decode image: " + path;
-                LOGGER.severe(msg);
-                throw new IOException(msg);
-            }
-
-            LOGGER.info("Image loaded from: " + path);
-            return image;
-
-        } catch (IOException e) {
-            String msg = "Error loading image from " + path;
-            LOGGER.log(Level.SEVERE, msg, e);
-            throw new RuntimeException("Failed to load image: " + name, e);
-        }
-    }
-
     public static void createGenericOgg(Path path, byte[] data) {
         try {
             Files.createDirectories(path.getParent());
@@ -147,24 +124,65 @@ public class IOUtils {
         }
     }
 
-    public static byte[] loadOgg(String name) {
-        String path = "/sounds/" + name + ".ogg";
 
-        try (var stream = IOUtils.class.getResourceAsStream(path)) {
+    private static <T> T loadResource(String path, Function<InputStream, T> decoder) {
+        try (InputStream stream = IOUtils.class.getResourceAsStream(path)) {
             if (stream == null) {
                 String msg = "Resource not found: " + path;
                 LOGGER.severe(msg);
                 throw new IllegalArgumentException(msg);
             }
 
-            byte[] data = stream.readAllBytes();
-            LOGGER.info("OGG file loaded from: " + path);
-            return data;
+            T result = decoder.apply(stream);
+            if (result == null) {
+                String msg = "Decoder failed for resource: " + path;
+                LOGGER.severe(msg);
+                throw new IOException(msg);
+            }
+
+            LOGGER.info("Resource loaded from: " + path);
+            return result;
 
         } catch (IOException e) {
-            String msg = "Error loading OGG from " + path;
+            String msg = "Error loading resource from " + path;
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new RuntimeException("Failed to load OGG: " + name, e);
+            throw new RuntimeException("Failed to load resource: " + path, e);
         }
     }
+
+
+    public static BufferedImage loadTexture(String name) {
+        String path = "/textures/" + name + ".png";
+        return loadResource(path, stream -> {
+            try {
+                return ImageIO.read(stream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public static byte[] loadOgg(String name) {
+        String path = "/sounds/" + name + ".ogg";
+        return loadResource(path, stream -> {
+            try {
+                return stream.readAllBytes();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public static JsonObject loadJson(String name) {
+        String path = "/json/" + name + ".json";
+        return loadResource(path, stream -> {
+            try {
+                String text = new String(stream.readAllBytes());
+                return JsonParser.parseString(text).getAsJsonObject();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
 }

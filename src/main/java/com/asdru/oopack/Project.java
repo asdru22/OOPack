@@ -164,6 +164,7 @@ public class Project {
     }
 
     public void build(boolean clear) {
+        long start = System.nanoTime();
 
         this.addNamespace(defaultNamespace);
 
@@ -194,6 +195,10 @@ public class Project {
                 throw new RuntimeException("Failed to create build directories", e);
             }
         });
+
+        long end = System.nanoTime();
+        double elapsedSeconds = (end - start) / 1_000_000_000.0;
+        System.out.printf("Build completed in %.3fs%n", elapsedSeconds);
     }
 
     private Path getDatapackPath(Path path) {
