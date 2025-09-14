@@ -1,14 +1,12 @@
 package com.asdru.oopack.util;
 
 import com.asdru.oopack.Context;
-import com.asdru.oopack.objects.assets.Font;
 import com.asdru.oopack.objects.data.LootTable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class ItemFactory {
 
-    private static Font font;
     private static JsonObject loreObj;
     private static boolean randomNames = true;
 
@@ -17,9 +15,6 @@ public class ItemFactory {
         ItemFactory.randomNames = randomNames;
     }
 
-    public static void setFont(Font font) {
-        ItemFactory.font = font;
-    }
 
     public static void setLoreObj(JsonObject loreObj) {
         ItemFactory.loreObj = loreObj;

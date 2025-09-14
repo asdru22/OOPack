@@ -5,9 +5,11 @@ import com.asdru.oopack.Namespace;
 import com.asdru.oopack.Project;
 import com.asdru.oopack.internal.AbstractFile;
 import com.asdru.oopack.internal.FileSystemObject;
+import com.asdru.oopack.objects.MCMetaFile;
 import com.asdru.oopack.objects.PlainFile;
 import com.asdru.oopack.objects.SoundFile;
 import com.asdru.oopack.objects.assets.Sound;
+import com.asdru.oopack.objects.assets.Texture;
 import com.asdru.oopack.objects.data.Function;
 import com.asdru.oopack.objects.assets.Lang;
 import com.asdru.oopack.objects.data.tags.FunctionTag;
@@ -177,6 +179,18 @@ public final class Util {
 
     public static void setOnTick(Function function) {
         setOnTick("function %s".formatted(function));
+    }
+
+    public static void addTooltip(String name,
+                                  String backgroundPath, String backgroundJson,
+                                  String framePath, String frameJson){
+        String dst = "gui/sprites/tooltip/";
+
+        Texture.of(backgroundPath,"%s%s_background".formatted(dst,name));
+        Texture.of(framePath,"%s%s_frame".formatted(dst,name));
+        MCMetaFile.f.ofName("textures/%s%s_background.png".formatted(dst,name),backgroundJson);
+        MCMetaFile.f.ofName("textures/%s%s_frame.png".formatted(dst,name),frameJson);
+
     }
 
 }
