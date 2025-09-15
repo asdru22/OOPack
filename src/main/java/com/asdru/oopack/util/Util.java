@@ -181,16 +181,17 @@ public final class Util {
         setOnTick("function %s".formatted(function));
     }
 
-    public static void addTooltip(String name,
-                                  String backgroundPath, String backgroundJson,
-                                  String framePath, String frameJson){
+    public static String addTooltip(String name,
+                                    String backgroundPath, String backgroundJson,
+                                    String framePath, String frameJson) {
         String dst = "gui/sprites/tooltip/";
 
-        Texture.of(backgroundPath,"%s%s_background".formatted(dst,name));
-        Texture.of(framePath,"%s%s_frame".formatted(dst,name));
-        MCMetaFile.f.ofName("textures/%s%s_background.png".formatted(dst,name),backgroundJson);
-        MCMetaFile.f.ofName("textures/%s%s_frame.png".formatted(dst,name),frameJson);
+        Texture.of(backgroundPath, "%s%s_background".formatted(dst, name));
+        Texture.of(framePath, "%s%s_frame".formatted(dst, name));
+        MCMetaFile.f.ofName("textures/%s%s_background.png".formatted(dst, name), backgroundJson);
+        MCMetaFile.f.ofName("textures/%s%s_frame.png".formatted(dst, name), frameJson);
 
+        return "%s:%s".formatted(Context.getActiveNamespace().getName(), name);
     }
 
 }

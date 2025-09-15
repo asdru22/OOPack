@@ -5,8 +5,7 @@ import com.asdru.oopack.internal.ContextItem;
 import com.asdru.oopack.internal.FileSystemObject;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Namespace implements Buildable, ContextItem {
     private final String name;
@@ -21,7 +20,7 @@ public class Namespace implements Buildable, ContextItem {
         return ns;
     }
 
-    private final List<FileSystemObject> children = new ArrayList<>();
+    private final Set<FileSystemObject> children = new LinkedHashSet<>();
 
     @Override
     public FileSystemObject add(FileSystemObject fso) {
@@ -33,7 +32,7 @@ public class Namespace implements Buildable, ContextItem {
         return name;
     }
 
-    public List<FileSystemObject> getContent() {
+    public Set<FileSystemObject> getContent() {
         return children;
     }
 

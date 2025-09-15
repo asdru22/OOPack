@@ -2,22 +2,19 @@ package com.asdru.oopack.util;
 
 import com.asdru.oopack.Context;
 import com.asdru.oopack.objects.data.LootTable;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 
 public class ItemFactory {
 
-    private static JsonObject loreObj;
+    private static JsonObject defaultComponents = new JsonObject();
     private static boolean randomNames = true;
-
 
     public static void setRandomNames(boolean randomNames) {
         ItemFactory.randomNames = randomNames;
     }
 
-
-    public static void setLoreObj(JsonObject loreObj) {
-        ItemFactory.loreObj = loreObj;
+    public static void setDefaultComponents(JsonObject components) {
+        ItemFactory.defaultComponents = components;
     }
 
     // builder
@@ -29,7 +26,7 @@ public class ItemFactory {
         private String baseItem;
         private String id;
         private String displayName;
-        private String components; // opzionale
+        private String components; // opzionale JSON string
 
         private Builder() {
         }
@@ -63,22 +60,22 @@ public class ItemFactory {
         }
 
         private JsonObject makeLootTable() {
-            String translationStr = "item.%s.%s"
-                    .formatted(Context.getActiveNamespace().getName(), id);
+            String ns = Context.getActiveNamespace().getName();
+            String translationStr = "item.%s.%s".formatted(ns, id);
 
             Util.addTranslation(translationStr, displayName);
 
-            // root
+            // === root
             JsonObject root = new JsonObject();
             JsonArray pools = new JsonArray();
             root.add("pools", pools);
 
-            // pool object
+            // pool
             JsonObject pool = new JsonObject();
             pool.addProperty("rolls", 1);
             pools.add(pool);
 
-            // entries
+            // entry
             JsonArray entries = new JsonArray();
             pool.add("entries", entries);
 
@@ -87,45 +84,49 @@ public class ItemFactory {
             entry.addProperty("name", baseItem);
             entries.add(entry);
 
-            // functions
+            // === unico set_components
             JsonArray functions = new JsonArray();
             pool.add("functions", functions);
 
-            // components (solo se definiti)
+            JsonObject setComponents = new JsonObject();
+            setComponents.addProperty("function", "minecraft:set_components");
+
+            // start from defaultComponents (clone!)
+            JsonObject merged = deepCopy(defaultComponents);
+
+            // merge in custom components (if present)
             if (components != null) {
-                JsonObject setComponents = new JsonObject();
-                setComponents.addProperty("function", "minecraft:set_components");
-                JsonObject compObj = com.google.gson.JsonParser
-                        .parseString(components)
-                        .getAsJsonObject();
-                setComponents.add("components", compObj);
-                functions.add(setComponents);
+                JsonObject compObj = JsonParser.parseString(components).getAsJsonObject();
+                mergeJsonObjects(merged, compObj);
             }
 
-            // set_name
-            JsonObject setName = new JsonObject();
-            setName.addProperty("function", "minecraft:set_name");
-            setName.addProperty("target", "item_name");
-
+            // aggiungi traduzione del nome dell’item
             JsonObject nameObj = new JsonObject();
             nameObj.addProperty("translate", translationStr);
-            setName.add("name", nameObj);
+            merged.add("minecraft:item_name", nameObj);
 
-            functions.add(setName);
+            // aggiungi custom_data di default (per esempio id)
+            JsonObject customData = new JsonObject();
+            JsonObject haywireObj = new JsonObject();
+            haywireObj.addProperty("id", id);
+            customData.add("haywire", haywireObj);
+            merged.add("minecraft:custom_data", customData);
 
-            // set_lore
-            JsonObject setLore = new JsonObject();
-            setLore.addProperty("function", "minecraft:set_lore");
-
-            JsonArray loreArr = new JsonArray();
-            loreArr.add(loreObj);
-
-            setLore.add("lore", loreArr);
-            setLore.addProperty("mode", "replace_all");
-
-            functions.add(setLore);
+            setComponents.add("components", merged);
+            functions.add(setComponents);
 
             return root;
+        }
+
+        // === helpers
+        private static void mergeJsonObjects(JsonObject target, JsonObject src) {
+            for (var entry : src.entrySet()) {
+                target.add(entry.getKey(), entry.getValue());
+            }
+        }
+
+        private static JsonObject deepCopy(JsonObject original) {
+            return JsonParser.parseString(original.toString()).getAsJsonObject();
         }
     }
 }

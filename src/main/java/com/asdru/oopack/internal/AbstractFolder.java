@@ -4,10 +4,12 @@ import com.asdru.oopack.Namespace;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractFolder<T extends FileSystemObject> implements FileSystemObject {
-    protected final List<T> children = new ArrayList<>();
+    protected final Set<T> children = new LinkedHashSet<>();
     protected ContextItem parent;
 
     @Override
@@ -16,7 +18,7 @@ public abstract class AbstractFolder<T extends FileSystemObject> implements File
     }
 
     @Override
-    public List<T> getContent() {
+    public Set<T> getContent() {
         return children;
     }
 
