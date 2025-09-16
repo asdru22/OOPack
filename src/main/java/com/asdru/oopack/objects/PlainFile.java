@@ -22,9 +22,15 @@ public abstract class PlainFile<C> extends AbstractFile<C> {
 
         @Override
         public F ofName(String name, String content, Object... args) {
-            if (name != null && name.contains(":")) {
-                name = name.substring(name.indexOf(":") + 1);
+            if (name != null) {
+                if (name.contains(":")) {
+                    name = name.substring(name.indexOf(":") + 1);
+                }
+                if (name.endsWith("/")) {
+                    name = name + randomNameRaw();
+                }
             }
+
             String formatted = formatContent(content, name, args);
             return createInstance(name, formatted);
         }

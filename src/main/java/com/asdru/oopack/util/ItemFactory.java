@@ -1,17 +1,23 @@
 package com.asdru.oopack.util;
 
 import com.asdru.oopack.Context;
+import com.asdru.oopack.objects.assets.Item;
 import com.asdru.oopack.objects.data.LootTable;
 import com.google.gson.*;
 
 public class ItemFactory {
 
     private static JsonObject defaultComponents = new JsonObject();
-    private static boolean randomNames = true;
+    private static boolean randomNames = true, internalIds = true;
 
     public static void setRandomNames(boolean randomNames) {
         ItemFactory.randomNames = randomNames;
     }
+
+    public static void setInternalIds(boolean internalIds) {
+        ItemFactory.internalIds = internalIds;
+    }
+
 
     public static void setDefaultComponents(JsonObject components) {
         ItemFactory.defaultComponents = components;
@@ -26,10 +32,9 @@ public class ItemFactory {
         private String baseItem;
         private String id;
         private String displayName;
-        private String components; // opzionale JSON string
+        private String components; // optional JSON string
+        private Item itemModelDefinition;
 
-        private Builder() {
-        }
 
         public Builder base(String baseItem) {
             this.baseItem = baseItem;
@@ -43,6 +48,11 @@ public class ItemFactory {
 
         public Builder name(String displayName) {
             this.displayName = displayName;
+            return this;
+        }
+
+        public Builder model(Item itemModelDefinition) {
+            this.itemModelDefinition = itemModelDefinition;
             return this;
         }
 
@@ -65,7 +75,7 @@ public class ItemFactory {
 
             Util.addTranslation(translationStr, displayName);
 
-            // === root
+            // root
             JsonObject root = new JsonObject();
             JsonArray pools = new JsonArray();
             root.add("pools", pools);
@@ -84,14 +94,13 @@ public class ItemFactory {
             entry.addProperty("name", baseItem);
             entries.add(entry);
 
-            // === unico set_components
             JsonArray functions = new JsonArray();
             pool.add("functions", functions);
 
             JsonObject setComponents = new JsonObject();
             setComponents.addProperty("function", "minecraft:set_components");
 
-            // start from defaultComponents (clone!)
+            // copy defaultComponents
             JsonObject merged = deepCopy(defaultComponents);
 
             // merge in custom components (if present)
@@ -100,17 +109,19 @@ public class ItemFactory {
                 mergeJsonObjects(merged, compObj);
             }
 
-            // aggiungi traduzione del nome dell’item
             JsonObject nameObj = new JsonObject();
             nameObj.addProperty("translate", translationStr);
             merged.add("minecraft:item_name", nameObj);
 
-            // aggiungi custom_data di default (per esempio id)
-            JsonObject customData = new JsonObject();
-            JsonObject haywireObj = new JsonObject();
-            haywireObj.addProperty("id", id);
-            customData.add("haywire", haywireObj);
-            merged.add("minecraft:custom_data", customData);
+            if (itemModelDefinition != null) {
+                String modelId = itemModelDefinition.toString();
+                merged.addProperty("minecraft:item_model", modelId);
+            }
+
+
+            if (internalIds) {
+                internalIds(merged);
+            }
 
             setComponents.add("components", merged);
             functions.add(setComponents);
@@ -118,10 +129,34 @@ public class ItemFactory {
             return root;
         }
 
-        // === helpers
+        private void internalIds(JsonObject merged) {
+            JsonObject internalIdObj = new JsonObject();
+            internalIdObj.addProperty("id", "$ns$:%s".formatted(id));
+
+            if (merged.has("minecraft:custom_data") &&
+                    merged.get("minecraft:custom_data").isJsonObject()) {
+                // merge into existing custom_data
+                JsonObject existingCustomData = merged.getAsJsonObject("minecraft:custom_data");
+                mergeJsonObjects(existingCustomData, internalIdObj);
+            } else {
+                // create new custom_data
+                JsonObject customData = new JsonObject();
+                customData.add(Context.getActiveNamespace().getName(), internalIdObj);
+                merged.add("minecraft:custom_data", customData);
+            }
+        }
+
         private static void mergeJsonObjects(JsonObject target, JsonObject src) {
             for (var entry : src.entrySet()) {
-                target.add(entry.getKey(), entry.getValue());
+                if (target.has(entry.getKey()) &&
+                        target.get(entry.getKey()).isJsonObject() &&
+                        entry.getValue().isJsonObject()) {
+                    // merge if both are objects
+                    mergeJsonObjects(target.getAsJsonObject(entry.getKey()), entry.getValue().getAsJsonObject());
+                } else {
+                    // if not, overwrite
+                    target.add(entry.getKey(), entry.getValue());
+                }
             }
         }
 

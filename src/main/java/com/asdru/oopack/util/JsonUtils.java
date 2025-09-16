@@ -1,16 +1,19 @@
 package com.asdru.oopack.util;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 
 public class JsonUtils {
+
+    // Static Gson instance with pretty printing
+    private static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
 
     public static String toString(JsonObject obj) {
         if (obj == null) {
             throw new IllegalArgumentException("JsonObject cannot be null");
         }
-        return obj.toString();
+        return GSON.toJson(obj);
     }
 
     public static JsonObject toJson(String jsonString) {
@@ -27,4 +30,3 @@ public class JsonUtils {
         }
     }
 }
-
