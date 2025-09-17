@@ -112,6 +112,7 @@ public class CodeGen {
         genData("TrimMaterial", "trim_material");
         genData("TrimPattern", "trim_pattern");
         genData("Worldgen", "worldgen");
+        genData("ItemModifier", "item_modifier");
 
         genTag("BannerPattern", "banner_pattern");
         genTag("Block", "block");

@@ -30,7 +30,7 @@ public final class Util {
         addFunctionToTag(f, "tick");
     }
 
-    private static <T extends AbstractFile<JsonObject>> JsonObject getOrCreateJsonFile(
+    private static <T extends AbstractFile<JsonObject>> T getOrCreateJsonFile(
             Namespace namespace,
             Class<T> clazz,
             String name,
@@ -46,7 +46,7 @@ public final class Util {
         // file is either the result of the find method
         // or created with supplier if the search returned a null value
         T file = optional.orElseGet(creator);
-        return file.getContent();
+        return file;
     }
 
     private static Function getOrCreateFunction(
@@ -84,7 +84,7 @@ public final class Util {
                     mcns.exit();
                     return ft;
                 }
-        );
+        ).getContent();
 
         JsonArray valuesArray = content.getAsJsonArray("values");
         valuesArray.add(f.toString());
@@ -96,7 +96,7 @@ public final class Util {
                 Lang.class,
                 formattedLocale,
                 () -> Lang.f.ofName(formattedLocale, "{}")
-        );
+        ).getContent();
         content.addProperty(key, value);
     }
 
@@ -108,20 +108,23 @@ public final class Util {
         addTranslation(Locale.US, key, value);
     }
 
-    public static void addSound(Namespace namespace, String key, String category,
-                                String subtitle, Sound... sounds) {
+    public static String addSound(Namespace namespace, String key, String category,
+                                  String subtitle, String translation, Sound... sounds) {
+
+        if (translation != null) {
+            addTranslation(subtitle, translation);
+        }
 
         if (sounds.length == 0) {
             throw new IllegalStateException("Sounds array is empty.");
         }
-
         String dst = "sounds";
-        JsonObject content = getOrCreateJsonFile(namespace,
+        SoundFile sf = getOrCreateJsonFile(namespace,
                 SoundFile.class,
                 dst,
-                () -> SoundFile.f.of(dst, "{}")
+                () -> SoundFile.f.ofName(dst, "{}")
         );
-
+        JsonObject content = sf.getContent();
         JsonObject soundEntry = new JsonObject();
 
         JsonArray soundsArray = new JsonArray();
@@ -134,20 +137,25 @@ public final class Util {
         soundEntry.addProperty("category", category);
 
         content.add(key, soundEntry);
+        return "%s:%s".formatted(namespace.getName(), key);
     }
 
-    public static void addSound(String key, String category, String subtitle, Sound... sounds) {
-        addSound(Context.getActiveNamespace(), key, category, subtitle, sounds);
+    public static String addSound(String key, String category, String subtitle, String translation, Sound... sounds) {
+        return addSound(Context.getActiveNamespace(), key, category, subtitle, translation, sounds);
     }
 
-    public static void addSound(String key, String category, Sound... sounds) {
-        addSound(key, category,
-                String.format("subtitle.%s.%s", Context.getActiveNamespace().getName(), key),
+    public static String addSound(String key, String category, String translation, Sound... sounds) {
+        return addSound(key, category,
+                String.format("subtitle.%s.%s", Context.getActiveNamespace().getName(), key), translation,
                 sounds);
     }
 
-    public static void addSound(String key, Sound... sounds) {
-        addSound(key, "master", sounds);
+    public static String addSound(String key, String translation, Sound... sounds) {
+        return addSound(key, "master", translation, sounds);
+    }
+
+    public static String addSound(String key, Sound... sounds) {
+        return addSound(key, "master", null, sounds);
     }
 
 
