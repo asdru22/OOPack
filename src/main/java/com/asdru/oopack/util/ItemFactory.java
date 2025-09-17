@@ -9,6 +9,12 @@ public class ItemFactory {
 
     private static JsonObject defaultComponents = new JsonObject();
     private static boolean randomNames = true, internalIds = true;
+    private static JsonObject finishedComponents;
+
+    public static JsonObject getFinishedComponents() {
+        return finishedComponents;
+    }
+
 
     public static void setRandomNames(boolean randomNames) {
         ItemFactory.randomNames = randomNames;
@@ -100,6 +106,15 @@ public class ItemFactory {
             JsonObject setComponents = new JsonObject();
             setComponents.addProperty("function", "minecraft:set_components");
 
+            JsonObject componentsFinal = getComponents(translationStr);
+            setComponents.add("components", componentsFinal);
+            functions.add(setComponents);
+
+            return root;
+        }
+
+        private JsonObject getComponents(String translationStr){
+
             // copy defaultComponents
             JsonObject merged = deepCopy(defaultComponents);
 
@@ -123,10 +138,8 @@ public class ItemFactory {
                 internalIds(merged);
             }
 
-            setComponents.add("components", merged);
-            functions.add(setComponents);
-
-            return root;
+            finishedComponents = merged;
+            return merged;
         }
 
         private void internalIds(JsonObject merged) {
