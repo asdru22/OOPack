@@ -2,10 +2,9 @@ package com.asdru.oopack.internal;
 
 
 import com.asdru.oopack.Namespace;
-import com.asdru.oopack.Project;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public interface FileSystemObject extends Buildable {
@@ -31,7 +30,7 @@ public interface FileSystemObject extends Buildable {
         }
 
         Object content = root.getContent();
-        if (content instanceof List<?> children) {
+        if (content instanceof Set<?> children) {
             for (Object child : children) {
                 Optional<T> found = find((FileSystemObject) child, clazz, condition);
                 if (found.isPresent()) {

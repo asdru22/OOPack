@@ -45,8 +45,7 @@ public final class Util {
 
         // file is either the result of the find method
         // or created with supplier if the search returned a null value
-        T file = optional.orElseGet(creator);
-        return file;
+        return optional.orElseGet(creator);
     }
 
     private static Function getOrCreateFunction(

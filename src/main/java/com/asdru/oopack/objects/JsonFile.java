@@ -3,6 +3,7 @@ package com.asdru.oopack.objects;
 import com.asdru.oopack.internal.JsonFileFactory;
 import com.asdru.oopack.util.IOUtils;
 import com.asdru.oopack.util.JsonUtils;
+import com.asdru.oopack.util.Metrics;
 import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
@@ -18,7 +19,7 @@ public abstract class JsonFile extends PlainFile<JsonObject> {
     public void writeContent(Path path) {
         JsonObject jsonContent = getContent();
         String jsonString = JsonUtils.toString(jsonContent);
-
+        Metrics.update(jsonString);
         IOUtils.createGenericTextFile(path, jsonString);
     }
 

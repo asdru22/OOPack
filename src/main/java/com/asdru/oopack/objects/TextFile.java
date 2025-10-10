@@ -2,6 +2,7 @@ package com.asdru.oopack.objects;
 
 
 import com.asdru.oopack.util.IOUtils;
+import com.asdru.oopack.util.Metrics;
 
 import java.nio.file.Path;
 
@@ -17,6 +18,7 @@ public abstract class TextFile extends PlainFile<StringBuilder> {
     @Override
     public void writeContent(Path path) {
         String formattedContent = getContent().toString().formatted(args);
+        Metrics.update(formattedContent);
         IOUtils.createGenericTextFile(path, formattedContent);
     }
 
